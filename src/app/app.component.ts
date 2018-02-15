@@ -5,6 +5,8 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 
 import { TabsPage } from '../pages/tabs/tabs';
 import { VoWPage } from '../pages/vo-w/vo-w';
+import { TrendingPage } from '../pages/trending/trending';
+import { SuggestedPage } from '../pages/suggested/suggested';
 
 @Component({
   templateUrl: 'app.html'
@@ -26,7 +28,9 @@ export class MyApp {
     });
 
     this.pages = [
-      { title: 'VOW', component: VoWPage }
+      { title: 'Vendor of the Week', component: VoWPage },
+      { title: 'Trending', component: TrendingPage },
+      { title: 'Suggested', component: SuggestedPage }
     ];
   
   }

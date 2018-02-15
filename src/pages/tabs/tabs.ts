@@ -6,6 +6,9 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 import { AboutPage } from '../about/about';
 import { ContactPage } from '../contact/contact';
 import { HomePage } from '../home/home';
+import { MapPage } from '../map/map';
+import { RankingsPage } from '../rankings/rankings';
+import { FilterPage } from '../filter/filter';
 
 import { VoWPage } from '../vo-w/vo-w';
 
@@ -14,9 +17,9 @@ import { VoWPage } from '../vo-w/vo-w';
 })
 export class TabsPage {
 
-  tab1Root = HomePage;
-  tab2Root = AboutPage;
-  tab3Root = ContactPage;
+  tab1Root = MapPage;
+  tab2Root = RankingsPage;
+  tab3Root = FilterPage;
 
   constructor() {
     
