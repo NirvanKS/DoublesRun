@@ -4,13 +4,16 @@ import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 
 import { TabsPage } from '../pages/tabs/tabs';
-
+import { VoWPage } from '../pages/vo-w/vo-w';
 
 @Component({
   templateUrl: 'app.html'
 })
 export class MyApp {
-  
+  @ViewChild(Nav) nav: Nav;
+
+  pages: Array<{title: string, component: any}>;
+
   rootPage:any = TabsPage;
   
 
@@ -21,7 +24,16 @@ export class MyApp {
       statusBar.styleDefault();
       splashScreen.hide();
     });
+
+    this.pages = [
+      { title: 'VOW', component: VoWPage }
+    ];
   
+  }
+  openPage(page) {
+    // Reset the content nav to have just this page
+    // we wouldn't want the back button to show in this scenario
+    this.nav.push(page.component);
   }
 
 }
