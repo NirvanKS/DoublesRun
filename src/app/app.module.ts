@@ -25,6 +25,10 @@ import {
   Marker
  } from '@ionic-native/google-maps';
 
+
+ import { VendorModalPage } from '../pages/vendor-modal/vendor-modal';
+ import { IonicPageModule } from 'ionic-angular';
+
 @NgModule({
   declarations: [
     MyApp,
@@ -35,11 +39,13 @@ import {
     FilterPage,
     TrendingPage,
     SuggestedPage,
-    VendorMarkerPage
+    VendorMarkerPage,
+    VendorModalPage,
   ],
   imports: [
     BrowserModule,
-    IonicModule.forRoot(MyApp)
+    IonicModule.forRoot(MyApp),
+    IonicPageModule.forChild(VendorModalPage),
   ],
   bootstrap: [IonicApp],
   entryComponents: [
@@ -51,7 +57,8 @@ import {
     FilterPage,
     TrendingPage,
     SuggestedPage,
-    VendorMarkerPage
+    VendorMarkerPage,
+    VendorModalPage,
   ],
   providers: [
     StatusBar,

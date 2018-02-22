@@ -1,7 +1,9 @@
 import { Component, ViewChild, ElementRef  } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, ModalController } from 'ionic-angular';
 import { VendorMarkerPage } from '../vendor-marker/vendor-marker';
 import { Geolocation } from '@ionic-native/geolocation';
+import{VendorModalPage} from '../vendor-modal/vendor-modal'
+
 
  declare var google;
 
@@ -12,9 +14,9 @@ import { Geolocation } from '@ionic-native/geolocation';
 })
 export class MapPage {
   map: any;
-  
+  modalParam = 'https://google.com/';
   @ViewChild('map') mapElement: ElementRef;
-  constructor(public navCtrl: NavController, public navParams: NavParams, public geolocation: Geolocation) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, public geolocation: Geolocation, public modalCtrl: ModalController) {
   }
 
   ionViewDidLoad() {
@@ -26,9 +28,15 @@ export class MapPage {
     this.navCtrl.push(VendorMarkerPage);
   }
 
+  openModalWithParams() {
+    let myModal = this.modalCtrl.create(VendorModalPage, { 'myParam': this.modalParam });
+    myModal.present();
+  }
+
+
+
   addMarker(){
     //this.navCtrl.push(VendorMarkerPage);
-
     let marker = new google.maps.Marker({
       map: this.map,
       animation: google.maps.Animation.DROP,
@@ -36,22 +44,27 @@ export class MapPage {
       
     });
     
-    let content = "<h4>Sauce Doubles</h4> <br>  <h1>5 Eastern Main Road<h1> <br> <h2>4/5 Stars<h2> "; 
+    let xd = "test";
+    let content = "<h4>Sauce Doubles "+xd+"\</h4> <br>  <h1>5 Eastern Main Road<h1> <br> <h2>4/5 Stars<h2> "; 
     var map = this.map;
     var navControl = this.navCtrl;
+    //var openModal = this.openModalWithParams;
+    var modal = this.modalCtrl;
+    var params = this.modalParam;
     marker.addListener('click', function() {
       //navControl.push(VendorMarkerPage);
       //alert(content);
-      
-
-    
+      var vendorModal = modal.create(VendorModalPage, { 'myParam': params });
+      vendorModal.present();
     });
         
    
     //this.addInfoWindow(marker, content);
    
   }
-  
+
+ 
+
 loadMap(){
     this.geolocation.getCurrentPosition().then((position) => {
       let latLng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
