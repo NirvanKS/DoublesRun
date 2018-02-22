@@ -1,14 +1,7 @@
 import { Component, ViewChild, ElementRef  } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
-// import {
-//   GoogleMaps,
-//   GoogleMap,
-//   GoogleMapsEvent,
-//   GoogleMapOptions,
-//   CameraPosition,
-//   MarkerOptions,
-//   Marker
-//  } from '@ionic-native/google-maps';
+import { VendorMarkerPage } from '../vendor-marker/vendor-marker';
+
  declare var google;
 
 @IonicPage()
@@ -18,6 +11,7 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 })
 export class MapPage {
   map: any;
+  
   @ViewChild('map') mapElement: ElementRef;
   constructor(public navCtrl: NavController, public navParams: NavParams) {
   }
@@ -35,45 +29,46 @@ export class MapPage {
       mapTypeId: google.maps.MapTypeId.ROADMAP
     }
     this.map = new google.maps.Map(this.mapElement.nativeElement, mapOptions);
+
+    
   }
 
-  // loadMap() {
+  loadNextPage(){
+    this.navCtrl.push(VendorMarkerPage);
+  }
 
-  //   let mapOptions: GoogleMapOptions = {
-  //     camera: {
-  //       target: {
-  //         lat: 43.0741904,
-  //         lng: -89.3809802
-  //       },
-  //       zoom: 18,
-  //       tilt: 30
-  //     }
-  //   };
+  addMarker(){
+    //this.navCtrl.push(VendorMarkerPage);
 
-  //   this.map = GoogleMaps.create('map_canvas', mapOptions);
+    let marker = new google.maps.Marker({
+      map: this.map,
+      animation: google.maps.Animation.DROP,
+      position: this.map.getCenter()
+      
+    });
+    
+    let content = "<h4>Sauce Doubles</h4> <br>  <h1>5 Eastern Main Road<h1> <br> <h2>4/5 Stars<h2> "; 
+    var map = this.map;
+    var navControl = this.navCtrl;
 
-  //   // Wait the MAP_READY before using any methods.
-  //   this.map.one(GoogleMapsEvent.MAP_READY)
-  //     .then(() => {
-  //       console.log('Map is ready!');
+    
 
-  //       // Now you can use all methods safely.
-  //       this.map.addMarker({
-  //           title: 'Ionic',
-  //           icon: 'blue',
-  //           animation: 'DROP',
-  //           position: {
-  //             lat: 43.0741904,
-  //             lng: -89.3809802
-  //           }
-  //         })
-  //         .then(marker => {
-  //           marker.on(GoogleMapsEvent.MARKER_CLICK)
-  //             .subscribe(() => {
-  //               alert('clicked');
-  //             });
-  //         });
 
-  //     });
-  //   }
+    
+   
+      
+
+    marker.addListener('click', function() {
+      //navControl.push(VendorMarkerPage);
+      //alert(content);
+      
+
+    
+    });
+        
+   
+    //this.addInfoWindow(marker, content);
+   
+  }
+
 }
