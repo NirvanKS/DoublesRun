@@ -12,6 +12,7 @@ import { FilterPage } from '../pages/filter/filter';
 import { TrendingPage } from '../pages/trending/trending';
 import { SuggestedPage } from '../pages/suggested/suggested';
 import { VendorMarkerPage } from '../pages/vendor-marker/vendor-marker';
+import { VendorAddPage } from '../pages/vendor-add/vendor-add';
 
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
@@ -41,6 +42,7 @@ import {
     SuggestedPage,
     VendorMarkerPage,
     VendorModalPage,
+    VendorAddPage
   ],
   imports: [
     BrowserModule,
@@ -59,6 +61,7 @@ import {
     SuggestedPage,
     VendorMarkerPage,
     VendorModalPage,
+    VendorAddPage
   ],
   providers: [
     StatusBar,
