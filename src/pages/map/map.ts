@@ -2,8 +2,8 @@ import { Component, ViewChild, ElementRef  } from '@angular/core';
 import { IonicPage, NavController, NavParams, ModalController } from 'ionic-angular';
 import { VendorMarkerPage } from '../vendor-marker/vendor-marker';
 import { Geolocation } from '@ionic-native/geolocation';
-import{VendorModalPage} from '../vendor-modal/vendor-modal'
-
+import{VendorModalPage} from '../vendor-modal/vendor-modal';
+import{VendorAddPage} from '../vendor-add/vendor-add';
 
  declare var google;
 
@@ -14,6 +14,8 @@ import{VendorModalPage} from '../vendor-modal/vendor-modal'
 })
 export class MapPage {
   map: any;
+  geoNumberLat: number = 0;
+  geoNumberLon: number = 0;
   modalParam = 'https://google.com/';
   @ViewChild('map') mapElement: ElementRef;
   constructor(public navCtrl: NavController, public navParams: NavParams, public geolocation: Geolocation, public modalCtrl: ModalController) {
@@ -37,12 +39,36 @@ export class MapPage {
 
   addMarker(){
     //this.navCtrl.push(VendorMarkerPage);
+    //var geoNum = this.geoNumber;
+    let modalVendorAdd = this.modalCtrl.create(VendorAddPage, { 'geoNumberLat': this.geoNumberLat, 'geoNumberLon': this.geoNumberLon});
+    modalVendorAdd.onDidDismiss(data => {
+      
+          if(data.confirm ===true){
+            console.log("hi");
+            console.log(data);
+            let marker = new google.maps.Marker({
+              map: this.map,
+              animation: google.maps.Animation.DROP,
+              position: this.map.getCenter()
+              
+            });
+
+            marker.addListener('click', function() {
+              //navControl.push(VendorMarkerPage);
+              //alert(content);
+              var vendorModal = modal.create(VendorModalPage, { 'myParam': params });
+              vendorModal.present();
+            });
+          }
+    });
+    modalVendorAdd.present();
+    /*
     let marker = new google.maps.Marker({
       map: this.map,
       animation: google.maps.Animation.DROP,
       position: this.map.getCenter()
       
-    });
+    });*/
     
     let xd = "test";
     let content = "<h4>Sauce Doubles "+xd+"\</h4> <br>  <h1>5 Eastern Main Road<h1> <br> <h2>4/5 Stars<h2> "; 
@@ -51,12 +77,13 @@ export class MapPage {
     //var openModal = this.openModalWithParams;
     var modal = this.modalCtrl;
     var params = this.modalParam;
+    /*
     marker.addListener('click', function() {
       //navControl.push(VendorMarkerPage);
       //alert(content);
       var vendorModal = modal.create(VendorModalPage, { 'myParam': params });
       vendorModal.present();
-    });
+    });*/
         
    
     //this.addInfoWindow(marker, content);
@@ -68,7 +95,8 @@ export class MapPage {
 loadMap(){
     this.geolocation.getCurrentPosition().then((position) => {
       let latLng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
-  
+      this.geoNumberLat = position.coords.latitude;
+      this.geoNumberLon = position.coords.longitude;
       let mapOptions = {
         center: latLng,
         zoom: 15,

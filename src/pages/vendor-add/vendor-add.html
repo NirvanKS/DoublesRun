@@ -1,0 +1,33 @@
+<!--
+  Generated template for the VendorAddPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+
+  <ion-navbar color="danger">
+    <ion-title>VendorAdd</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+    <form (ngSubmit)="logForm()">
+        <ion-item>
+          <ion-label>Vendor Name: </ion-label>
+          <ion-input type="text" [(ngModel)]="vendorForm.name" name="Name"></ion-input>
+        </ion-item>
+        <ion-item>
+            <ion-label>Description</ion-label>
+          <ion-textarea type="text" [(ngModel)]="vendorForm.description" name="Description"></ion-textarea>
+        </ion-item>
+        <br>
+        <br>
+        <br>
+        <button ion-button type="submit" color="danger" block>Add Vendor</button>
+    </form>
+  
+  <button ion-button color="danger" (click)="dismiss()">Back</button>
+</ion-content>
