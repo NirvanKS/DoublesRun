@@ -4,7 +4,7 @@ from __future__ import unicode_literals
 from django.db import models
 
 # Create your models here.
-class vendor(models.Model):
+class Vendor(models.Model):
     Name = models.CharField(max_length=40)
     Description = models.CharField(max_length=200)
     locLat = models.DecimalField(max_digits=19, decimal_places=10)

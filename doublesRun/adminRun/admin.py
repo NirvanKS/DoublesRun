@@ -2,6 +2,6 @@
 from __future__ import unicode_literals
 
 from django.contrib import admin
-from .models import vendor
+from .models import Vendor
 
-admin.site.register(vendor)
+admin.site.register(Vendor)
