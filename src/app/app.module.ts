@@ -16,15 +16,7 @@ import { VendorAddPage } from '../pages/vendor-add/vendor-add';
 
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
-import {
-  GoogleMaps,
-  GoogleMap,
-  GoogleMapsEvent,
-  GoogleMapOptions,
-  CameraPosition,
-  MarkerOptions,
-  Marker
- } from '@ionic-native/google-maps';
+ import { Camera } from '@ionic-native/camera';
 
 
  import { VendorModalPage } from '../pages/vendor-modal/vendor-modal';
@@ -66,8 +58,8 @@ import {
   providers: [
     StatusBar,
     SplashScreen,
-    GoogleMaps,
     Geolocation,
+    Camera,
     {provide: ErrorHandler, useClass: IonicErrorHandler}
   ]
 })

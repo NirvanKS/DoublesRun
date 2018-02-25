@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, ViewController } from 'ionic-angular';
 import { Vendor } from './vendor';
-
+import {Camera,CameraOptions} from '@ionic-native/camera';
 
 /**
  * Generated class for the VendorAddPage page.
@@ -17,6 +17,7 @@ import { Vendor } from './vendor';
 })
 export class VendorAddPage {
   vendor: Vendor;
+  public base64Image : string;
   vendorForm = {
     name: '',
     description:'',
@@ -24,7 +25,7 @@ export class VendorAddPage {
     locationLon:0
   }
   confirmVend: boolean = false;
-  constructor(public viewCtrl: ViewController ,public navCtrl: NavController, public navParams: NavParams) {
+  constructor(public viewCtrl: ViewController ,public navCtrl: NavController, public navParams: NavParams, private camera : Camera) {
   }
 
 
@@ -59,5 +60,23 @@ export class VendorAddPage {
     //this.weep = false;
     console.log(this.vendor);
   }
+
+  takePhoto() {
+    const options : CameraOptions = {
+      quality: 50, // picture quality
+      destinationType: this.camera.DestinationType.DATA_URL,
+      encodingType: this.camera.EncodingType.JPEG,
+      mediaType: this.camera.MediaType.PICTURE
+    }
+    this.camera.getPicture(options) .then((imageData) => {
+        this.base64Image = "data:image/jpeg;base64," + imageData;
+      }, (err) => {
+        console.log(err);
+      });
+  }
+
+  deletePhoto(index){
+    this.base64Image = null;
+ }
 
 }
