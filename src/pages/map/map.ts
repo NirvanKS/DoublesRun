@@ -4,6 +4,7 @@ import { VendorMarkerPage } from '../vendor-marker/vendor-marker';
 import { Geolocation } from '@ionic-native/geolocation';
 import{VendorModalPage} from '../vendor-modal/vendor-modal';
 import{VendorAddPage} from '../vendor-add/vendor-add';
+import { AfterViewInit } from '@angular/core';
 
  declare var google;
 
@@ -12,7 +13,10 @@ import{VendorAddPage} from '../vendor-add/vendor-add';
   selector: 'page-map',
   templateUrl: 'map.html',
 })
-export class MapPage {
+export class MapPage implements AfterViewInit {
+  ngAfterViewInit(): void{
+    this.loadMap();
+  }
   map: any;
   geoNumberLat: number = 0;
   geoNumberLon: number = 0;
@@ -23,7 +27,7 @@ export class MapPage {
   }
 
   ionViewDidLoad() {
-    this.loadMap();
+    //this.loadMap();
   }
  
 
@@ -144,5 +148,5 @@ loadMap(){
   }
 
 
- 
+  
 }
