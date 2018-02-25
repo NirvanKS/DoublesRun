@@ -4,6 +4,7 @@ import { VendorMarkerPage } from '../vendor-marker/vendor-marker';
 import { Geolocation } from '@ionic-native/geolocation';
 import{VendorModalPage} from '../vendor-modal/vendor-modal';
 import{VendorAddPage} from '../vendor-add/vendor-add';
+import { AfterViewInit } from '@angular/core';
 
  declare var google;
 
@@ -12,17 +13,21 @@ import{VendorAddPage} from '../vendor-add/vendor-add';
   selector: 'page-map',
   templateUrl: 'map.html',
 })
-export class MapPage {
+export class MapPage implements AfterViewInit {
+  ngAfterViewInit(): void{
+    this.loadMap();
+  }
   map: any;
   geoNumberLat: number = 0;
   geoNumberLon: number = 0;
+  geoLatLon: any;
   modalParam = 'https://google.com/';
   @ViewChild('map') mapElement: ElementRef;
   constructor(public navCtrl: NavController, public navParams: NavParams, public geolocation: Geolocation, public modalCtrl: ModalController) {
   }
 
   ionViewDidLoad() {
-    this.loadMap();
+    //this.loadMap();
   }
  
 
@@ -49,7 +54,7 @@ export class MapPage {
             let marker = new google.maps.Marker({
               map: this.map,
               animation: google.maps.Animation.DROP,
-              position: this.map.getCenter()
+              position: this.geoLatLon//this.map.getCenter()
               
             });
 
@@ -95,6 +100,7 @@ export class MapPage {
 loadMap(){
     this.geolocation.getCurrentPosition().then((position) => {
       let latLng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+      this.geoLatLon = latLng;
       this.geoNumberLat = position.coords.latitude;
       this.geoNumberLon = position.coords.longitude;
       let mapOptions = {
@@ -142,5 +148,5 @@ loadMap(){
   }
 
 
- 
+  
 }
