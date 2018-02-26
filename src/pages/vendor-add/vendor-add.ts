@@ -2,6 +2,8 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, ViewController } from 'ionic-angular';
 import { Vendor } from './vendor';
 import {Camera,CameraOptions} from '@ionic-native/camera';
+import { Http, Headers } from '@angular/http';
+import 'rxjs/add/operator/map';
 
 /**
  * Generated class for the VendorAddPage page.
@@ -17,15 +19,16 @@ import {Camera,CameraOptions} from '@ionic-native/camera';
 })
 export class VendorAddPage {
   vendor: Vendor;
-  public base64Image : string;
   vendorForm = {
     name: '',
     description:'',
     locationLat:0,
-    locationLon:0
+    locationLon:0,
+    image: ''
   }
   confirmVend: boolean = false;
-  constructor(public viewCtrl: ViewController ,public navCtrl: NavController, public navParams: NavParams, private camera : Camera) {
+  constructor(public viewCtrl: ViewController ,public navCtrl: NavController, 
+    public navParams: NavParams, private camera : Camera, private http: HTTP) {
   }
 
 
@@ -69,14 +72,24 @@ export class VendorAddPage {
       mediaType: this.camera.MediaType.PICTURE
     }
     this.camera.getPicture(options) .then((imageData) => {
-        this.base64Image = "data:image/jpeg;base64," + imageData;
+        this.vendorForm.image = "data:image/jpeg;base64," + imageData;
       }, (err) => {
         console.log(err);
       });
   }
 
   deletePhoto(index){
-    this.base64Image = null;
+    this.vendorForm.image = null;
+ }
+
+ addVendor(){
+   let headers = new Headers();
+   headers.append('Content-Type','application/json');
+   this.http.post('http://localhost:8080/api/Vendors', JSON.stringify(this.vendorForm), {headers:headers})
+   .map(res=> res.json())
+   .subscribe(data=>{
+     console.log(data);
+   })
  }
 
 }

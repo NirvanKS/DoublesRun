@@ -29,7 +29,7 @@
         </button>
         <ion-card class="block">
           <ion-icon  name="trash" class="deleteIcon" (click)="deletePhoto()"></ion-icon>
-          <img [src]="base64Image" *ngIf="photo" />
+          <img [src]="vendorForm.image" *ngIf="photo" />
         </ion-card>
         <br>
         <br>
