@@ -24,17 +24,22 @@
           <ion-textarea type="text" [(ngModel)]="vendorForm.description" name="Description"></ion-textarea>
         </ion-item>
         <br>
-        <button ion-button full (click)="takePhoto()" >
-          <ion-icon name="camera"></ion-icon>Take Photo
-        </button>
+        
         <ion-card class="block">
           <ion-icon  name="trash" class="deleteIcon" (click)="deletePhoto()"></ion-icon>
           <img [src]="vendorForm.image" *ngIf="photo" />
         </ion-card>
         <br>
         <br>
-        <button ion-button type="submit" color="danger" block>Add Vendor</button>
+        
     </form>
+
+    <button ion-button full (click)="takePhoto()" >
+      <ion-icon name="camera"></ion-icon>Take Photo
+    </button>
+    <br>
+    <br>
+    <button ion-button type="submit" (click)="logForm()" color="danger" block>Add Vendor</button>
   
   <button ion-button color="danger" (click)="dismiss()">Back</button>
 </ion-content>

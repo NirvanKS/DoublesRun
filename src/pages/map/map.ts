@@ -45,6 +45,27 @@ export class MapPage implements AfterViewInit {
   addMarker(){
     //this.navCtrl.push(VendorMarkerPage);
     //var geoNum = this.geoNumber;
+    this.navCtrl.push(VendorAddPage, {
+      geoNumberLat: this.geoNumberLat,
+      geoNumberLon: this.geoNumberLon,
+
+    });
+
+    let marker = new google.maps.Marker({
+      map: this.map,
+      animation: google.maps.Animation.DROP,
+      position: this.geoLatLon//this.map.getCenter()
+      
+    });
+
+    marker.addListener('click', function() {
+      //navControl.push(VendorMarkerPage);
+      //alert(content);
+      var vendorModal = modal.create(VendorModalPage, { 'myParam': params });
+      vendorModal.present();
+      
+    });
+    /*
     let modalVendorAdd = this.modalCtrl.create(VendorAddPage, { 'geoNumberLat': this.geoNumberLat, 'geoNumberLon': this.geoNumberLon});
     modalVendorAdd.onDidDismiss(data => {
       
@@ -67,13 +88,8 @@ export class MapPage implements AfterViewInit {
           }
     });
     modalVendorAdd.present();
-    /*
-    let marker = new google.maps.Marker({
-      map: this.map,
-      animation: google.maps.Animation.DROP,
-      position: this.map.getCenter()
-      
-    });*/
+    */
+   
     
     let xd = "test";
     let content = "<h4>Sauce Doubles "+xd+"\</h4> <br>  <h1>5 Eastern Main Road<h1> <br> <h2>4/5 Stars<h2> "; 
@@ -82,16 +98,7 @@ export class MapPage implements AfterViewInit {
     //var openModal = this.openModalWithParams;
     var modal = this.modalCtrl;
     var params = this.modalParam;
-    /*
-    marker.addListener('click', function() {
-      //navControl.push(VendorMarkerPage);
-      //alert(content);
-      var vendorModal = modal.create(VendorModalPage, { 'myParam': params });
-      vendorModal.present();
-    });*/
-        
-   
-    //this.addInfoWindow(marker, content);
+    
    
   }
 

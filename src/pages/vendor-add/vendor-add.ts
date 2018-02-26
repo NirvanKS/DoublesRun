@@ -28,7 +28,7 @@ export class VendorAddPage {
   }
   confirmVend: boolean = false;
   constructor(public viewCtrl: ViewController ,public navCtrl: NavController, 
-    public navParams: NavParams, private camera : Camera, private http: HTTP) {
+    public navParams: NavParams, private camera : Camera, private http: Http) {
   }
 
 
@@ -40,7 +40,8 @@ export class VendorAddPage {
 
   dismiss() {
 
-    this.viewCtrl.dismiss({'confirm': this.confirmVend});
+    //this.viewCtrl.dismiss({'confirm': this.confirmVend});
+    this.navCtrl.pop();
   }
 
   logForm(form){
@@ -59,7 +60,8 @@ export class VendorAddPage {
     }
     */
     this.confirmVend = true;
-    this.dismiss();
+    //this.dismiss();
+    this.navCtrl.pop();
     //this.weep = false;
     console.log(this.vendor);
   }
