@@ -25,10 +25,10 @@
         </ion-item>
         <br>
         
-        <ion-card class="block">
+        <ion-thumbnail item-left>
           <ion-icon  name="trash" class="deleteIcon" (click)="deletePhoto()"></ion-icon>
-          <img [src]="vendorForm.image" *ngIf="photo" />
-        </ion-card>
+          <img [src]="vendorForm.image" *ngIf="vendorForm.image" width="128" height="128"/>
+        </ion-thumbnail>
         <br>
         <br>
         
