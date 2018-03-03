@@ -14,32 +14,32 @@
 
 
 <ion-content padding>
-    <form (ngSubmit)="logForm()">
-        <ion-item>
-          <ion-label>Vendor Name: </ion-label>
-          <ion-input type="text" [(ngModel)]="vendorForm.name" name="Name"></ion-input>
-        </ion-item>
-        <ion-item>
-            <ion-label>Description</ion-label>
-          <ion-textarea type="text" [(ngModel)]="vendorForm.description" name="Description"></ion-textarea>
-        </ion-item>
-        <br>
-        
-        <ion-thumbnail item-left>
-          <ion-icon  name="trash" class="deleteIcon" (click)="deletePhoto()"></ion-icon>
-          <img [src]="vendorForm.image" *ngIf="vendorForm.image" width="128" height="128"/>
-        </ion-thumbnail>
-        <br>
-        <br>
-        
-    </form>
+  <form (ngSubmit)="logForm()">
+    <ion-item>
+      <ion-label>Vendor Name: </ion-label>
+      <ion-input type="text" [(ngModel)]="vendorForm.Name" name="Name"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label>Description</ion-label>
+      <ion-textarea type="text" [(ngModel)]="vendorForm.Description" name="Description"></ion-textarea>
+    </ion-item>
+    <br>
 
-    <button ion-button full (click)="takePhoto()" >
-      <ion-icon name="camera"></ion-icon>Take Photo
-    </button>
+    <ion-thumbnail item-left>
+      <ion-icon name="trash" class="deleteIcon" (click)="deletePhoto()"></ion-icon>
+      <img [src]="vendorForm.pic" *ngIf="vendorForm.pic" width="128" height="128" />
+    </ion-thumbnail>
     <br>
     <br>
-    <button ion-button type="submit" (click)="logForm()" color="danger" block>Add Vendor</button>
-  
+
+  </form>
+
+  <button ion-button full (click)="takePhoto()">
+    <ion-icon name="camera"></ion-icon>Take Photo
+  </button>
+  <br>
+  <br>
+  <button ion-button type="submit" (click)="logForm()" color="danger" block>Add Vendor</button>
+
   <button ion-button color="danger" (click)="dismiss()">Back</button>
 </ion-content>

@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, ViewController } from 'ionic-angular';
 import { Vendor } from './vendor';
-import {Camera,CameraOptions} from '@ionic-native/camera';
+import { Camera, CameraOptions } from '@ionic-native/camera';
 import { Http, Headers } from '@angular/http';
 import 'rxjs/add/operator/map';
 
@@ -20,15 +20,15 @@ import 'rxjs/add/operator/map';
 export class VendorAddPage {
   vendor: Vendor;
   vendorForm = {
-    name: '',
-    description:'',
-    locationLat:0,
-    locationLon:0,
-    image: ''
+    Name: '',
+    Description: '',
+    locLat: 0,
+    locLong: 0,
+    pic: ''
   }
   confirmVend: boolean = false;
-  constructor(public viewCtrl: ViewController ,public navCtrl: NavController, 
-    public navParams: NavParams, private camera : Camera, private http: Http) {
+  constructor(public viewCtrl: ViewController, public navCtrl: NavController,
+    public navParams: NavParams, private camera: Camera, private http: Http) {
   }
 
 
@@ -36,7 +36,7 @@ export class VendorAddPage {
     console.log('ionViewDidLoad VendorAddPage');
   }
 
-  
+
 
   dismiss() {
 
@@ -44,9 +44,9 @@ export class VendorAddPage {
     this.navCtrl.pop();
   }
 
-  logForm(form){
-    this.vendorForm.locationLat = this.navParams.get('geoNumberLat');
-    this.vendorForm.locationLon = this.navParams.get('geoNumberLon');
+  logForm(form) {
+    this.vendorForm.locLat = this.navParams.get('geoNumberLat');
+    this.vendorForm.locLong = this.navParams.get('geoNumberLon');
     this.vendor = this.vendorForm;
 
     /*if Vendor Info is NOT in the Database (the Vendoris legit and does NOT exist yet){
@@ -67,31 +67,31 @@ export class VendorAddPage {
   }
 
   takePhoto() {
-    const options : CameraOptions = {
+    const options: CameraOptions = {
       quality: 50, // picture quality
       destinationType: this.camera.DestinationType.DATA_URL,
       encodingType: this.camera.EncodingType.JPEG,
       mediaType: this.camera.MediaType.PICTURE
     }
-    this.camera.getPicture(options) .then((imageData) => {
-        this.vendorForm.image = "data:image/jpeg;base64," + imageData;
-      }, (err) => {
-        console.log(err);
-      });
+    this.camera.getPicture(options).then((imageData) => {
+      this.vendorForm.pic = "data:image/jpeg;base64," + imageData;
+    }, (err) => {
+      console.log(err);
+    });
   }
 
-  deletePhoto(index){
-    this.vendorForm.image = null;
- }
+  deletePhoto(index) {
+    this.vendorForm.pic = null;
+  }
 
- addVendor(){
-   let headers = new Headers();
-   headers.append('Content-Type','application/json');
-   this.http.post('http://localhost:8080/api/Vendors', JSON.stringify(this.vendorForm), {headers:headers})
-   .map(res=> res.json())
-   .subscribe(data=>{
-     console.log(data);
-   })
- }
+  addVendor() {
+    let headers = new Headers();
+    headers.append('Content-Type', 'application/json');
+    this.http.post('http://localhost:8000/api/Vendors', JSON.stringify(this.vendorForm), { headers: headers })
+      .map(res => res.json())
+      .subscribe(data => {
+        console.log(data);
+      })
+  }
 
 }
