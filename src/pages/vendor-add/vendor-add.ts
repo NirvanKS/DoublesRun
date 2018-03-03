@@ -59,6 +59,7 @@ export class VendorAddPage {
       this.dismiss();
     }
     */
+    this.addVendor();
     this.confirmVend = true;
     //this.dismiss();
     this.navCtrl.pop();
@@ -87,7 +88,7 @@ export class VendorAddPage {
   addVendor() {
     let headers = new Headers();
     headers.append('Content-Type', 'application/json');
-    this.http.post('http://localhost:8000/api/Vendors', JSON.stringify(this.vendorForm), { headers: headers })
+    this.http.post('http://127.0.0.1:8000/vendors/', JSON.stringify(this.vendorForm), { headers: headers })
       .map(res => res.json())
       .subscribe(data => {
         console.log(data);
