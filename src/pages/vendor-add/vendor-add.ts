@@ -4,7 +4,7 @@ import { Vendor } from './vendor';
 import { Camera, CameraOptions } from '@ionic-native/camera';
 import { Http, Headers } from '@angular/http';
 import 'rxjs/add/operator/map';
-
+import { ToastController } from 'ionic-angular';
 /**
  * Generated class for the VendorAddPage page.
  *
@@ -26,9 +26,13 @@ export class VendorAddPage {
     locLong: 0,
     pic: ''
   }
+  mark: any;
+  currGeoLocLat: number;
+  currGeoLocLong: number;
+  vendorFormName: string;
   confirmVend: boolean = false;
   constructor(public viewCtrl: ViewController, public navCtrl: NavController,
-    public navParams: NavParams, private camera: Camera, private http: Http) {
+    public navParams: NavParams, private camera: Camera, private http: Http, private toastCtrl: ToastController) {
   }
 
 
@@ -47,8 +51,10 @@ export class VendorAddPage {
   logForm(form) {
     this.vendorForm.locLat = this.navParams.get('geoNumberLat');
     this.vendorForm.locLong = this.navParams.get('geoNumberLon');
+    this.currGeoLocLat = this.navParams.get('geoNumberLat');
+    this.currGeoLocLong = this.navParams.get('geoNumberLon');
     this.vendor = this.vendorForm;
-
+    this.vendorFormName = this.vendorForm.Name;
     /*if Vendor Info is NOT in the Database (the Vendoris legit and does NOT exist yet){
       this.confirmVend = true;
       this.dismiss();
@@ -59,8 +65,9 @@ export class VendorAddPage {
       this.dismiss();
     }
     */
-    this.addVendor();
-    
+    if (this.checkForVendorDuplicates) this.addVendor();
+    else this.presentSuccessToast();
+
     this.confirmVend = true;
     //this.dismiss();
     this.navCtrl.pop();
@@ -95,5 +102,57 @@ export class VendorAddPage {
         console.log(data);
       })
   }
+
+  checkForVendorDuplicates(): Boolean {
+    this.http.get('http://127.0.0.1:8000/vendors/').map(res => res.json()).subscribe((data: Object) => {
+      //this.markers = data;
+      this.mark = Object.values(data);
+      let x = 0;
+      this.mark.forEach(element => {
+        if (element.locLong <= (this.currGeoLocLong + 0.09) || element.locLong >= (this.currGeoLocLong - 0.09)) {
+
+          if (element.locLat <= (this.currGeoLocLat + 0.09) || element.locLat >= (this.currGeoLocLat - 0.09)) {
+
+            if (element.Name == this.vendorFormName) {
+              this.presentFailToast()
+              return false;
+            }
+          }
+          //
+        }
+      })
+
+    });
+    return true;
+  }
+
+  presentFailToast() {
+    let toast = this.toastCtrl.create({
+      message: 'Vendor already exists!',
+      duration: 3000,
+      position: 'bottom'
+    });
+
+    toast.onDidDismiss(() => {
+      console.log('Dismissed toast');
+    });
+
+    toast.present();
+  }
+
+  presentSuccessToast() {
+    let toast = this.toastCtrl.create({
+      message: 'Vendor added!',
+      duration: 3000,
+      position: 'bottom'
+    });
+
+    toast.onDidDismiss(() => {
+      console.log('Dismissed toast');
+    });
+
+    toast.present();
+  }
+
 
 }
