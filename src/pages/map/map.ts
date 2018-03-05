@@ -54,7 +54,7 @@ export class MapPage implements AfterViewInit {
       geoNumberLon: this.geoNumberLon,
 
     });
-
+/*
     let marker = new google.maps.Marker({
       map: this.map,
       animation: google.maps.Animation.DROP,
@@ -69,6 +69,8 @@ export class MapPage implements AfterViewInit {
       vendorModal.present();
       
     });
+    */
+    
     /*
     let modalVendorAdd = this.modalCtrl.create(VendorAddPage, { 'geoNumberLat': this.geoNumberLat, 'geoNumberLon': this.geoNumberLon});
     modalVendorAdd.onDidDismiss(data => {

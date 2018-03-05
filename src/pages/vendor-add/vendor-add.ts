@@ -27,6 +27,7 @@ export class VendorAddPage {
     pic: ''
   }
   mark: any;
+  notFound: boolean =true;
   currGeoLocLat: number;
   currGeoLocLong: number;
   vendorFormName: string;
@@ -65,8 +66,35 @@ export class VendorAddPage {
       this.dismiss();
     }
     */
-    if (this.checkForVendorDuplicates) this.addVendor();
-    else this.presentSuccessToast();
+    this.checkForVendorDuplicates().subscribe((data: Object) => {
+      //this.markers = data;
+      this.mark = Object.values(data);
+      let x = 0;
+      this.mark.forEach(element => {
+        if (element.locLong <= (this.currGeoLocLong + 0.09) || element.locLong >= (this.currGeoLocLong - 0.09)) {
+
+          if (element.locLat <= (this.currGeoLocLat + 0.09) || element.locLat >= (this.currGeoLocLat - 0.09)) {
+
+            if (element.Name == this.vendorFormName) {
+              console.log("Same Name Found!" + element.Name);
+              this.notFound = false;
+            }
+          }
+          //
+        }
+      })
+      if (this.notFound == true)
+      {
+      this.addVendor();
+      this.presentSuccessToast();
+      } 
+      else 
+      {
+        this.presentFailToast()
+      }
+
+    });;
+    
 
     this.confirmVend = true;
     //this.dismiss();
@@ -103,27 +131,15 @@ export class VendorAddPage {
       })
   }
 
-  checkForVendorDuplicates(): Boolean {
-    this.http.get('http://127.0.0.1:8000/vendors/').map(res => res.json()).subscribe((data: Object) => {
-      //this.markers = data;
-      this.mark = Object.values(data);
-      let x = 0;
-      this.mark.forEach(element => {
-        if (element.locLong <= (this.currGeoLocLong + 0.09) || element.locLong >= (this.currGeoLocLong - 0.09)) {
-
-          if (element.locLat <= (this.currGeoLocLat + 0.09) || element.locLat >= (this.currGeoLocLat - 0.09)) {
-
-            if (element.Name == this.vendorFormName) {
-              this.presentFailToast()
-              return false;
-            }
-          }
-          //
-        }
-      })
-
-    });
+  checkForVendorDuplicates(): any  {
+   return this.http.get('http://127.0.0.1:8000/vendors/').map(res => res.json());
+    /*
+    if(this.notFound == false)
+    {
+      return false;
+    }
     return true;
+    */
   }
 
   presentFailToast() {
