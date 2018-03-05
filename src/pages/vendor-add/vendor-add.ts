@@ -60,6 +60,7 @@ export class VendorAddPage {
     }
     */
     this.addVendor();
+    
     this.confirmVend = true;
     //this.dismiss();
     this.navCtrl.pop();

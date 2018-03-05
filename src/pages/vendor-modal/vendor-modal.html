@@ -7,7 +7,7 @@
 <ion-header>
 
   <ion-navbar>
-    <ion-title>vendorModal</ion-title>
+    <ion-title>Vendor</ion-title>
   </ion-navbar>
 
 </ion-header>
@@ -15,15 +15,16 @@
 
 <ion-content padding>
 
-  <div [hidden]="!myParam">
-    <h3>Sauce Doubles</h3>
-    <h5>LP12 Eastern Main Road, Curepe</h5>
-    <pre style="background-color: #f8f8f8">{{myParam}}</pre>
+  <div > <!--[hidden]="!myParam" -->
+    <h3>{{name}}</h3>
+    
+    <pre style="background-color: #f8f8f8">{{description}}</pre>
     <h5 class="display-5 text-center"> * * * *</h5>
 
   </div>
+  <!--
   <div [hidden]="myParam">
     <p>No parameters passed.</p>
-  </div>
+  </div> -->
   <button ion-button color="danger" full (click)="dismiss()">Back</button>
 </ion-content>

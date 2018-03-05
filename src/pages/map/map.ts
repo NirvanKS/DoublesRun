@@ -5,7 +5,8 @@ import { Geolocation } from '@ionic-native/geolocation';
 import{VendorModalPage} from '../vendor-modal/vendor-modal';
 import{VendorAddPage} from '../vendor-add/vendor-add';
 import { AfterViewInit } from '@angular/core';
-
+import { Http, Headers } from '@angular/http';
+import { Observable } from 'rxjs/Observable';
  declare var google;
 
 @IonicPage()
@@ -16,14 +17,17 @@ import { AfterViewInit } from '@angular/core';
 export class MapPage implements AfterViewInit {
   ngAfterViewInit(): void{
     this.loadMap();
+    
   }
   map: any;
+  markers: Observable<any>[] = [];
+  mark: any;
   geoNumberLat: number = 0;
   geoNumberLon: number = 0;
   geoLatLon: any;
   modalParam = 'https://google.com/';
   @ViewChild('map') mapElement: ElementRef;
-  constructor(public navCtrl: NavController, public navParams: NavParams, public geolocation: Geolocation, public modalCtrl: ModalController) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, public geolocation: Geolocation, public modalCtrl: ModalController, private http: Http) {
   }
 
   ionViewDidLoad() {
@@ -146,13 +150,52 @@ loadMap(){
         if (y > maxY) y = maxY;
 
         map.setCenter(new google.maps.LatLng(y, x));
+        
       });
+      this.loadMarkers();
     }, (err) => {
       console.log(err);
     });
 
     
   }
+
+  loadMarkers()
+  {
+    var Vmodal = this.modalCtrl;
+    this.http.get('http://127.0.0.1:8000/vendors/').map(res => res.json()).subscribe((data: Object) => {
+      //this.markers = data;
+      this.mark = Object.values(data);
+      let x=0;
+      this.mark.forEach(element =>{
+        //console.log(element.Name);
+        let markLatLon = new google.maps.LatLng(element.locLat,element.locLong);
+        let marker = new google.maps.Marker({
+          map: this.map,
+          animation: google.maps.Animation.DROP,
+          position: markLatLon//this.map.getCenter()
+          
+        });
+
+        marker.addListener('click', function() {
+          //navControl.push(VendorMarkerPage);
+          //alert(content);
+          
+
+          var vendorModal = Vmodal.create(VendorModalPage, { 'name': element.Name, 'description': element.Description });
+          vendorModal.present();
+          
+        });
+    
+        
+        //console.log(x);
+        //console.log(element);
+      })
+      //console.log(data);
+    });
+  }
+
+
 
 
   

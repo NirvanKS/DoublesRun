@@ -14,9 +14,12 @@ import { IonicPage, NavController, NavParams, ViewController } from 'ionic-angul
   templateUrl: 'vendor-modal.html',
 })
 export class VendorModalPage {
-  myParam: string;
+  name: string;
+  description: string;
   constructor(public viewCtrl: ViewController, public navCtrl: NavController, public navParams: NavParams) {
-    this.myParam = navParams.get('myParam');
+    this.name = navParams.get('name');
+    this.description = navParams.get('description');
+    //this.description = navParams.get('description');
   }
 
   ionViewDidLoad() {
