@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, ViewController } from 'ionic-angular';
+import { VendorReviewPage } from '../vendor-review/vendor-review';
 
 /**
  * Generated class for the VendorModalPage page.
@@ -28,6 +29,13 @@ export class VendorModalPage {
 
   dismiss() {
     this.viewCtrl.dismiss();
+  }
+
+  loadReviewPage(){
+    this.navCtrl.push(VendorReviewPage, {
+      vendorName : this.name,
+      vendorDescription: this.description
+    });
   }
 
 }
