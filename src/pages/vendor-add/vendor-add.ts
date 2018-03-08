@@ -20,12 +20,14 @@ import { ToastController } from 'ionic-angular';
 export class VendorAddPage {
   vendor: Vendor;
   vendorForm = {
+    Type: true,
     Name: '',
     Description: '',
     locLat: 0,
     locLong: 0,
     pic: ''
   }
+  vendorType: any;
   mark: any;
   notFound: boolean =true;
   currGeoLocLat: number;
@@ -50,6 +52,8 @@ export class VendorAddPage {
   }
 
   logForm(form) {
+    if (this.vendorType == 'dv') this.vendorForm.Type = true;
+    else this.vendorForm.Type = false;
     this.vendorForm.locLat = this.navParams.get('geoNumberLat');
     this.vendorForm.locLong = this.navParams.get('geoNumberLon');
     this.currGeoLocLat = this.navParams.get('geoNumberLat');
@@ -128,6 +132,7 @@ export class VendorAddPage {
       .map(res => res.json())
       .subscribe(data => {
         console.log(data);
+        
       })
   }
 
