@@ -10,6 +10,7 @@ class Vendor(models.Model):
     locLat = models.DecimalField(max_digits=25, decimal_places=20)
     locLong = models.DecimalField(max_digits=25, decimal_places=20)
     pic = models.CharField(max_length=1000000)
+    Type = models.BooleanField()
 
     def __str__(self):
         return self.Name
