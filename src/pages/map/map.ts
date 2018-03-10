@@ -165,6 +165,7 @@ loadMap(){
   loadMarkers()
   {
     var Vmodal = this.modalCtrl;
+    
     this.http.get('http://127.0.0.1:8000/vendors/').map(res => res.json()).subscribe((data: Object) => {
       //this.markers = data;
       this.mark = Object.values(data);
@@ -183,8 +184,8 @@ loadMap(){
           //navControl.push(VendorMarkerPage);
           //alert(content);
           
-
-          var vendorModal = Vmodal.create(VendorModalPage, { 'name': element.Name, 'description': element.Description });
+          
+          var vendorModal = Vmodal.create(VendorModalPage, { 'name': element.Name, 'description': element.Description,'type':element.Type });
           vendorModal.present();
           
         });

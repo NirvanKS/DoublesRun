@@ -17,15 +17,25 @@
 
   <div > <!--[hidden]="!myParam" -->
     <h3>{{name}}</h3>
-    
+    <div *ngIf="type">
+        
+        <!-- Doubles Specific attributes to this vendor, go here: Avg Thickness, Avg Spicy, Cucumber -->
+    </div>
+    <!--Avg Rating and Description goes outside of ngIf-->
     <pre style="background-color: #f8f8f8">{{description}}</pre>
     <h5 class="display-5 text-center"> * * * *</h5>
-    <button ion-button color="danger" full (click)="loadReviewPage()">Add Review</button>
+    <div text-center>
+        <button ion-button color="danger" (click)="loadReviewPage()">Add Review</button>
+        <br>
+        <button ion-button color="danger" (click)="dismiss()">Back</button>
+    </div>
    
+    
   </div>
+  
   <!--
   <div [hidden]="myParam">
     <p>No parameters passed.</p>
   </div> -->
-  <button ion-button color="danger" full (click)="dismiss()">Back</button>
+  
 </ion-content>

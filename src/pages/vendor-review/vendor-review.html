@@ -17,42 +17,75 @@
   <h1>{{name}}</h1>
   <br>
   <br>
-  <h2>General Rating</h2>
-  <ion-list>
-     
-  <ion-item>
-    <ion-range min="0" max="5" pin=true [(ngModel)]="saturation" color="danger">
-      <ion-label range-left>0 stars</ion-label>
-      <ion-label range-right>5 stars</ion-label>
-    </ion-range>
-  </ion-item>
-  <br>
-  <h2>Doubles Bara</h2>
-  <ion-item>
-      <ion-range min="0" max="10" pin=true [(ngModel)]="saturation" color="danger">
-        <ion-label range-left>Thin</ion-label>
-        <ion-label range-right>Thick</ion-label>
-      </ion-range>
-  </ion-item>
-  <br>
-  <h2>Spiciness</h2>
-  <ion-item>
-      <ion-range min="0" max="10" pin=true [(ngModel)]="saturation" color="danger">
-        <ion-label range-left>Not Spicy</ion-label>
-        <ion-label range-right>Spiciness</ion-label>
-      </ion-range>
-  </ion-item>
-  <br>
-  <ion-item id="filter-checkbox13">
-      <ion-label>
-        Cucumber Available
-      </ion-label>
-      <ion-checkbox></ion-checkbox>
-    </ion-item>
- 
-  </ion-list>
-  
-  
-  <br>
+  <div *ngIf="type">
+      <form (ngSubmit)= "logReview()">
+            <h4>General Rating</h4>
+            <ion-list>
+                <ion-item>
+                  <ion-range min="0" max="5" pin=true color="danger" [(ngModel)] = "review.rating" name="rating">
+                    <ion-icon small range-left name="md-star"></ion-icon>
+                    <ion-icon range-right name="md-star"></ion-icon>
+                  </ion-range>
+                </ion-item>
+                <br>
+                <h2>Bara Thickness</h2>
+                <ion-item>
+                    <ion-range min="0" max="10" pin=true color="danger" [(ngModel)] = "review.thickness" name="thickness">
+                      <ion-label range-left>Thin</ion-label>
+                      <ion-label range-right>Thick</ion-label>
+                    </ion-range>
+                </ion-item>
+                <br>
+                <h2>Spiciness</h2>
+                <ion-item>
+                    <ion-range min="0" max="10" pin=true  color="danger" [(ngModel)]="review.spicy" name="spicy">
+                      <ion-icon small range-left name="md-flame"></ion-icon>
+                      <ion-icon range-right name="md-flame"></ion-icon>
+                    </ion-range>
+                </ion-item>
+                <br>
+                <ion-item>
+                    <ion-label>Cucumber Available</ion-label>
+                    <ion-select [(ngModel)]="review.topping" name="topping">
+                      <ion-option value="y" checked="true">Yes</ion-option>
+                      <ion-option value="n">No</ion-option>
+                    </ion-select>
+                </ion-item> 
+                <br>
+                <ion-item>
+                    <ion-textarea placeholder="Enter a comment" [(ngModel)] = "review.comment" name="comment"></ion-textarea>
+                </ion-item>
+                <div text-center>
+                    <button ion-button color="danger" type="submit">Submit</button>
+                </div>
+                  
+
+          
+            </ion-list>
+            <br>
+    </form>
+</div>
+
+<div *ngIf="type==false">
+  <form (ngSubmit)= "logNonReview()">
+      <h4>General Rating for Non Vendors</h4>
+      <ion-list>
+          <ion-item>
+            <ion-range min="0" max="5" pin=true color="danger" [(ngModel)] = "NonReview.Nrating" name="Nrating">
+              <ion-icon small range-left name="md-star"></ion-icon>
+              <ion-icon range-right name="md-star"></ion-icon>
+            </ion-range>
+          </ion-item>
+          <ion-item>
+              <ion-textarea placeholder="Enter a comment" [(ngModel)]= "NonReview.Ncomment" name="Ncomment"></ion-textarea>
+          </ion-item>
+          <div text-center>
+              <button ion-button color="danger" type="submit">Submit</button>
+          </div>
+          
+
+      </ion-list>
+  </form>
+</div>
 
 </ion-content>
