@@ -16,15 +16,43 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 export class VendorReviewPage {
   name: String;
   description: String;
+  type: boolean;
+  review = {
+    rating: 0,
+    thickness: 0,
+    spicy: 0,
+    topping: "n",
+    time: 0,
+    comment: ""
+
+  }
+  NonReview = {
+    Nrating:0,
+    time: 0,
+    Ncomment: ""
+  }
   
   constructor(public navCtrl: NavController, public navParams: NavParams) {
     this.name = navParams.get('vendorName');
     this.description = navParams.get('vendorDescription');
+    this.type = navParams.get('vendorType');
   }
   
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad VendorReviewPage');
+  }
+
+  logReview(form){
+    var d = new Date();
+    this.review.time = d.getHours();
+    console.log(this.review);
+  }
+
+  logNonReview(form){
+    var d = new Date();
+    this.NonReview.time = d.getHours();
+    console.log(this.NonReview);
   }
 
 }

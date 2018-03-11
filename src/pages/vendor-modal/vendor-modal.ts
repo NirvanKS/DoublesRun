@@ -17,9 +17,11 @@ import { VendorReviewPage } from '../vendor-review/vendor-review';
 export class VendorModalPage {
   name: string;
   description: string;
+  type: boolean;
   constructor(public viewCtrl: ViewController, public navCtrl: NavController, public navParams: NavParams) {
     this.name = navParams.get('name');
     this.description = navParams.get('description');
+    this.type = navParams.get('type');
     //this.description = navParams.get('description');
   }
 
@@ -34,7 +36,8 @@ export class VendorModalPage {
   loadReviewPage(){
     this.navCtrl.push(VendorReviewPage, {
       vendorName : this.name,
-      vendorDescription: this.description
+      vendorDescription: this.description,
+      vendorType: this.type
     });
   }
 

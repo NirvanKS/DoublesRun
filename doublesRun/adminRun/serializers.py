@@ -5,4 +5,4 @@ class VendorSerializer(serializers.HyperlinkedModelSerializer):
     id = serializers.ReadOnlyField()
     class Meta:
         model = Vendor
-        fields = ('id','Name', 'Description', 'locLat', 'locLong','pic')
+        fields = ('id','Name', 'Description', 'locLat', 'locLong','pic', 'Type')
