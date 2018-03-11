@@ -22,6 +22,8 @@ from adminRun import views
 
 router = routers.DefaultRouter()
 router.register(r'vendors', views.VendorViewSet)
+router.register(r'users',views.UserViewSet)
+router.register(r'reviews',views.ReviewViewSet)
 
 
 urlpatterns = [
