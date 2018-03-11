@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "1021422510186",
+    "project_id": "firebase-doublesrun"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1021422510186:android:764d2cb7da3280eb",
+        "android_client_info": {
+          "package_name": "io.ionic.starter"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1021422510186-98n0si45rcs271800fecjidpmg0jpbf5.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "io.ionic.starter",
+            "certificate_hash": "43a775a13d68ad2a418bce5fee89c9e617f7bc38"
+          }
+        },
+        {
+          "client_id": "1021422510186-q4rrtd07m0fr5qeidr1uolr4mb82j4b8.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCHNFf46Kcegj-591CHUyrtATCCAHyHM9w"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 1
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

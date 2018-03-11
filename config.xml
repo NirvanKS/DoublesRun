@@ -85,6 +85,11 @@
     <variable name="API_KEY_FOR_IOS" value="AIzaSyA3DF6b_zlZ7bmdOqj6SprIsuXZ9oB392I" />
     <plugin name="cordova-plugin-geolocation" spec="^4.0.1" />
     <plugin name="cordova-plugin-camera" spec="^4.0.2" />
+    <allow-navigation href="http://192.168.100.10:8100" />
     <engine name="browser" spec="5.0.3" />
     <engine name="android" spec="^7.0.0" />
+    <engine name="ios" spec="4.5.4" />
+    <plugin name="cordova-plugin-googleplus" spec="https://github.com/EddyVerbruggen/cordova-plugin-googleplus">
+        <variable name="REVERSED_CLIENT_ID" value="com.googleusercontent.apps.1021422510186-2e9rbq25bs887bkmcd1i5ucpaa6tsb6g" />
+    </plugin>
 </widget>

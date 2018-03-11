@@ -1,3 +1,102 @@
 page-suggested {
 
 }
+h5{
+    text-align: center
+}
+#butt{
+    position: relative;
+    background-image: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    padding: 14px 50px;
+    border-radius: 4px;
+    border: none;
+    color: #fff;
+    cursor: pointer;
+    outline: none;
+    overflow: hidden;
+    box-shadow: 0 14px 30px rgba(0,0,0,0.15);
+    font-family: 'Lato', sans-serif;
+    font-size: 16px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+p{
+    text-align: center
+}
+#egg { 
+    display:block;
+    margin: auto;
+    margin-top: 100px;
+    top: 1vh;
+    width: 126px; 
+    height: 180px; 
+    background-color:lightskyblue;
+    border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;     
+  }
+  
+
+  #mouthCont {
+    position: relative;
+    margin: auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    width: 100px;
+  }
+  
+  .timido {
+      width: 12px;
+      height: 12px;
+      position: block;
+      opacity: 0;
+      transition: opacity .4s ease-in-out;
+      background-color: #D68A72;
+      border-radius: 20px;
+      /*box-shadow: 0px 0px 20px #D68A72;*/
+      -webkit-box-shadow: 0px 0px 26px 4px rgba(214,138,114,1);
+      -moz-box-shadow: 0px 0px 26px 4px rgba(214,138,114,1);
+      box-shadow: 0px 0px 6px 6px rgba(214,138,114,1);
+  }
+  
+  .right {
+      margin-top: 72px;
+  }
+  
+  .left {
+      margin-left: 22px;
+      margin-top: 72px;
+  }
+  
+ 
+  #mouth {
+      display: block;
+      margin: auto;
+      position: relative;
+      top: 4px;
+      height: 65px;
+      width: 25px;
+      border-radius: 7px;
+      border-bottom: 5px solid black;
+      transform: rotate(180deg);
+      transform-origin: 12px 68px;
+      transition: border-radius .5s, border-bottom .4s ease-in-out, transform .0s, transform-origin 0s;
+  }
+  
+  #eyeCont {
+      display: grid;
+      margin: auto;
+      position: relative;
+      top: 80px;
+      height: 40px;
+      width: 80px;
+      grid-template-columns: 1fr 1fr;
+      grid-template-areas: 
+        "a b";
+  } 
+  
+  .eye { 
+      margin: 14px;
+      border-radius: 10px;
+      background-color: black;
+  }
+  
