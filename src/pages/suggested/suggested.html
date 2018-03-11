@@ -30,9 +30,22 @@
   </div>
 
   <ng-template #loginTemplate>
-    <h1>Please Login to see your Google Account Information</h1>
+    <div class="draw">
+      <div id="egg">
+        <div id="eyeCont">
+          <div class="eye a"></div>
+          <div class="eye b"></div>
+        </div>
+        <div id="mouthCont">
+          <div class="timido left"></div>
+          <div id="mouth"></div>
+          <div class="timido right"></div>
+        </div>
+      </div>
+    </div>
+    <h5 ion-text color="dark">Looks like you're not logged in :(</h5>
     <p>
-      <button ion-button (click)="login()">Login With Google</button>
+      <button id="butt" ion-button (click)="login()">Login With Google</button>
     </p>
   </ng-template>
 </ion-content>
