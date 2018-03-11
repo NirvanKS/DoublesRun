@@ -8,7 +8,7 @@ from django.contrib.postgres.fields import ArrayField
 
 # Create your models here.
 class Vendor(models.Model):
-    id = models.UUIDField(primary_key=True, default=uuid.uuid1, editable=False)
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4(), editable=False)
     Name = models.CharField(max_length=40)
     Description = models.CharField(max_length=200)
     locLat = models.DecimalField(max_digits=25, decimal_places=20)

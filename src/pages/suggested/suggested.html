@@ -6,13 +6,46 @@
 -->
 <ion-header>
 
-  <ion-navbar color = "danger">
+  <ion-navbar color="danger">
     <ion-title>Suggested</ion-title>
   </ion-navbar>
 
 </ion-header>
 
-
 <ion-content padding>
+  <div *ngIf="isLoggedIn; else loginTemplate">
+    <h1>Welcome, {{displayName}}!</h1>
+    <p>Email: {{email}}
+      <br> Family Name: {{familyName}}
+      <br> Given Name: {{givenName}}
+      <br> User ID: {{userId}}</p>
+    <p>
+      <ion-avatar item-left>
+        <img src="{{imageUrl}}">
+      </ion-avatar>
+    </p>
+    <p>
+      <button ion-button (click)="logout()">Logout From Google</button>
+    </p>
+  </div>
 
+  <ng-template #loginTemplate>
+    <div class="draw">
+      <div id="egg">
+        <div id="eyeCont">
+          <div class="eye a"></div>
+          <div class="eye b"></div>
+        </div>
+        <div id="mouthCont">
+          <div class="timido left"></div>
+          <div id="mouth"></div>
+          <div class="timido right"></div>
+        </div>
+      </div>
+    </div>
+    <h5 ion-text color="dark">Looks like you're not logged in :(</h5>
+    <p>
+      <button id="butt" ion-button (click)="login()">Login With Google</button>
+    </p>
+  </ng-template>
 </ion-content>
