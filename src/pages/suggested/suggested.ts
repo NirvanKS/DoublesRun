@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
-import { GooglePlus } from '@ionic-native/google-plus'
-import { ToastController } from 'ionic-angular';
+import { LoginProvider } from '../../providers/login/login'
 /**
  * Generated class for the SuggestedPage page.
  *
@@ -13,58 +12,40 @@ import { ToastController } from 'ionic-angular';
 @Component({
   selector: 'page-suggested',
   templateUrl: 'suggested.html',
-  providers: [GooglePlus]
 })
 export class SuggestedPage {
+  isLoggedIn: boolean = false;
+  loggedUser: any;
   displayName: any;
   email: any;
   familyName: any;
   givenName: any;
   userId: any;
   imageUrl: any;
-
-  isLoggedIn: boolean = false;
-
-  constructor(public navCtrl: NavController, public navParams: NavParams, private googlePlus: GooglePlus, private toastCtrl: ToastController) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, public loginProvider: LoginProvider) {
   }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad SuggestedPage');
   }
 
-  login() {
-    this.googlePlus.login({})
-      .then(res => {
-        console.log(res);
-        this.displayName = res.displayName;
-        this.email = res.email;
-        this.familyName = res.familyName;
-        this.givenName = res.givenName;
-        this.userId = res.userId;
-        this.imageUrl = res.imageUrl;
-
-        this.isLoggedIn = true;
-      })
-      .catch(err => {
-        console.log(this.googlePlus.getSigningCertificateFingerprint());
-        console.error(err);
-      });
+  async login() {
+    await this.loginProvider.login();
+    console.log(this.loginProvider.displayName);
+    this.displayName = this.loginProvider.displayName;
+    this.email = this.loginProvider.email;
+    this.familyName = this.loginProvider.familyName;
+    this.givenName = this.loginProvider.givenName;
+    this.userId = this.loginProvider.userId;
+    this.imageUrl = this.loginProvider.imageUrl;
+    this.isLoggedIn = this.loginProvider.isLoggedIn;
+    console.log(this.isLoggedIn);
   }
 
-  logout() {
-    this.googlePlus.logout()
-      .then(res => {
-        console.log(res);
-        this.displayName = "";
-        this.email = "";
-        this.familyName = "";
-        this.givenName = "";
-        this.userId = "";
-        this.imageUrl = "";
-
-        this.isLoggedIn = false;
-      })
-      .catch(err => console.error(err));
+  async logout() {
+    await this.loginProvider.logout();
   }
+
+
 
 }
