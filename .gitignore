@@ -34,3 +34,6 @@ $RECYCLE.BIN/
 .DS_Store
 Thumbs.db
 UserInterfaceState.xcuserstate
+doublesRun/adminRun/migrations/0002_auto_20180313_2056.py
+doublesRun/adminRun/migrations/0003_auto_20180313_2056.py
+doublesRun/adminRun/migrations/0006_merge_20180313_2158.py

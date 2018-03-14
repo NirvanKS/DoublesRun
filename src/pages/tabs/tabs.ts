@@ -20,7 +20,7 @@ export class TabsPage {
   tab3Root = FilterPage;
 
   constructor() {
-    
+
   }
 
 
