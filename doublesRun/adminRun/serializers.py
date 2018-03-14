@@ -18,4 +18,4 @@ class ReviewSerializer(serializers.HyperlinkedModelSerializer):
     id = serializers.ReadOnlyField()
     class Meta:
         model = Review
-        fields = ('id', 'rating', 'spicy', 'thickness', 'time', 'comment', 'vendorID', 'userID')
+        fields = ('id', 'rating', 'spicy', 'thickness', 'time', 'comment', 'vendorID', 'userID', 'cucumber')

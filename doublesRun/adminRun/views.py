@@ -21,5 +21,5 @@ class UserViewSet(viewsets.ModelViewSet):
     serializer_class = UserSerializer
 
 class ReviewViewSet(viewsets.ModelViewSet):
-    queryset = User.objects.all()
+    queryset = Review.objects.all()
     serializer_class = ReviewSerializer

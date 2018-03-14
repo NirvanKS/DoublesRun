@@ -137,9 +137,15 @@ export class MapPage implements AfterViewInit {
         marker.addListener('click', function () {
           //navControl.push(VendorMarkerPage);
           //alert(content);
-
-
-          var vendorModal = Vmodal.create(VendorModalPage, { 'name': element.Name, 'description': element.Description, 'type': element.Type });
+          
+          
+          var vendorModal = Vmodal.create(VendorModalPage, { 'name': element.Name, 
+          'description': element.Description,'type':element.Type,
+          'reviewList':element.reviews, 'avgRating':element.avgRating,
+          'avgThickness':element.avgThickness, 'avgTime':element.avgTime,
+          'avgCucumber':element.avgCucumber, 'avgSpicy':element.avgSpicy,
+          'vendorID':element.id });
+          console.log("vendorid:",element.id);
           vendorModal.present();
 
         });
