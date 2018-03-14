@@ -13,7 +13,7 @@ class Vendor(models.Model):
     Description = models.CharField(max_length=200)
     locLat = models.DecimalField(max_digits=25, decimal_places=20)
     locLong = models.DecimalField(max_digits=25, decimal_places=20)
-    pic = models.CharField(max_length=1000000)
+    pic = models.CharField(max_length=1000000, blank = True)
     Type = models.BooleanField()
     avgRating = models.DecimalField(max_digits=2 ,decimal_places=1, default=0.0)
     avgThickness = models.DecimalField(max_digits =3, decimal_places=1,default=0.0)
