@@ -26,7 +26,7 @@ export class VendorModalPage {
   avgRating: Number;
   avgThickness: Number;
   avgTime: Number;
-  avgCucumber: Number; 
+  avgCucumber: boolean; 
   avgSpicy: Number;
   revList: any;
   reviews: any;
