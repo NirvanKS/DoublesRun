@@ -18,26 +18,32 @@ export class VendorReviewPage {
   description: String;
   type: boolean;
   
+
+  
   review = {
     rating: 0,
     thickness: 0,
     spicy: 0,
-    topping: "n",
+    cucumber: false,
     time: 0,
-    comment: ""
+    comment: "",
+    vendorID: ""
 
   }
   NonReview = {
-    Nrating:0,
+    rating:0,
     time: 0,
-    Ncomment: ""
+    comment: "",
+    vendorID: ""
   }
   
   constructor(public navCtrl: NavController, private http: Http, public navParams: NavParams) {
     this.name = navParams.get('vendorName');
     this.description = navParams.get('vendorDescription');
     this.type = navParams.get('vendorType');
-    
+    this.review.vendorID = navParams.get('vendorID');
+    this.NonReview.vendorID = navParams.get('vendorID');
+    console.log("vendorid:",this.review.vendorID);
   }
   
 
@@ -69,7 +75,7 @@ export class VendorReviewPage {
     
     let headers = new Headers();
     headers.append('Content-Type', 'application/json');
-    this.http.post('http://127.0.0.1:8000/vendors/', JSON.stringify(review), { headers: headers })
+    this.http.post('http://127.0.0.1:8000/reviews/', JSON.stringify(review), { headers: headers })
       .map(res => res.json())
       .subscribe(data => {
         console.log("httppost responsea:",data);
