@@ -23,8 +23,8 @@ export class VendorReviewPage {
   uLName: string;
   uEmail: string;
 
-  
   review = {
+    userID: '',
     rating: 0,
     thickness: 0,
     spicy: 0,
@@ -35,7 +35,8 @@ export class VendorReviewPage {
 
   }
   NonReview = {
-    rating:0,
+    userID: '',
+    rating: 0,
     time: 0,
     comment: "",
     vendorID: ""
@@ -53,34 +54,34 @@ export class VendorReviewPage {
     this.uLName = this.loginProvider.familyName;
     this.uEmail = this.loginProvider.email;
   }
-  
+
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad VendorReviewPage');
   }
 
-  logReview(form){
+  logReview(form) {
     var d = new Date();
     this.review.time = d.getHours();
+    this.review.userID = this.currUserID;
     console.log(this.review);
     this.addReview(this.review);
     this.navCtrl.pop();
 
-    
+
   }
 
-  logNonReview(form){
+  logNonReview(form) {
     var d = new Date();
     this.NonReview.time = d.getHours();
+    this.NonReview.userID = this.currUserID;
     this.addReview(this.NonReview);
     console.log(this.NonReview);
-
-
     this.navCtrl.pop();
   }
 
-  addReview(review){
-    
+  addReview(review) {
+
     let headers = new Headers();
     headers.append('Content-Type', 'application/json');
     this.http.post('http://127.0.0.1:8000/reviews/', JSON.stringify(review), { headers: headers })

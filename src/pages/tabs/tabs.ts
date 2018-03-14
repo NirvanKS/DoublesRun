@@ -15,12 +15,12 @@ import { VoWPage } from '../vo-w/vo-w';
 })
 export class TabsPage {
 
-  tab1Root = MapPage;
-  tab2Root = RankingsPage;
+  tab1Root = RankingsPage;
+  tab2Root = MapPage;
   tab3Root = FilterPage;
 
   constructor() {
-    
+
   }
 
 
