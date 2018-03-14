@@ -29,7 +29,7 @@ export class VendorAddPage {
   }
   vendorType: any;
   mark: any;
-  notFound: boolean =true;
+  notFound: boolean = true;
   currGeoLocLat: number;
   currGeoLocLong: number;
   vendorFormName: string;
@@ -87,18 +87,16 @@ export class VendorAddPage {
           //
         }
       })
-      if (this.notFound == true)
-      {
-      this.addVendor();
-      this.presentSuccessToast();
-      } 
-      else 
-      {
+      if (this.notFound == true) {
+        this.addVendor();
+        this.presentSuccessToast();
+      }
+      else {
         this.presentFailToast()
       }
 
     });;
-    
+
 
     this.confirmVend = true;
     //this.dismiss();
@@ -132,12 +130,12 @@ export class VendorAddPage {
       .map(res => res.json())
       .subscribe(data => {
         console.log(data);
-        
+
       })
   }
 
-  checkForVendorDuplicates(): any  {
-   return this.http.get('http://127.0.0.1:8000/vendors/').map(res => res.json());
+  checkForVendorDuplicates(): any {
+    return this.http.get('http://127.0.0.1:8000/vendors/').map(res => res.json());
     /*
     if(this.notFound == false)
     {

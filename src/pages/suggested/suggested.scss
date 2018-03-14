@@ -1,6 +1,16 @@
 page-suggested {
 
 }
+
+#desc{
+    text-align: center;
+    padding: 14px 50px;
+    border-radius: 4px;
+    border: none;
+    background-color: lightgrey;
+    overflow: hidden;
+    box-shadow: 0 8px 59px  rgba(0,0,0,0.15);
+}
 h5{
     text-align: center
 }
@@ -31,7 +41,7 @@ p{
     top: 1vh;
     width: 126px; 
     height: 180px; 
-    background-color:lightskyblue;
+    background-color:#efc958;
     border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;     
   }
   
