@@ -17,7 +17,7 @@
   <h1>{{name}}</h1>
   <br>
   <br>
-  <div *ngIf="type">
+  <div *ngIf="type==true">
       <form (ngSubmit)= "logReview()">
             <h4>General Rating</h4>
             <ion-list>
@@ -46,9 +46,9 @@
                 <br>
                 <ion-item>
                     <ion-label>Cucumber Available</ion-label>
-                    <ion-select [(ngModel)]="review.topping" name="topping">
-                      <ion-option value="y" checked="true">Yes</ion-option>
-                      <ion-option value="n">No</ion-option>
+                    <ion-select [(ngModel)]="review.cucumber" name="cucumber">
+                      <ion-option value="true" checked="true">Yes</ion-option>
+                      <ion-option value="false">No</ion-option>
                     </ion-select>
                 </ion-item> 
                 <br>
@@ -71,13 +71,13 @@
       <h4>General Rating for Non Vendors</h4>
       <ion-list>
           <ion-item>
-            <ion-range min="0" max="5" pin=true color="danger" [(ngModel)] = "NonReview.Nrating" name="Nrating">
+            <ion-range min="0" max="5" pin=true color="danger" [(ngModel)] = "NonReview.rating" name="rating">
               <ion-icon small range-left name="md-star"></ion-icon>
               <ion-icon range-right name="md-star"></ion-icon>
             </ion-range>
           </ion-item>
           <ion-item>
-              <ion-textarea placeholder="Enter a comment" [(ngModel)]= "NonReview.Ncomment" name="Ncomment"></ion-textarea>
+              <ion-textarea placeholder="Enter a comment" [(ngModel)]= "NonReview.comment" name="comment"></ion-textarea>
           </ion-item>
           <div text-center>
               <button ion-button color="danger" type="submit">Submit</button>

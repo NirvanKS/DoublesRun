@@ -16,14 +16,14 @@
 <ion-content padding>
   <form (ngSubmit)="logForm()">
     <ion-list radio-group [(ngModel)]="vendorType" name="VendorType">
-        <ion-item>
-          <ion-label>Doubles Vendor</ion-label>
-          <ion-radio value="dv"></ion-radio>
-        </ion-item>
-        <ion-item>
-          <ion-label>Not a Doubles Vendor</ion-label>
-          <ion-radio value="ndv"></ion-radio>
-        </ion-item>
+      <ion-item>
+        <ion-label>Doubles Vendor</ion-label>
+        <ion-radio value="dv"></ion-radio>
+      </ion-item>
+      <ion-item>
+        <ion-label>Not a Doubles Vendor</ion-label>
+        <ion-radio value="ndv"></ion-radio>
+      </ion-item>
     </ion-list>
     <ion-item>
       <ion-label>Vendor Name: </ion-label>
@@ -43,7 +43,7 @@
     <br>
 
   </form>
- 
+
 
   <button ion-button full (click)="takePhoto()">
     <ion-icon name="camera"></ion-icon> &nbsp; Take Photo
@@ -51,6 +51,6 @@
   <br>
   <br>
   <button ion-button type="submit" (click)="logForm()" color="danger" block>Add Vendor</button>
-  
+
   <!-- <button ion-button color="danger" (click)="dismiss()">Back</button> -->
 </ion-content>

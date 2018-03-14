@@ -18,11 +18,13 @@ import { VendorReviewPage } from '../pages/vendor-review/vendor-review';
 
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
- import { Camera } from '@ionic-native/camera';
+import { Camera } from '@ionic-native/camera';
 
 
- import { VendorModalPage } from '../pages/vendor-modal/vendor-modal';
- import { IonicPageModule } from 'ionic-angular';
+import { VendorModalPage } from '../pages/vendor-modal/vendor-modal';
+import { IonicPageModule } from 'ionic-angular';
+import { LoginProvider } from '../providers/login/login';
+import { GooglePlus } from '@ionic-native/google-plus'
 
 @NgModule({
   declarations: [
@@ -66,7 +68,9 @@ import { SplashScreen } from '@ionic-native/splash-screen';
     Geolocation,
     Camera,
     HttpModule,
-    {provide: ErrorHandler, useClass: IonicErrorHandler}
+    { provide: ErrorHandler, useClass: IonicErrorHandler },
+    LoginProvider,
+    GooglePlus,
   ]
 })
-export class AppModule {}
+export class AppModule { }

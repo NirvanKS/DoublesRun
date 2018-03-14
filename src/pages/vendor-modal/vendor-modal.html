@@ -33,9 +33,9 @@
         <br>
         <button ion-button color="danger" (click)="dismiss()">Back</button>
     </div>
-    <div *ngFor='let review of reviews | async'>
-      {{review.rating}}<br>
-      {{review.comment}}
+    <div *ngFor='let rating of ratings; let i = index'>
+      {{rating}}<br>
+      {{comments[i]}}
     </div>
    
     
