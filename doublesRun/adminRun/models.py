@@ -8,7 +8,8 @@ from django.contrib.postgres.fields import ArrayField
 
 # Create your models here.
 class Vendor(models.Model):
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4(), editable=False)
+    
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     Name = models.CharField(max_length=40)
     Description = models.CharField(max_length=200)
     locLat = models.DecimalField(max_digits=25, decimal_places=20)
@@ -21,6 +22,7 @@ class Vendor(models.Model):
     avgCucumber = models.DecimalField(max_digits =3,decimal_places=1,default=0.0)
     avgSpicy = models.DecimalField(max_digits =3,decimal_places=1, default=0.0)
     reviews = ArrayField(models.CharField(max_length=30, blank=True, default="a"),default= list,blank=True)
+    
 
     def __str__(self):
         return self.Name
