@@ -90,18 +90,7 @@ export class VendorReviewPage {
         console.log("httppost responsea:",data);
         
       });
-    this.http.get('http://127.0.0.1:8000/users/'+this.currUserID+'/')
-      .map(res=>res.json())
-      .subscribe(data=>{},err=>{
-        if (err.status == 404){
-          let newuser = {id:this.currUserID, name:this.uFName+' '+this.uLName, email: this.uEmail};
-          this.http.post('http://127.0.0.1:8000/users/'+this.currUserID+'/', JSON.stringify(newuser),{headers: headers})
-          .map(res => res.json())
-          .subscribe(data => {
-            console.log("httppost responsea:",data);
-          });
-        }
-      })
+    
   }
 
 }
