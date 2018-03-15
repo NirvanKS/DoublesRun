@@ -42,6 +42,45 @@
           "status": 1
         }
       }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1021422510186:android:eeb345e947d0a35d",
+        "android_client_info": {
+          "package_name": "com.compass.doublesrun"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1021422510186-s1th32op54agv3oculqbpdvdg2lkhsfh.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.compass.doublesrun",
+            "certificate_hash": "77adae87cd4c9cf1449780e1e34015df4c6f57b9"
+          }
+        },
+        {
+          "client_id": "1021422510186-q4rrtd07m0fr5qeidr1uolr4mb82j4b8.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCHNFf46Kcegj-591CHUyrtATCCAHyHM9w"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 1
+        }
+      }
     }
   ],
   "configuration_version": "1"
