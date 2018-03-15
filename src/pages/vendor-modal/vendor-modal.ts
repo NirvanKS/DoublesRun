@@ -21,10 +21,13 @@ export class VendorModalPage {
   description: string;
   type: boolean;
   ratings: any = [];
+  ratingsEmpty:boolean = true;
   comments: any = [];
+  names:any = [];
 
 
   avgRating: Number;
+  pic: any;
   avgThickness: Number;
   avgTime: Number;
   avgCucumber: boolean; 
@@ -32,24 +35,36 @@ export class VendorModalPage {
   revList: any;
   reviews: any;
   vendorID: any;
-  isLoggedIn: boolean = false;
+
+  day:boolean = true;
+  thickness:any='Thin Barra';
+  spiciness:string='Mild Pepper';
+  cuc:string='No Cucumber';
+  isLoggedIn: boolean = true;
   constructor(public viewCtrl: ViewController, public navCtrl: NavController,
     private http: Http, public navParams: NavParams, public loginProvider: LoginProvider, private alertCtrl: AlertController) {
 
     this.name = navParams.get('name');
+    this.pic = navParams.get('img');
     this.description = navParams.get('description');
     this.type = navParams.get('type');
     this.revList = navParams.get('reviewList');
+    if (this.revList.length>0) this.ratingsEmpty = false;
     this.avgRating = navParams.get('avgRating'); this.avgCucumber = navParams.get('avgCucumber');
     this.avgThickness = navParams.get('avgThickness'); this.avgSpicy = navParams.get('avgSpicy');
+    if (this.avgThickness>5) this.thickness = 'Thick Barra';
+    if (this.avgSpicy>5) this.spiciness = 'Hell';
+    if (this.avgCucumber) this.cuc = 'Yes Cucumber';
     this.avgTime = navParams.get('avgTime');
+    
+    if (this.avgTime>18) this.day = false;
     this.vendorID = navParams.get('vendorID');
   }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad VendorModalPage');
     console.log(this.revList[this.revList.length - 1]);
-    this.isLoggedIn = this.loginProvider.isLoggedIn;
+    // this.isLoggedIn = this.loginProvider.isLoggedIn;
     this.loadSomeReviews();
   }
 
@@ -58,6 +73,14 @@ export class VendorModalPage {
   }
 
   loadReviewPage() {
+    if (this.isLoggedIn == true) {
+      this.navCtrl.push(VendorReviewPage, {
+        vendorName: this.name,
+        vendorDescription: this.description,
+        vendorType: this.type,
+        vendorID: this.vendorID
+      });
+    }
     if (this.isLoggedIn == false) {
       let alert = this.alertCtrl.create({
         title: 'You must be logged in to add a review',
@@ -112,9 +135,17 @@ export class VendorModalPage {
         .map(res => res.json())
         .subscribe((data: Object) => {
           this.reviews = Object.values(data);
-          this.ratings.push(this.reviews[1]);
+          let r = (this.reviews[1])
+          var numbers = Array.from(new Array(r),(val,index)=>index+1);
+          this.ratings.push(numbers);
           this.comments.push(this.reviews[5]);
-          console.log(this.reviews[1]);
+
+          this.http.get('http://127.0.0.1:8000/users/' + this.reviews[7] + '/')
+            .map(res => res.json())
+            .subscribe((data: Object) => {
+              let u = Object.values(data);
+              this.names.push(u[1]);
+            });
         })
     }
   }

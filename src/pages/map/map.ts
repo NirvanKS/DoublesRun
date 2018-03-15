@@ -141,6 +141,7 @@ export class MapPage implements AfterViewInit {
           
           var vendorModal = Vmodal.create(VendorModalPage, { 'name': element.Name, 
           'description': element.Description,'type':element.Type,
+          'img':element.pic,
           'reviewList':element.reviews, 'avgRating':element.avgRating,
           'avgThickness':element.avgThickness, 'avgTime':element.avgTime,
           'avgCucumber':element.avgCucumber, 'avgSpicy':element.avgSpicy,
