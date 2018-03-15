@@ -6,7 +6,7 @@
 -->
 <ion-header>
 
-  <ion-navbar>
+  <ion-navbar color="danger">
     <ion-title>Vendor</ion-title>
   </ion-navbar>
 
@@ -27,15 +27,22 @@
       <ion-icon range-right name="md-star"></ion-icon>
     </div> -->
     <!-- ^^ average rating in star form -->
-    <h5 class="display-5 text-center"> * * * *</h5>
+    
     <div text-center>
         <button ion-button color="danger" (click)="loadReviewPage()">Add Review</button>
         <br>
         <button ion-button color="danger" (click)="dismiss()">Back</button>
     </div>
+    <h3>User Reviews</h3>
     <div *ngFor='let rating of ratings; let i = index'>
-      {{rating}}<br>
-      {{comments[i]}}
+      <br>
+      <p style="background-color: #f8f8f8">
+        {{rating}}
+        <br>
+        {{comments[i]}}
+      
+      </p><br>
+      
     </div>
    
     
