@@ -1,5 +1,6 @@
 //import { HttpClient } from '@angular/common/http';
 import { Injectable, Component } from '@angular/core';
+import { Http, Headers } from '@angular/http';
 import { GooglePlus } from '@ionic-native/google-plus'
 /*
   Generated class for the LoginProvider provider.
@@ -12,7 +13,7 @@ import { GooglePlus } from '@ionic-native/google-plus'
 
 export class LoginProvider {
   providers: [GooglePlus]
-  constructor(private googlePlus: GooglePlus) {
+  constructor(private http: Http, private googlePlus: GooglePlus) {
     console.log('Hello LoginProvider Provider');
   }
   displayName: any;
@@ -35,6 +36,21 @@ export class LoginProvider {
         this.userId = res.userId;
         this.imageUrl = res.imageUrl;
         this.isLoggedIn = true;
+
+        let headers = new Headers();
+        headers.append('Content-Type', 'application/json'); 
+        this.http.get('http://127.0.0.1:8000/users/'+this.userId+'/')
+          .map(res=>res.json())
+          .subscribe(data=>{},err=>{
+            if (err.status == 404){
+              let newuser = {id:this.userId, name:this.givenName+' '+this.familyName, email: this.email};
+              this.http.post('http://127.0.0.1:8000/users/'+this.userId+'/', JSON.stringify(newuser),{headers: headers})
+              .map(res => res.json())
+              .subscribe(data => {
+                console.log("httppost responsea:",data);
+              });
+            }
+          });
       })
       .catch(err => {
         console.log(this.googlePlus.getSigningCertificateFingerprint());

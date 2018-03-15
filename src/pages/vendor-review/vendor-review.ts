@@ -19,7 +19,9 @@ export class VendorReviewPage {
   description: String;
   type: boolean;
   currUserID: string;
-
+  uFName: string;
+  uLName: string;
+  uEmail: string;
 
   review = {
     userID: '',
@@ -39,14 +41,18 @@ export class VendorReviewPage {
     comment: "",
     vendorID: ""
   }
-
+  
   constructor(public navCtrl: NavController, private http: Http, public navParams: NavParams, public loginProvider: LoginProvider) {
     this.name = navParams.get('vendorName');
     this.description = navParams.get('vendorDescription');
     this.type = navParams.get('vendorType');
     this.review.vendorID = navParams.get('vendorID');
     this.NonReview.vendorID = navParams.get('vendorID');
-    this.currUserID = this.loginProvider.userId;
+    
+    this.currUserID  = this.loginProvider.userId;
+    this.uFName = this.loginProvider.givenName;
+    this.uLName = this.loginProvider.familyName;
+    this.uEmail = this.loginProvider.email;
   }
 
 
@@ -81,9 +87,10 @@ export class VendorReviewPage {
     this.http.post('http://127.0.0.1:8000/reviews/', JSON.stringify(review), { headers: headers })
       .map(res => res.json())
       .subscribe(data => {
-        console.log("httppost responsea:", data);
-
-      })
+        console.log("httppost responsea:",data);
+        
+      });
+    
   }
 
 }
