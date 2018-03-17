@@ -2,7 +2,8 @@ import { Component, Input } from '@angular/core';
 import { IonicPage, NavController, NavParams, ViewController } from 'ionic-angular';
 import { VendorReviewPage } from '../vendor-review/vendor-review';
 import { Http, Headers } from '@angular/http';
-import { LoginProvider } from '../../providers/login/login'
+import { LoginProvider } from '../../providers/login/login';
+import {ApiProvider} from '../../providers/api/api';
 import { AlertController } from 'ionic-angular';
 /**
  * Generated class for the VendorModalPage page.
@@ -40,9 +41,11 @@ export class VendorModalPage {
   thickness:any='Thin Barra';
   spiciness:string='Mild Pepper';
   cuc:string='No Cucumber';
-  isLoggedIn: boolean = true;
+  isLoggedIn: boolean = false;
+  apiUrl="https://dream-coast-60132.herokuapp.com/";
   constructor(public viewCtrl: ViewController, public navCtrl: NavController,
-    private http: Http, public navParams: NavParams, public loginProvider: LoginProvider, private alertCtrl: AlertController) {
+    private http: Http, public navParams: NavParams, public loginProvider: LoginProvider, 
+    private alertCtrl: AlertController, public api: ApiProvider) {
 
     this.name = navParams.get('name');
     this.pic = navParams.get('img');
@@ -64,7 +67,8 @@ export class VendorModalPage {
   ionViewDidLoad() {
     console.log('ionViewDidLoad VendorModalPage');
     console.log(this.revList[this.revList.length - 1]);
-    // this.isLoggedIn = this.loginProvider.isLoggedIn;
+    this.isLoggedIn = this.loginProvider.isLoggedIn;
+    // this.apiUrl = this.api.url;
     this.loadSomeReviews();
   }
 
@@ -131,7 +135,8 @@ export class VendorModalPage {
   loadSomeReviews() {
     for (var i = this.revList.length - 1; i > this.revList.length - 6; i--) {
       if (i < 0) break;
-      this.http.get('http://127.0.0.1:8000/reviews/' + this.revList[i] + '/')
+      //this.http.get('http://127.0.0.1:8000/reviews/' + this.revList[i] + '/')
+      this.http.get(this.apiUrl+'reviews/' + this.revList[i] + '/')
         .map(res => res.json())
         .subscribe((data: Object) => {
           this.reviews = Object.values(data);
@@ -140,7 +145,8 @@ export class VendorModalPage {
           this.ratings.push(numbers);
           this.comments.push(this.reviews[5]);
 
-          this.http.get('http://127.0.0.1:8000/users/' + this.reviews[7] + '/')
+          //this.http.get('http://127.0.0.1:8000/users/' + this.reviews[7] + '/')
+          this.http.get(this.apiUrl+'users/' + this.reviews[7] + '/')
             .map(res => res.json())
             .subscribe((data: Object) => {
               let u = Object.values(data);

@@ -1,7 +1,8 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { Http, Headers } from '@angular/http';
-import { LoginProvider } from '../../providers/login/login'
+import { LoginProvider } from '../../providers/login/login';
+import {ApiProvider} from '../../providers/api/api';
 /**
  * Generated class for the VendorReviewPage page.
  *
@@ -22,6 +23,7 @@ export class VendorReviewPage {
   uFName: string;
   uLName: string;
   uEmail: string;
+  apiUrl="https://dream-coast-60132.herokuapp.com/";
 
   review = {
     userID: '',
@@ -42,7 +44,8 @@ export class VendorReviewPage {
     vendorID: ""
   }
   
-  constructor(public navCtrl: NavController, private http: Http, public navParams: NavParams, public loginProvider: LoginProvider) {
+  constructor(public navCtrl: NavController, private http: Http, public navParams: NavParams, 
+    public loginProvider: LoginProvider, public api: ApiProvider) {
     this.name = navParams.get('vendorName');
     this.description = navParams.get('vendorDescription');
     this.type = navParams.get('vendorType');
@@ -58,6 +61,7 @@ export class VendorReviewPage {
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad VendorReviewPage');
+    // this.apiUrl = this.api.url;
   }
 
   logReview(form) {
@@ -84,7 +88,8 @@ export class VendorReviewPage {
 
     let headers = new Headers();
     headers.append('Content-Type', 'application/json');
-    this.http.post('http://127.0.0.1:8000/reviews/', JSON.stringify(review), { headers: headers })
+    //this.http.post('http://127.0.0.1:8000/reviews/', JSON.stringify(review), { headers: headers })
+    this.http.post(this.apiUrl+'reviews/', JSON.stringify(review), { headers: headers })
       .map(res => res.json())
       .subscribe(data => {
         console.log("httppost responsea:",data);
