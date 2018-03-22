@@ -1,4 +1,7 @@
 page-vendor-modal {
+    .scroll-content{
+        padding:0px !important;
+    }
 }
 @import url('https://fonts.googleapis.com/css?family=Itim');
 @import url('https://fonts.googleapis.com/css?family=Timmana');
@@ -12,10 +15,6 @@ $timmana:'Timmana',sans-serif;
 $cabin:'Cabin Sketch',cursive;
 #vpic{
     width:100%;height:17.1em; margin:0%; padding:0%;
-}
-.scroll-content{
-    margin:0% !important; 
-    padding:0% !important;
 }
 
 #title{

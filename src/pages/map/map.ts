@@ -7,6 +7,7 @@ import { VendorAddPage } from '../vendor-add/vendor-add';
 import { AfterViewInit } from '@angular/core';
 import { Http, Headers } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
+import {ApiProvider} from '../../providers/api/api';
 declare var google;
 
 @IonicPage()
@@ -26,12 +27,16 @@ export class MapPage implements AfterViewInit {
   geoNumberLon: number = 0;
   geoLatLon: any;
   modalParam = 'https://google.com/';
+  apiUrl="https://dream-coast-60132.herokuapp.com/";
   @ViewChild('map') mapElement: ElementRef;
-  constructor(public navCtrl: NavController, public navParams: NavParams, public geolocation: Geolocation, public modalCtrl: ModalController, private http: Http) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, 
+    public geolocation: Geolocation, public modalCtrl: ModalController, 
+    private http: Http, public api: ApiProvider) {
   }
 
   ionViewDidLoad() {
     //this.loadMap();
+    
   }
 
 
@@ -53,8 +58,6 @@ export class MapPage implements AfterViewInit {
 
     });
 
-    let xd = "test";
-    let content = "<h4>Sauce Doubles " + xd + "\</h4> <br>  <h1>5 Eastern Main Road<h1> <br> <h2>4/5 Stars<h2> ";
     var map = this.map;
     var navControl = this.navCtrl;
     var modal = this.modalCtrl;
@@ -90,7 +93,6 @@ export class MapPage implements AfterViewInit {
       this.map.addListener('dragend', function () {
         var center = map.getCenter();
         if (strictBounds.contains(center)) return;
-        console.log("outta here");
         // out of bounds - Move the map back within the bounds
 
         var c = center,
@@ -120,7 +122,8 @@ export class MapPage implements AfterViewInit {
   loadMarkers() {
     var Vmodal = this.modalCtrl;
 
-    this.http.get('http://127.0.0.1:8000/vendors/').map(res => res.json()).subscribe((data: Object) => {
+    //this.http.get('http://127.0.0.1:8000/vendors/').map(res => res.json()).subscribe((data: Object) => {
+      this.http.get(this.apiUrl+'vendors/').map(res => res.json()).subscribe((data: Object) => {
       //this.markers = data;
       this.mark = Object.values(data);
       let x = 0;
@@ -146,7 +149,6 @@ export class MapPage implements AfterViewInit {
           'avgThickness':element.avgThickness, 'avgTime':element.avgTime,
           'avgCucumber':element.avgCucumber, 'avgSpicy':element.avgSpicy,
           'vendorID':element.id });
-          console.log("vendorid:",element.id);
           vendorModal.present();
 
         });
