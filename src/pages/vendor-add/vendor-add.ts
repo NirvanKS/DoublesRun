@@ -5,7 +5,6 @@ import { Camera, CameraOptions } from '@ionic-native/camera';
 import { Http, Headers } from '@angular/http';
 import 'rxjs/add/operator/map';
 import { ToastController } from 'ionic-angular';
-import {ApiProvider} from '../../providers/api/api';
 /**
  * Generated class for the VendorAddPage page.
  *
@@ -35,16 +34,13 @@ export class VendorAddPage {
   currGeoLocLong: number;
   vendorFormName: string;
   confirmVend: boolean = false;
-  apiUrl="https://dream-coast-60132.herokuapp.com/";
   constructor(public viewCtrl: ViewController, public navCtrl: NavController,
-    public navParams: NavParams, private camera: Camera, private http: Http, 
-    private toastCtrl: ToastController, public api: ApiProvider) {
+    public navParams: NavParams, private camera: Camera, private http: Http, private toastCtrl: ToastController) {
   }
 
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad VendorAddPage');
-    // this.apiUrl = this.api.url;
   }
 
 
@@ -77,6 +73,7 @@ export class VendorAddPage {
     this.checkForVendorDuplicates().subscribe((data: Object) => {
       //this.markers = data;
       this.mark = Object.values(data);
+      let x = 0;
       this.mark.forEach(element => {
         if (element.locLong <= (this.currGeoLocLong + 0.09) || element.locLong >= (this.currGeoLocLong - 0.09)) {
 
@@ -129,8 +126,7 @@ export class VendorAddPage {
   addVendor() {
     let headers = new Headers();
     headers.append('Content-Type', 'application/json');
-    //this.http.post('http://127.0.0.1:8000/vendors/', JSON.stringify(this.vendorForm), { headers: headers })
-    this.http.post(this.apiUrl+'vendors/', JSON.stringify(this.vendorForm), { headers: headers })
+    this.http.post('http://127.0.0.1:8000/vendors/', JSON.stringify(this.vendorForm), { headers: headers })
       .map(res => res.json())
       .subscribe(data => {
         console.log(data);
@@ -139,8 +135,7 @@ export class VendorAddPage {
   }
 
   checkForVendorDuplicates(): any {
-    //return this.http.get('http://127.0.0.1:8000/vendors/').map(res => res.json());
-    return this.http.get(this.apiUrl+'vendors/').map(res => res.json());
+    return this.http.get('http://127.0.0.1:8000/vendors/').map(res => res.json());
     /*
     if(this.notFound == false)
     {

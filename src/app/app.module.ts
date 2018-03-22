@@ -25,7 +25,6 @@ import { VendorModalPage } from '../pages/vendor-modal/vendor-modal';
 import { IonicPageModule } from 'ionic-angular';
 import { LoginProvider } from '../providers/login/login';
 import { GooglePlus } from '@ionic-native/google-plus'
-import { ApiProvider } from '../providers/api/api';
 
 @NgModule({
   declarations: [
@@ -72,7 +71,6 @@ import { ApiProvider } from '../providers/api/api';
     { provide: ErrorHandler, useClass: IonicErrorHandler },
     LoginProvider,
     GooglePlus,
-    ApiProvider,
   ]
 })
 export class AppModule { }
