@@ -17,7 +17,7 @@ declare var google;
 })
 export class MapPage implements AfterViewInit {
   ngAfterViewInit(): void {
-    this.loadMap();
+    // this.loadMap();
 
   }
   map: any;
@@ -33,7 +33,9 @@ export class MapPage implements AfterViewInit {
     public geolocation: Geolocation, public modalCtrl: ModalController, 
     private http: Http, public api: ApiProvider) {
   }
-
+  ionViewWillEnter(){
+    this.loadMap();
+  }
   ionViewDidLoad() {
     //this.loadMap();
     
@@ -70,6 +72,7 @@ export class MapPage implements AfterViewInit {
 
   loadMap() {
     this.geolocation.getCurrentPosition().then((position) => {
+      console.log("loading map...");
       let latLng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
       this.geoLatLon = latLng;
       this.geoNumberLat = position.coords.latitude;
@@ -121,7 +124,6 @@ export class MapPage implements AfterViewInit {
 
   loadMarkers() {
     var Vmodal = this.modalCtrl;
-
     //this.http.get('http://127.0.0.1:8000/vendors/').map(res => res.json()).subscribe((data: Object) => {
       this.http.get(this.apiUrl+'vendors/').map(res => res.json()).subscribe((data: Object) => {
       //this.markers = data;
