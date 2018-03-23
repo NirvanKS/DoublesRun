@@ -54,6 +54,15 @@ export class MapPage implements AfterViewInit {
 
 
   addMarker() {
+    this.geolocation.getCurrentPosition().then((position) => {
+    console.log("got location?");
+    let latLng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+    this.geoLatLon = latLng;
+    this.geoNumberLat = position.coords.latitude;
+    this.geoNumberLon = position.coords.longitude;
+    map.setCenter(latLng);
+    map.setZoom(15);
+  });
     this.navCtrl.push(VendorAddPage, {
       geoNumberLat: this.geoNumberLat,
       geoNumberLon: this.geoNumberLon,
@@ -71,50 +80,62 @@ export class MapPage implements AfterViewInit {
 
 
   loadMap() {
+    console.log("haHAAA fed7");
+    // this.geolocation.getCurrentPosition().then((position) => {
+    console.log("loading map...");
+    // let latLng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+    // this.geoLatLon = latLng;
+    // this.geoNumberLat = position.coords.latitude;
+    // this.geoNumberLon = position.coords.longitude;
+    let mapOptions = {
+      center: new google.maps.LatLng(10.4568902,-61.2991011),
+      zoom: 10.35,
+      minZoom: 10,
+      mapTypeId: google.maps.MapTypeId.ROADMAP
+    }
+    this.map = new google.maps.Map(this.mapElement.nativeElement, mapOptions);
+    // Bounds for Trinidad
+    var strictBounds = new google.maps.LatLngBounds(
+      new google.maps.LatLng(10.150, -61.564),
+      new google.maps.LatLng(10.737, -61.11)
+    );
+
+    var center;
+    // Listen for the dragend event
+    var map = this.map;
+    this.loadMarkers();
+
     this.geolocation.getCurrentPosition().then((position) => {
-      console.log("loading map...");
+      console.log("got location?");
       let latLng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
       this.geoLatLon = latLng;
       this.geoNumberLat = position.coords.latitude;
       this.geoNumberLon = position.coords.longitude;
-      let mapOptions = {
-        center: latLng,
-        zoom: 15,
-        minZoom: 10,
-        mapTypeId: google.maps.MapTypeId.ROADMAP
-      }
-      this.map = new google.maps.Map(this.mapElement.nativeElement, mapOptions);
-      // Bounds for Trinidad
-      var strictBounds = new google.maps.LatLngBounds(
-        new google.maps.LatLng(10.150, -61.564),
-        new google.maps.LatLng(10.737, -61.11)
-      );
+      map.setCenter(latLng);
+      map.setZoom(15);
+    });
+    this.map.addListener('dragend', function () {
+      var center = map.getCenter();
+      if (strictBounds.contains(center)) return;
+      // out of bounds - Move the map back within the bounds
 
-      var center;
-      // Listen for the dragend event
-      var map = this.map;
-      this.map.addListener('dragend', function () {
-        var center = map.getCenter();
-        if (strictBounds.contains(center)) return;
-        // out of bounds - Move the map back within the bounds
+      var c = center,
+        x = c.lng(),
+        y = c.lat(),
+        maxX = strictBounds.getNorthEast().lng(),
+        maxY = strictBounds.getNorthEast().lat(),
+        minX = strictBounds.getSouthWest().lng(),
+        minY = strictBounds.getSouthWest().lat();
 
-        var c = center,
-          x = c.lng(),
-          y = c.lat(),
-          maxX = strictBounds.getNorthEast().lng(),
-          maxY = strictBounds.getNorthEast().lat(),
-          minX = strictBounds.getSouthWest().lng(),
-          minY = strictBounds.getSouthWest().lat();
+      if (x < minX) x = minX;
+      if (x > maxX) x = maxX;
+      if (y < minY) y = minY;
+      if (y > maxY) y = maxY;
 
-        if (x < minX) x = minX;
-        if (x > maxX) x = maxX;
-        if (y < minY) y = minY;
-        if (y > maxY) y = maxY;
+      map.setCenter(new google.maps.LatLng(y, x));
 
-        map.setCenter(new google.maps.LatLng(y, x));
-
-      });
-      this.loadMarkers();
+    // });
+    
     }, (err) => {
       console.log(err);
     });
