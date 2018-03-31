@@ -7,7 +7,8 @@ import { VendorAddPage } from '../vendor-add/vendor-add';
 import { AfterViewInit } from '@angular/core';
 import { Http, Headers } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
-import {ApiProvider} from '../../providers/api/api';
+import { ApiProvider } from '../../providers/api/api';
+import { SnapToMapProvider } from '../../providers/snap-to-map/snap-to-map'
 declare var google;
 
 @IonicPage()
@@ -27,18 +28,18 @@ export class MapPage implements AfterViewInit {
   geoNumberLon: number = 0;
   geoLatLon: any;
   modalParam = 'https://google.com/';
-  apiUrl="https://dream-coast-60132.herokuapp.com/";
+  apiUrl = "https://dream-coast-60132.herokuapp.com/";
   @ViewChild('map') mapElement: ElementRef;
-  constructor(public navCtrl: NavController, public navParams: NavParams, 
-    public geolocation: Geolocation, public modalCtrl: ModalController, 
-    private http: Http, public api: ApiProvider) {
+  constructor(public navCtrl: NavController, public navParams: NavParams,
+    public geolocation: Geolocation, public modalCtrl: ModalController,
+    private http: Http, public api: ApiProvider, public snaptomap: SnapToMapProvider) {
   }
-  ionViewWillEnter(){
+  ionViewWillEnter() {
     this.loadMap();
   }
   ionViewDidLoad() {
     //this.loadMap();
-    
+
   }
 
 
@@ -55,14 +56,14 @@ export class MapPage implements AfterViewInit {
 
   addMarker() {
     this.geolocation.getCurrentPosition().then((position) => {
-    console.log("got location?");
-    let latLng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
-    this.geoLatLon = latLng;
-    this.geoNumberLat = position.coords.latitude;
-    this.geoNumberLon = position.coords.longitude;
-    map.setCenter(latLng);
-    map.setZoom(15);
-  });
+      console.log("got location?");
+      let latLng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+      this.geoLatLon = latLng;
+      this.geoNumberLat = position.coords.latitude;
+      this.geoNumberLon = position.coords.longitude;
+      map.setCenter(latLng);
+      map.setZoom(15);
+    });
     this.navCtrl.push(VendorAddPage, {
       geoNumberLat: this.geoNumberLat,
       geoNumberLon: this.geoNumberLon,
@@ -88,7 +89,7 @@ export class MapPage implements AfterViewInit {
     // this.geoNumberLat = position.coords.latitude;
     // this.geoNumberLon = position.coords.longitude;
     let mapOptions = {
-      center: new google.maps.LatLng(10.4568902,-61.2991011),
+      center: new google.maps.LatLng(10.4568902, -61.2991011),
       zoom: 10.35,
       minZoom: 10,
       mapTypeId: google.maps.MapTypeId.ROADMAP
@@ -104,49 +105,57 @@ export class MapPage implements AfterViewInit {
     // Listen for the dragend event
     var map = this.map;
     this.loadMarkers();
-
-    this.geolocation.getCurrentPosition().then((position) => {
-      console.log("got location?");
-      let latLng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
-      this.geoLatLon = latLng;
-      this.geoNumberLat = position.coords.latitude;
-      this.geoNumberLon = position.coords.longitude;
+    if (this.snaptomap.shouldIBeVendorSnappo) {
+      let latLng = new google.maps.LatLng(this.snaptomap.myLatParam, this.snaptomap.myLongParam);
+      //this.navParams.get("myLatParam");
       map.setCenter(latLng);
       map.setZoom(15);
-    });
-    this.map.addListener('dragend', function () {
-      var center = map.getCenter();
-      if (strictBounds.contains(center)) return;
-      // out of bounds - Move the map back within the bounds
+      this.snaptomap.shouldIBeVendorSnappo = false;
+      //return; //optional? dont wanna have a gigantic else statement for the rest of this function tho
+    }
+    else {
+      this.geolocation.getCurrentPosition().then((position) => {
+        console.log("got location?");
+        let latLng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+        this.geoLatLon = latLng;
+        this.geoNumberLat = position.coords.latitude;
+        this.geoNumberLon = position.coords.longitude;
+        map.setCenter(latLng);
+        map.setZoom(15);
+      });
+      this.map.addListener('dragend', function () {
+        var center = map.getCenter();
+        if (strictBounds.contains(center)) return;
+        // out of bounds - Move the map back within the bounds
 
-      var c = center,
-        x = c.lng(),
-        y = c.lat(),
-        maxX = strictBounds.getNorthEast().lng(),
-        maxY = strictBounds.getNorthEast().lat(),
-        minX = strictBounds.getSouthWest().lng(),
-        minY = strictBounds.getSouthWest().lat();
+        var c = center,
+          x = c.lng(),
+          y = c.lat(),
+          maxX = strictBounds.getNorthEast().lng(),
+          maxY = strictBounds.getNorthEast().lat(),
+          minX = strictBounds.getSouthWest().lng(),
+          minY = strictBounds.getSouthWest().lat();
 
-      if (x < minX) x = minX;
-      if (x > maxX) x = maxX;
-      if (y < minY) y = minY;
-      if (y > maxY) y = maxY;
+        if (x < minX) x = minX;
+        if (x > maxX) x = maxX;
+        if (y < minY) y = minY;
+        if (y > maxY) y = maxY;
 
-      map.setCenter(new google.maps.LatLng(y, x));
+        map.setCenter(new google.maps.LatLng(y, x));
 
-    // });
-    
-    }, (err) => {
-      console.log(err);
-    });
+        // });
 
+      }, (err) => {
+        console.log(err);
+      });
+    }
 
   }
 
   loadMarkers() {
     var Vmodal = this.modalCtrl;
     //this.http.get('http://127.0.0.1:8000/vendors/').map(res => res.json()).subscribe((data: Object) => {
-      this.http.get(this.apiUrl+'vendors/').map(res => res.json()).subscribe((data: Object) => {
+    this.http.get(this.apiUrl + 'vendors/').map(res => res.json()).subscribe((data: Object) => {
       //this.markers = data;
       this.mark = Object.values(data);
       let x = 0;
@@ -163,15 +172,17 @@ export class MapPage implements AfterViewInit {
         marker.addListener('click', function () {
           //navControl.push(VendorMarkerPage);
           //alert(content);
-          
-          
-          var vendorModal = Vmodal.create(VendorModalPage, { 'name': element.Name, 
-          'description': element.Description,'type':element.Type,
-          'img':element.pic,
-          'reviewList':element.reviews, 'avgRating':element.avgRating,
-          'avgThickness':element.avgThickness, 'avgTime':element.avgTime,
-          'avgCucumber':element.avgCucumber, 'avgSpicy':element.avgSpicy,
-          'vendorID':element.id });
+
+
+          var vendorModal = Vmodal.create(VendorModalPage, {
+            'name': element.Name,
+            'description': element.Description, 'type': element.Type,
+            'img': element.pic,
+            'reviewList': element.reviews, 'avgRating': element.avgRating,
+            'avgThickness': element.avgThickness, 'avgTime': element.avgTime,
+            'avgCucumber': element.avgCucumber, 'avgSpicy': element.avgSpicy,
+            'vendorID': element.id
+          });
           vendorModal.present();
 
         });

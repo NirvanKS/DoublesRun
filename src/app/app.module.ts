@@ -26,6 +26,7 @@ import { IonicPageModule } from 'ionic-angular';
 import { LoginProvider } from '../providers/login/login';
 import { GooglePlus } from '@ionic-native/google-plus'
 import { ApiProvider } from '../providers/api/api';
+import { SnapToMapProvider } from '../providers/snap-to-map/snap-to-map';
 
 @NgModule({
   declarations: [
@@ -73,6 +74,7 @@ import { ApiProvider } from '../providers/api/api';
     LoginProvider,
     GooglePlus,
     ApiProvider,
+    SnapToMapProvider,
   ]
 })
 export class AppModule { }

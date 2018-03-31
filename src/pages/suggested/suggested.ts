@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { LoginProvider } from '../../providers/login/login'
+import { SnapToMapProvider } from '../../providers/snap-to-map/snap-to-map'
 /**
  * Generated class for the SuggestedPage page.
  *
@@ -22,7 +23,10 @@ export class SuggestedPage {
   givenName: any;
   userId: any;
   imageUrl: any;
-  constructor(public navCtrl: NavController, public navParams: NavParams, public loginProvider: LoginProvider) {
+
+  geoLat: number;
+  geoLong: number;
+  constructor(public navCtrl: NavController, public navParams: NavParams, public loginProvider: LoginProvider, public snaptomap: SnapToMapProvider) {
   }
 
   ionViewDidLoad() {
@@ -46,6 +50,10 @@ export class SuggestedPage {
     await this.loginProvider.logout();
   }
 
+  snapVendorToMap() {
+    // returns geoLat: number, geoLong: number
+    this.snaptomap.goToVendor(this.geoLat, this.geoLong);
+  }
 
 
 }
