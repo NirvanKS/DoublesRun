@@ -123,33 +123,32 @@ export class MapPage implements AfterViewInit {
         map.setCenter(latLng);
         map.setZoom(15);
       });
-      this.map.addListener('dragend', function () {
-        var center = map.getCenter();
-        if (strictBounds.contains(center)) return;
-        // out of bounds - Move the map back within the bounds
-
-        var c = center,
-          x = c.lng(),
-          y = c.lat(),
-          maxX = strictBounds.getNorthEast().lng(),
-          maxY = strictBounds.getNorthEast().lat(),
-          minX = strictBounds.getSouthWest().lng(),
-          minY = strictBounds.getSouthWest().lat();
-
-        if (x < minX) x = minX;
-        if (x > maxX) x = maxX;
-        if (y < minY) y = minY;
-        if (y > maxY) y = maxY;
-
-        map.setCenter(new google.maps.LatLng(y, x));
-
-        // });
-
-      }, (err) => {
-        console.log(err);
-      });
     }
+    this.map.addListener('dragend', function () {
+      var center = map.getCenter();
+      if (strictBounds.contains(center)) return;
+      // out of bounds - Move the map back within the bounds
 
+      var c = center,
+        x = c.lng(),
+        y = c.lat(),
+        maxX = strictBounds.getNorthEast().lng(),
+        maxY = strictBounds.getNorthEast().lat(),
+        minX = strictBounds.getSouthWest().lng(),
+        minY = strictBounds.getSouthWest().lat();
+
+      if (x < minX) x = minX;
+      if (x > maxX) x = maxX;
+      if (y < minY) y = minY;
+      if (y > maxY) y = maxY;
+
+      map.setCenter(new google.maps.LatLng(y, x));
+
+      // });
+
+    }, (err) => {
+      console.log(err);
+    });
   }
 
   loadMarkers() {
