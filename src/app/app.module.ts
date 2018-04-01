@@ -15,6 +15,7 @@ import { SuggestedPage } from '../pages/suggested/suggested';
 import { VendorMarkerPage } from '../pages/vendor-marker/vendor-marker';
 import { VendorAddPage } from '../pages/vendor-add/vendor-add';
 import { VendorReviewPage } from '../pages/vendor-review/vendor-review';
+import { FilterListPage } from '../pages/filter-list/filter-list';
 
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
@@ -41,6 +42,7 @@ import { ApiProvider } from '../providers/api/api';
     VendorModalPage,
     VendorAddPage,
     VendorReviewPage,
+    FilterListPage,
   ],
   imports: [
     BrowserModule,
@@ -62,6 +64,7 @@ import { ApiProvider } from '../providers/api/api';
     VendorModalPage,
     VendorAddPage,
     VendorReviewPage,
+    FilterListPage,
   ],
   providers: [
     StatusBar,

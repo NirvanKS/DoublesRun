@@ -34,34 +34,34 @@
       <ion-label>
         Top 50 Only
       </ion-label>
-      <ion-checkbox></ion-checkbox>
+      <ion-checkbox [(ngModel)]="highRated"></ion-checkbox>
     </ion-item>
     <ion-item id="filter-checkbox6">
       <ion-label>
         Thick Barra Only
       </ion-label>
-      <ion-checkbox></ion-checkbox>
+      <ion-checkbox [(ngModel)]="thick"></ion-checkbox>
     </ion-item>
     <ion-item id="filter-checkbox5">
       <ion-label>
         Thin Barra Only
       </ion-label>
-      <ion-checkbox></ion-checkbox>
+      <ion-checkbox [(ngModel)]="thin"></ion-checkbox>
     </ion-item>
     <ion-item id="filter-checkbox2">
       <ion-label>
         Cucumber Available
       </ion-label>
-      <ion-checkbox></ion-checkbox>
+      <ion-checkbox [(ngModel)]="cucumber"></ion-checkbox>
     </ion-item>
     <ion-item id="filter-checkbox1">
       <ion-label>
         Very Spicy
       </ion-label>
-      <ion-checkbox></ion-checkbox>
+      <ion-checkbox [(ngModel)]="spicy"></ion-checkbox>
     </ion-item>
   </ion-list>
-  <button id="filter-button1" ion-button color="danger" block>
+  <button id="filter-button1" ion-button color="danger" block (click)="openPage()">
     Run
   </button>
 </ion-content>
