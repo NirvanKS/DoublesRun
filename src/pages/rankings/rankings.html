@@ -12,24 +12,15 @@
     <ion-title>Rankings</ion-title>
   </ion-navbar>
 </ion-header>
-
-
 <ion-content padding>
-  <ion-list id="rankings-list2">
-    <ion-item id="rankings-list-item15" style="">TSM DoublesLift</ion-item>
-    <ion-item id="rankings-list-item16" style="">Kumar Doubles</ion-item>
-    <ion-item id="rankings-list-item17" style="">PogChamp Doubles</ion-item>
-    <ion-item id="rankings-list-item18" style="">Sauce Doubles</ion-item>
-
+  <ion-refresher (ionRefresh)="forceReload($event)">
+    <ion-refresher-content refreshingText="Reload from API...">
+    </ion-refresher-content>
+  </ion-refresher>
+  <button ion-button full color="danger" (click)="invalidateCache()">Invalidate Cache</button>
+  <ion-list>
+    <ion-item *ngFor="let vendor of vendors | async">
+      {{ vendor.Name }}
+    </ion-item>
   </ion-list>
-  <div>
-    <br>
-    <ion-list>
-      <ion-item class="myListItem">
-        <ion-img width="45" height="45" src="assets/icon/favicon.ico"></ion-img>
-      </ion-item>
-    </ion-list>
-   
-    
-  </div>
 </ion-content>

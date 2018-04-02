@@ -7,6 +7,7 @@ import { TabsPage } from '../pages/tabs/tabs';
 import { VoWPage } from '../pages/vo-w/vo-w';
 import { TrendingPage } from '../pages/trending/trending';
 import { SuggestedPage } from '../pages/suggested/suggested';
+import { CacheService } from "ionic-cache";
 
 @Component({
   templateUrl: 'app.html'
@@ -14,15 +15,17 @@ import { SuggestedPage } from '../pages/suggested/suggested';
 export class MyApp {
   @ViewChild(Nav) nav: Nav;
 
-  pages: Array<{title: string, component: any}>;
+  pages: Array<{ title: string, component: any }>;
 
-  rootPage:any = TabsPage;
-  
+  rootPage: any = TabsPage;
 
-  constructor(platform: Platform, statusBar: StatusBar, splashScreen: SplashScreen) {
+
+  constructor(platform: Platform, cache: CacheService, statusBar: StatusBar, splashScreen: SplashScreen) {
     platform.ready().then(() => {
       // Okay, so the platform is ready and our plugins are available.
       // Here you can do any higher level native things you might need.
+      cache.setDefaultTTL(60 * 60 * 6); //cached data valid for 6 hours, could decrease or increase depending on what we want
+      cache.setOfflineInvalidate(false);   // Keep our cached results when device is offline
       statusBar.styleDefault();
       splashScreen.hide();
     });
@@ -32,7 +35,7 @@ export class MyApp {
       { title: 'Trending', component: TrendingPage },
       { title: 'Suggested', component: SuggestedPage }
     ];
-  
+
   }
   openPage(page) {
     // Reset the content nav to have just this page

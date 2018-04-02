@@ -1,5 +1,7 @@
 
 import { Injectable } from '@angular/core';
+import { Http } from '@angular/http';
+import { CacheService } from 'ionic-cache';
 
 /*
   Generated class for the ApiProvider provider.
@@ -10,7 +12,7 @@ import { Injectable } from '@angular/core';
 @Injectable()
 export class ApiProvider {
 
-  constructor() {
+  constructor(private http: Http, private cache: CacheService) {
   }
-  url:"https://dream-coast-60132.herokuapp.com/"
+  url: "https://dream-coast-60132.herokuapp.com/"
 }

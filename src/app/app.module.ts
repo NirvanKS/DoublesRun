@@ -4,6 +4,7 @@ import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
 import { MyApp } from './app.component';
 import { Geolocation } from '@ionic-native/geolocation';
 import { HttpModule } from '@angular/http';
+import { CacheModule } from 'ionic-cache';
 
 import { TabsPage } from '../pages/tabs/tabs';
 import { VoWPage } from '../pages/vo-w/vo-w';
@@ -50,6 +51,7 @@ import { SnapToMapProvider } from '../providers/snap-to-map/snap-to-map';
     HttpModule,
     IonicModule.forRoot(MyApp),
     IonicPageModule.forChild(VendorModalPage),
+    CacheModule.forRoot()
   ],
   bootstrap: [IonicApp],
   entryComponents: [
