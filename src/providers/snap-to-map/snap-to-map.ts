@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { MapPage } from '../../pages/map/map';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { Inject, ViewChild } from '@angular/core';
 /*
   Generated class for the SnapToMapProvider provider.
 
@@ -10,10 +11,11 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 */
 @Injectable()
 export class SnapToMapProvider {
+  @ViewChild('Nav') nav;
   myLatParam: number; //vendor geolocation
   myLongParam: number;
   shouldIBeVendorSnappo = false;
-  constructor(public navCtrl: NavController) {
+  constructor() {
     console.log('Hello SnapToMapProvider Provider');
   }
 
@@ -21,7 +23,7 @@ export class SnapToMapProvider {
     this.myLatParam = geoLat;
     this.myLongParam = geoLong;
     this.shouldIBeVendorSnappo = true;
-    this.navCtrl.push(MapPage, { 'myLongParam': this.myLongParam, 'myLatParam': this.myLatParam });
+    this.nav.push(MapPage);
   }
 
 }
