@@ -22,6 +22,7 @@ export class LoginProvider {
   givenName: any;
   userId: any;
   imageUrl: any;
+  suggestions: any = [];
 
   isLoggedIn: boolean = false;
 
@@ -42,13 +43,17 @@ export class LoginProvider {
         //this.http.get('http://127.0.0.1:8000/users/'+this.userId+'/')
         this.http.get('https://dream-coast-60132.herokuapp.com/users/'+this.userId+'/')
           .map(res=>res.json())
-          .subscribe(data=>{},err=>{
+          .subscribe(data=>{
+            this.suggestions = data.suggestions;
+            console.log("sugg", this.suggestions);
+          },err=>{
             if (err.status == 404){
               let newuser = {id:this.userId, name:this.givenName+' '+this.familyName, email: this.email};
               //this.http.post('http://127.0.0.1:8000/users/'+this.userId+'/', JSON.stringify(newuser),{headers: headers})
               this.http.post('https://dream-coast-60132.herokuapp.com/users/', JSON.stringify(newuser),{headers: headers})
               .map(res => res.json())
               .subscribe(data => {
+                //fill suggestions for new user here maybe
                 console.log("httppost responsea:",data);
               });
             }
