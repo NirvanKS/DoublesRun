@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { IonicPageModule } from 'ionic-angular';
 import { SuggestedPage } from './suggested';
+import { LoginProvider } from '../../providers/login/login';
 
 @NgModule({
   declarations: [
@@ -10,4 +11,11 @@ import { SuggestedPage } from './suggested';
     IonicPageModule.forChild(SuggestedPage),
   ],
 })
-export class SuggestedPageModule {}
+export class SuggestedPageModule {
+  suggestions:any;
+  constructor(public loginProvider: LoginProvider){
+    this.suggestions = loginProvider.suggestions;
+  }
+
+
+}

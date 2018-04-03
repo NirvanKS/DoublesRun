@@ -36,7 +36,7 @@
     <br>
 
     <ion-thumbnail item-left>
-      <ion-icon name="trash" class="deleteIcon" (click)="deletePhoto()"></ion-icon>
+      <ion-icon *ngIf="vendorForm.pic" name="trash" class="deleteIcon" (click)="deletePhoto()"></ion-icon>
       <img [src]="vendorForm.pic" *ngIf="vendorForm.pic" width="128" height="128" />
     </ion-thumbnail>
     <br>
