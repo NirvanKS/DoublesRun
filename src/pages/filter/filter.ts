@@ -61,8 +61,10 @@ export class FilterPage {
         this.vendors = this.vendors.filter(element => element.avgSpicy > 5.0);
         //console.log(this.vendors);
       }
-      console.log(this.vendors);
-      this.navCtrl.push(FilterListPage);
+      //console.log(this.vendors);
+      this.navCtrl.push(FilterListPage,{
+        vendors: this.vendors
+      });
 
 
     });
