@@ -11,7 +11,7 @@ import { Inject, ViewChild } from '@angular/core';
 */
 @Injectable()
 export class SnapToMapProvider {
-  @ViewChild('Nav') nav;
+  @ViewChild('nav') nav: NavController;
   myLatParam: number; //vendor geolocation
   myLongParam: number;
   shouldIBeVendorSnappo = false;
@@ -23,7 +23,6 @@ export class SnapToMapProvider {
     this.myLatParam = geoLat;
     this.myLongParam = geoLong;
     this.shouldIBeVendorSnappo = true;
-    this.nav.push(MapPage);
   }
 
 }

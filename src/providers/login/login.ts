@@ -1,7 +1,8 @@
 //import { HttpClient } from '@angular/common/http';
 import { Injectable, Component } from '@angular/core';
 import { Http, Headers } from '@angular/http';
-import { GooglePlus } from '@ionic-native/google-plus'
+import { GooglePlus } from '@ionic-native/google-plus';
+import { CacheService } from 'ionic-cache';
 /*
   Generated class for the LoginProvider provider.
 
@@ -13,7 +14,7 @@ import { GooglePlus } from '@ionic-native/google-plus'
 
 export class LoginProvider {
   providers: [GooglePlus]
-  constructor(private http: Http, private googlePlus: GooglePlus) {
+  constructor(private http: Http,private cache: CacheService,private googlePlus: GooglePlus) {
     console.log('Hello LoginProvider Provider');
   }
   displayName: any;
@@ -23,6 +24,8 @@ export class LoginProvider {
   userId: any;
   imageUrl: any;
   suggestions: any = [];
+  suggVendors: any = [];
+  cachedVendors: any;
 
   isLoggedIn: boolean = false;
 
@@ -46,6 +49,14 @@ export class LoginProvider {
           .subscribe(data=>{
             this.suggestions = data.suggestions;
             console.log("sugg", this.suggestions);
+            this.cachedVendors.subscribe((data:Object)=>{
+              console.log(data)
+              for (let i=0;i<this.suggestions.length;i++){
+                let vend = (Object.values(data).find(element => element.id == this.suggestions[i]));
+                this.suggVendors.push(vend);
+                console.log("fwef",this.suggVendors, this.suggestions[i]);
+              }
+            })
           },err=>{
             if (err.status == 404){
               let newuser = {id:this.userId, name:this.givenName+' '+this.familyName, email: this.email};
@@ -58,6 +69,10 @@ export class LoginProvider {
               });
             }
           });
+        let url = 'https://dream-coast-60132.herokuapp.com/vendors/';
+        this.cachedVendors = this.cache.loadFromObservable(url, this.http.get(url).map(res => res.json()));
+        
+        
       })
       .catch(err => {
         console.log(this.googlePlus.getSigningCertificateFingerprint());

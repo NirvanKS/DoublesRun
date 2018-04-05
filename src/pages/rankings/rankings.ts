@@ -4,6 +4,9 @@ import { Http } from '@angular/http';
 import { CacheService } from 'ionic-cache';
 import { Observable } from 'rxjs/Observable';
 import { ApiProvider } from '../../providers/api/api';
+import { SnapToMapProvider } from '../../providers/snap-to-map/snap-to-map'
+import { MapPage } from '../map/map'
+/**
 /**
  * Generated class for the RankingsPage page.
  *
@@ -21,7 +24,8 @@ export class RankingsPage {
   vendorsKey = "vendor-ranking-list"
   vendors: Observable<any>;
   vendorList: any;
-  constructor(public navCtrl: NavController, public navParams: NavParams, private http: Http, private cache: CacheService, public api: ApiProvider) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, private http: Http, private cache: CacheService, public api: ApiProvider
+    , public snaptomap: SnapToMapProvider) {
   }
 
   ionViewDidLoad() {
@@ -30,6 +34,10 @@ export class RankingsPage {
 
   }
 
+  openVendor(vendor) {
+    this.snaptomap.goToVendor(vendor.locLat, vendor.locLong);
+    this.navCtrl.parent.select(1);
+  }
   // Load either from API or Cache
   loadVendors(refresher?) {
     let url = 'https://dream-coast-60132.herokuapp.com/vendors/';
@@ -47,8 +55,8 @@ export class RankingsPage {
       // Hide the refresher once loading is done
       this.vendors.subscribe(data => {
         refresher.complete();
-        let x = this.cache.loadFromObservable(url, req);    //url here in this case is the actual key, but not the GROUP KEY
-        console.log(x);
+        //let x = this.cache.loadFromObservable(url, req);    //url here in this case is the actual key, but not the GROUP KEY
+        //console.log(x);
       });
     } else {
       // Load with Group key and custom TTL

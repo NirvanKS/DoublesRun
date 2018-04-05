@@ -19,7 +19,7 @@
   </ion-refresher>
   <button ion-button full color="danger" (click)="invalidateCache()">Invalidate Cache</button>
   <ion-list>
-    <ion-item *ngFor="let vendor of vendors | async">
+    <ion-item *ngFor="let vendor of vendors | async" (click)="openVendor(vendor)">
       {{ vendor.Name }}
     </ion-item>
   </ion-list>
