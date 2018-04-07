@@ -46,7 +46,7 @@ export class RankingsPage {
         return res.json();
       });
 
-    let ttl = 60 * 60 * 6;
+    let ttl = 60 * 60 * 3;
 
     if (refresher) {
       // Reload data even if it is cached
