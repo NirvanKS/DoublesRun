@@ -24,6 +24,7 @@ export class RankingsPage {
   vendorsKey = "vendor-ranking-list"
   vendors: Observable<any>;
   vendorList: any;
+  orderedVendors: any;
   constructor(public navCtrl: NavController, public navParams: NavParams, private http: Http, private cache: CacheService, public api: ApiProvider
     , public snaptomap: SnapToMapProvider) {
   }
@@ -65,6 +66,21 @@ export class RankingsPage {
       // Or just load without additional settings
       // this.films = this.cache.loadFromObservable(url, req);
     }
+
+    this.vendors.subscribe((data: Object) => {
+      this.vendorList = Object.values(data);
+      console.log(this.vendorList);
+      this.orderedVendors = this.vendorList.sort(function compare(a, b) {
+        // if (a.avgRating < b.avgRating)
+        //   return -1;
+        // if (a.avgRating > b.avgRating)
+        //   return 1;
+        // return 0;
+        return b.rankingScore - a.rankingScore;
+      })
+      console.log("ordered" + this.orderedVendors[1].rankingScore);
+    })
+
   }
 
   // Invalidate for a specific group key
