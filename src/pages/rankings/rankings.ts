@@ -21,7 +21,12 @@ export class RankingsPage {
   vendorsKey = "vendor-ranking-list"
   vendors: Observable<any>;
   vendorList: any;
+<<<<<<< HEAD
   constructor(public navCtrl: NavController, public navParams: NavParams, private http: Http, private cache: CacheService, public api: ApiProvider) {
+=======
+  constructor(public navCtrl: NavController, public navParams: NavParams, private http: Http, private cache: CacheService, public api: ApiProvider
+    , public snaptomap: SnapToMapProvider) {
+>>>>>>> parent of f4456a2... Added Ranking Page functionality
   }
 
   ionViewDidLoad() {

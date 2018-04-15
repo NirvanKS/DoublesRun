@@ -19,7 +19,11 @@
   </ion-refresher>
   <button ion-button full color="danger" (click)="invalidateCache()">Invalidate Cache</button>
   <ion-list>
+<<<<<<< HEAD
     <ion-item *ngFor="let vendor of vendors | async">
+=======
+    <ion-item *ngFor="let vendor of vendors | async" (click)="openVendor(vendor)">
+>>>>>>> parent of f4456a2... Added Ranking Page functionality
       {{ vendor.Name }}
     </ion-item>
   </ion-list>
