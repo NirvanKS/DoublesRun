@@ -8,7 +8,6 @@ import { VoWPage } from '../pages/vo-w/vo-w';
 import { TrendingPage } from '../pages/trending/trending';
 import { SuggestedPage } from '../pages/suggested/suggested';
 import { CacheService } from "ionic-cache";
-import { timer } from 'rxjs/observable/timer';
 
 @Component({
   templateUrl: 'app.html'
@@ -16,7 +15,6 @@ import { timer } from 'rxjs/observable/timer';
 export class MyApp {
   @ViewChild(Nav) nav: Nav;
 
-  showSplash = true;
   pages: Array<{ title: string, component: any }>;
 
   rootPage: any = TabsPage;
@@ -30,7 +28,6 @@ export class MyApp {
       cache.setOfflineInvalidate(false);   // Keep our cached results when device is offline
       statusBar.styleDefault();
       splashScreen.hide();
-      timer(3000).subscribe(() => this.showSplash = false)
     });
 
     this.pages = [
