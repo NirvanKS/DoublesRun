@@ -17,6 +17,7 @@
     <ion-refresher-content refreshingText="Reload from API...">
     </ion-refresher-content>
   </ion-refresher>
+  <button ion-button full color="danger" (click)="invalidateCache()">Invalidate Cache</button>
   <ion-list>
     <ion-item *ngFor="let vendor of vendors | async" (click)="openVendor(vendor)">
       {{ vendor.Name }}
