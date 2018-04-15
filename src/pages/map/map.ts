@@ -9,8 +9,6 @@ import { Http, Headers } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 import { ApiProvider } from '../../providers/api/api';
 import { SnapToMapProvider } from '../../providers/snap-to-map/snap-to-map'
-import { CacheService } from 'ionic-cache';
-
 declare var google;
 
 @IonicPage()
@@ -23,7 +21,6 @@ export class MapPage implements AfterViewInit {
     // this.loadMap();
 
   }
-  cachedVendors: any;
   map: any;
   markers: Observable<any>[] = [];
   mark: any;
@@ -35,7 +32,7 @@ export class MapPage implements AfterViewInit {
   @ViewChild('map') mapElement: ElementRef;
   constructor(public navCtrl: NavController, public navParams: NavParams,
     public geolocation: Geolocation, public modalCtrl: ModalController,
-    private http: Http, public api: ApiProvider, public snaptomap: SnapToMapProvider, private cache: CacheService) {
+    private http: Http, public api: ApiProvider, public snaptomap: SnapToMapProvider) {
   }
   ionViewWillEnter() {
     this.loadMap();
@@ -154,54 +151,8 @@ export class MapPage implements AfterViewInit {
     });
   }
 
-  loadFromCache(vendorObservable: Observable<any>) {
-    var Vmodal = this.modalCtrl;
-    vendorObservable.subscribe((data: Object) => {
-      //this.markers = data;
-      this.mark = Object.values(data);
-      let x = 0;
-      this.mark.forEach(element => {
-        //console.log(element.Name);
-        let markLatLon = new google.maps.LatLng(element.locLat, element.locLong);
-        let marker = new google.maps.Marker({
-          map: this.map,
-          animation: google.maps.Animation.DROP,
-          position: markLatLon//this.map.getCenter()
-
-        });
-
-        marker.addListener('click', function () {
-          //navControl.push(VendorMarkerPage);
-          //alert(content);
-
-
-          var vendorModal = Vmodal.create(VendorModalPage, {
-            'name': element.Name,
-            'description': element.Description, 'type': element.Type,
-            'img': element.pic,
-            'reviewList': element.reviews, 'avgRating': element.avgRating,
-            'avgThickness': element.avgThickness, 'avgTime': element.avgTime,
-            'avgCucumber': element.avgCucumber, 'avgSpicy': element.avgSpicy,
-            'vendorID': element.id
-          });
-          vendorModal.present();
-
-        });
-      })
-    });
-  }
-
-
   loadMarkers() {
     var Vmodal = this.modalCtrl;
-    let url = 'https://dream-coast-60132.herokuapp.com/vendors/';
-    this.cachedVendors = this.cache.loadFromObservable(url, this.http.get(this.apiUrl + 'vendors/').map(res => res.json()));
-    if (this.cachedVendors != null) {
-      console.log(this.cachedVendors);
-      console.log("Loading from cache");
-      this.loadFromCache(this.cachedVendors);
-      return;
-    }
     //this.http.get('http://127.0.0.1:8000/vendors/').map(res => res.json()).subscribe((data: Object) => {
     this.http.get(this.apiUrl + 'vendors/').map(res => res.json()).subscribe((data: Object) => {
       //this.markers = data;

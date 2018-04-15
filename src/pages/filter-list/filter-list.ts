@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
-import { SnapToMapProvider } from '../../providers/snap-to-map/snap-to-map'
-import { MapPage } from '../map/map'
+
 /**
  * Generated class for the FilterListPage page.
  *
@@ -17,7 +16,7 @@ import { MapPage } from '../map/map'
 export class FilterListPage {
   vendorList: any;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public snaptomap: SnapToMapProvider) {
+  constructor(public navCtrl: NavController, public navParams: NavParams) {
     this.vendorList = navParams.get('vendors');
   }
 
@@ -25,12 +24,9 @@ export class FilterListPage {
     console.log('ionViewDidLoad FilterListPage');
   }
 
-  openVendor(v) {
+  openVendor(v){
     console.log("This vendor's Latitidue is: " + v.locLat);
     console.log("This vendor's Longitude is: " + v.locLong);
-    this.snaptomap.goToVendor(v.locLat, v.locLong);
-    this.navCtrl.parent.select(1);
-    //this.navCtrl.push(MapPage);
     //Call Nirvan's Service here with the longitude and latitude
   }
 

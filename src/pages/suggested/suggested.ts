@@ -1,11 +1,7 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
-import { LoginProvider } from '../../providers/login/login';
-import { SnapToMapProvider } from '../../providers/snap-to-map/snap-to-map';
-import { CacheService } from 'ionic-cache';
-import { Http, Headers } from '@angular/http';
-import { TabsPage } from '../tabs/tabs';
-
+import { LoginProvider } from '../../providers/login/login'
+import { SnapToMapProvider } from '../../providers/snap-to-map/snap-to-map'
 /**
  * Generated class for the SuggestedPage page.
  *
@@ -19,33 +15,27 @@ import { TabsPage } from '../tabs/tabs';
   templateUrl: 'suggested.html',
 })
 export class SuggestedPage {
-  isLoggedIn: boolean= this.loginProvider.isLoggedIn;
+  isLoggedIn: boolean = false;
   loggedUser: any;
-  displayName: any= this.loginProvider.displayName;
-  email: any= this.loginProvider.email;
-  familyName: any= this.loginProvider.familyName;
-  givenName: any= this.loginProvider.givenName;
-  userId: any= this.loginProvider.userId;
-  imageUrl: any= this.loginProvider.imageUrl;
-  suggestions:any= this.loginProvider.suggestions;
-  suggVendors: any = this.loginProvider.suggVendors;
-  cachedVendors: any;
-  tabsPage:any = TabsPage;
+  displayName: any;
+  email: any;
+  familyName: any;
+  givenName: any;
+  userId: any;
+  imageUrl: any;
 
   geoLat: number;
   geoLong: number;
-  constructor(public navCtrl: NavController, public navParams: NavParams, 
-    public loginProvider: LoginProvider, public snaptomap: SnapToMapProvider, 
-    private cache: CacheService, public http: Http) {
-    
+  constructor(public navCtrl: NavController, public navParams: NavParams, public loginProvider: LoginProvider, public snaptomap: SnapToMapProvider) {
   }
 
   ionViewDidLoad() {
+    console.log('ionViewDidLoad SuggestedPage');
   }
-  ionViewWillEnter(){
-  }
+
   async login() {
     await this.loginProvider.login();
+    console.log(this.loginProvider.displayName);
     this.displayName = this.loginProvider.displayName;
     this.email = this.loginProvider.email;
     this.familyName = this.loginProvider.familyName;
@@ -53,18 +43,16 @@ export class SuggestedPage {
     this.userId = this.loginProvider.userId;
     this.imageUrl = this.loginProvider.imageUrl;
     this.isLoggedIn = this.loginProvider.isLoggedIn;
-    this.suggestions = this.loginProvider.suggestions;
-    this.suggVendors= this.loginProvider.suggVendors;
-    
+    console.log(this.isLoggedIn);
   }
 
   async logout() {
     await this.loginProvider.logout();
   }
 
-  snapVendorToMap(v) {
-    this.snaptomap.goToVendor(v.locLat, v.locLong);
-    this.navCtrl.setRoot(this.tabsPage, {tabIndex: 1});
+  snapVendorToMap() {
+    // returns geoLat: number, geoLong: number
+    this.snaptomap.goToVendor(this.geoLat, this.geoLong);
   }
 
 
