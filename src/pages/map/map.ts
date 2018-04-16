@@ -182,7 +182,7 @@ export class MapPage implements AfterViewInit {
         let markLatLon = new google.maps.LatLng(element.locLat, element.locLong);
         let marker = new google.maps.Marker({
           map: this.map,
-          icon: "../../assets/imgs/doubles.png",
+          icon: "../assets/imgs/doubles.png",
           animation: google.maps.Animation.DROP,
           position: markLatLon//this.map.getCenter()
 
@@ -230,7 +230,7 @@ export class MapPage implements AfterViewInit {
         let markLatLon = new google.maps.LatLng(element.locLat, element.locLong);
         let marker = new google.maps.Marker({
           map: this.map,
-          icon: "../../assets/imgs/doubles.png",
+          icon: "../assets/imgs/doubles.png",
           animation: google.maps.Animation.DROP,
           position: markLatLon//this.map.getCenter()
 
