@@ -16,7 +16,7 @@
 
 <ion-content padding>
   <div id="filter-markdown2" class="show-list-numbers-and-dots">
-    <p style="color:#000000;">
+    <p id="par">
       Experience Doubles Run after with our map of known night-time vendors.
     </p>
   </div>
@@ -61,7 +61,7 @@
       <ion-checkbox [(ngModel)]="spicy"></ion-checkbox>
     </ion-item>
   </ion-list>
-  <button id="filter-button1" ion-button color="danger" block (click)="openPage()">
+  <button id="filter-button1" ion-button [color]="ionicNamedColor" block (click)="openPage()">
     Run
   </button>
 </ion-content>

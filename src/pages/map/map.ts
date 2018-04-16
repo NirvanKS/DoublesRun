@@ -11,6 +11,7 @@ import { ApiProvider } from '../../providers/api/api';
 import { SnapToMapProvider } from '../../providers/snap-to-map/snap-to-map'
 import { CacheService } from 'ionic-cache';
 import { mapStyle } from './mapStyle';
+import { ThemeSettingsProvider } from '../../providers/theme-settings/theme-settings'
 declare var google;
 
 @IonicPage()
@@ -36,7 +37,7 @@ export class MapPage implements AfterViewInit {
   @ViewChild('map') mapElement: ElementRef;
   constructor(public navCtrl: NavController, public navParams: NavParams,
     public geolocation: Geolocation, public modalCtrl: ModalController,
-    private http: Http, public api: ApiProvider, public snaptomap: SnapToMapProvider, private cache: CacheService, ) {
+    private http: Http, public api: ApiProvider, public snaptomap: SnapToMapProvider, private cache: CacheService, public settings: ThemeSettingsProvider) {
   }
   ionViewWillEnter() {
     this.loadMap();

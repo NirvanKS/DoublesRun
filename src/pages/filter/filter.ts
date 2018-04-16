@@ -19,6 +19,7 @@ import { ThemeSettingsProvider } from '../../providers/theme-settings/theme-sett
 })
 export class FilterPage {
   selectedTheme: String;
+  public ionicNamedColor: string = 'danger';
   nightMode = false;
   apiUrl = "https://dream-coast-60132.herokuapp.com/";
   vendors: any;
@@ -50,6 +51,13 @@ export class FilterPage {
     } else {
       this.settings.setActiveTheme('dark-theme');
     }
+
+    if (this.ionicNamedColor === 'danger') {
+      this.ionicNamedColor = 'dark'
+    } else {
+      this.ionicNamedColor = 'danger'
+    }
+
   }
 
   loadFromCache(vendorObservable: Observable<any>) {

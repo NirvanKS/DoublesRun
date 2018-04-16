@@ -18,26 +18,26 @@
     <div *ngFor='let s of suggVendors'>
       <ion-card>
 
-        <img width="300" height="200" [src]="s.pic"/>
-    
+        <img width="300" height="200" [src]="s.pic" />
+
         <ion-card-content>
           <ion-card-title>
-            {{s.Name}} 
+            {{s.Name}}
           </ion-card-title>
           <p>
             {{s.Description}}
           </p>
         </ion-card-content>
-    
+
         <ion-row no-padding>
           <ion-col text-right>
             <button ion-button clear small color="danger" icon-start (click)="snapVendorToMap(s)">
-              <ion-icon name='map' ></ion-icon>
+              <ion-icon name='map'></ion-icon>
               View On Map
             </button>
           </ion-col>
         </ion-row>
-    
+
       </ion-card>
     </div>
 
@@ -61,7 +61,7 @@
         </div>
       </div>
     </div>
-    <h5 ion-text color="dark">Looks like you're not logged in :(</h5>
+    <h5 id="logH">Looks like you're not logged in :(</h5>
     <p>
       <button id="butt" ion-button (click)="login()">Login With Google</button>
     </p>

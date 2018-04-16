@@ -15,28 +15,28 @@
 
 <ion-content padding>
 
-    <div *ngFor='let t of trendingVendors'>
-        <ion-card>
-            <img [src]="t.pic"/>
-          <ion-card-content>
-            <ion-card-title>
-              {{t.Name}} 
-            </ion-card-title>
-            <p>
-              {{t.Description}}
-            </p>
-          </ion-card-content>
-      
-          <ion-row no-padding>
-            <ion-col text-right>
-              <button ion-button clear small color="danger" icon-start (click)="snapVendorToMap(t)">
-                <ion-icon name='map' ></ion-icon>
-                View On Map
-              </button>
-            </ion-col>
-          </ion-row>
-      
-        </ion-card>
-      </div>
+  <div *ngFor='let t of trendingVendors'>
+    <ion-card class="vendor-card">
+      <img [src]="t.pic" />
+      <ion-card-content>
+        <ion-card-title class="vendor-title">
+          {{t.Name}}
+        </ion-card-title>
+        <p class="vendor-desc">
+          {{t.Description}}
+        </p>
+      </ion-card-content>
+
+      <ion-row no-padding>
+        <ion-col text-right>
+          <button ion-button clear small [color]="ionicNamedColor" icon-start (click)="snapVendorToMap(t)" class="viewMapButton">
+            <ion-icon name='md-globe'></ion-icon>
+            View On Map
+          </button>
+        </ion-col>
+      </ion-row>
+
+    </ion-card>
+  </div>
 
 </ion-content>
