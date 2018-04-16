@@ -49,8 +49,8 @@ export class TrendingPage {
       this.cachedVendors = Object.values(data);
       console.log("cash2",this.cachedVendors);
       this.cachedVendors.forEach(element => {
-        if(element.reviews.length>3){
-          for(let i=1;i<=3;i++){
+        if(element.reviews.length>0){
+          for(let i=1;i<=1;i++){
             this.http.get('https://dream-coast-60132.herokuapp.com/reviews/'+element.reviews[element.reviews.length-i]+'/')
               .map(res=>res.json())
               .subscribe(data=>{  
