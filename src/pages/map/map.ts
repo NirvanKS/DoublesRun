@@ -24,6 +24,7 @@ export class MapPage implements AfterViewInit {
     // this.loadMap();
 
   }
+  mapOptions: any;
   selectedTheme: String
   cachedVendors: any;
   map: any;
@@ -94,21 +95,26 @@ export class MapPage implements AfterViewInit {
     // this.geoNumberLat = position.coords.latitude;
     // this.geoNumberLon = position.coords.longitude;
     let style = mapStyle;
+    if (this.settings.isDark == true) {
+      this.mapOptions = {
+        center: new google.maps.LatLng(10.4568902, -61.2991011),
+        zoom: 10.35,
+        minZoom: 10,
+        mapTypeId: google.maps.MapTypeId.ROADMAP,
+        styles: style
+      }
+    }
+    else {
+      this.mapOptions = {
+        center: new google.maps.LatLng(10.4568902, -61.2991011),
+        zoom: 10.35,
+        minZoom: 10,
+        mapTypeId: google.maps.MapTypeId.ROADMAP
+      }
+    }
 
-    let mapOptions = {
-      center: new google.maps.LatLng(10.4568902, -61.2991011),
-      zoom: 10.35,
-      minZoom: 10,
-      mapTypeId: google.maps.MapTypeId.ROADMAP
-    }
-    let mapOptionsNight = {
-      center: new google.maps.LatLng(10.4568902, -61.2991011),
-      zoom: 10.35,
-      minZoom: 10,
-      mapTypeId: google.maps.MapTypeId.ROADMAP,
-      styles: style
-    }
-    this.map = new google.maps.Map(this.mapElement.nativeElement, mapOptionsNight);
+
+    this.map = new google.maps.Map(this.mapElement.nativeElement, this.mapOptions);
     // Bounds for Trinidad
     var strictBounds = new google.maps.LatLngBounds(
       new google.maps.LatLng(10.150, -61.564),
