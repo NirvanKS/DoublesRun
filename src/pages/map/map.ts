@@ -10,7 +10,7 @@ import { Observable } from 'rxjs/Observable';
 import { ApiProvider } from '../../providers/api/api';
 import { SnapToMapProvider } from '../../providers/snap-to-map/snap-to-map'
 import { CacheService } from 'ionic-cache';
-
+import { mapStyle } from './mapStyle';
 declare var google;
 
 @IonicPage()
@@ -23,6 +23,7 @@ export class MapPage implements AfterViewInit {
     // this.loadMap();
 
   }
+  selectedTheme: String
   cachedVendors: any;
   map: any;
   markers: Observable<any>[] = [];
@@ -35,7 +36,7 @@ export class MapPage implements AfterViewInit {
   @ViewChild('map') mapElement: ElementRef;
   constructor(public navCtrl: NavController, public navParams: NavParams,
     public geolocation: Geolocation, public modalCtrl: ModalController,
-    private http: Http, public api: ApiProvider, public snaptomap: SnapToMapProvider, private cache: CacheService) {
+    private http: Http, public api: ApiProvider, public snaptomap: SnapToMapProvider, private cache: CacheService, ) {
   }
   ionViewWillEnter() {
     this.loadMap();
@@ -91,13 +92,22 @@ export class MapPage implements AfterViewInit {
     // this.geoLatLon = latLng;
     // this.geoNumberLat = position.coords.latitude;
     // this.geoNumberLon = position.coords.longitude;
+    let style = mapStyle;
+
     let mapOptions = {
       center: new google.maps.LatLng(10.4568902, -61.2991011),
       zoom: 10.35,
       minZoom: 10,
       mapTypeId: google.maps.MapTypeId.ROADMAP
     }
-    this.map = new google.maps.Map(this.mapElement.nativeElement, mapOptions);
+    let mapOptionsNight = {
+      center: new google.maps.LatLng(10.4568902, -61.2991011),
+      zoom: 10.35,
+      minZoom: 10,
+      mapTypeId: google.maps.MapTypeId.ROADMAP,
+      styles: style
+    }
+    this.map = new google.maps.Map(this.mapElement.nativeElement, mapOptionsNight);
     // Bounds for Trinidad
     var strictBounds = new google.maps.LatLngBounds(
       new google.maps.LatLng(10.150, -61.564),

@@ -4,7 +4,7 @@ import { FilterListPage } from '../filter-list/filter-list';
 import { Http, Headers } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 import { CacheService } from 'ionic-cache';
-
+import { ThemeSettingsProvider } from '../../providers/theme-settings/theme-settings'
 /**
  * Generated class for the FilterPage page.
  *
@@ -18,6 +18,8 @@ import { CacheService } from 'ionic-cache';
   templateUrl: 'filter.html',
 })
 export class FilterPage {
+  selectedTheme: String;
+  nightMode = false;
   apiUrl = "https://dream-coast-60132.herokuapp.com/";
   vendors: any;
   highRated: boolean = false;
@@ -26,11 +28,28 @@ export class FilterPage {
   cucumber: boolean = false;
   spicy: boolean = false;
   cachedVendors: any;
-  constructor(public navCtrl: NavController, public navParams: NavParams, private http: Http, private cache: CacheService) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, private http: Http, private cache: CacheService, public settings: ThemeSettingsProvider) {
+    this.settings.getActiveTheme().subscribe(val => {
+      this.selectedTheme = val;
+      console.log("filter component " + this.selectedTheme);
+    });
+
   }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad FilterPage');
+  }
+
+  enableNight() {
+    console.log("enabling night" + this.nightMode);
+    this.settings.isDark = this.nightMode;
+    // if (this.nightMode) this.settings.setActiveTheme('dark-theme');
+    // else this.settings.setActiveTheme('light-theme');
+    if (this.selectedTheme === 'dark-theme') {
+      this.settings.setActiveTheme('light-theme');
+    } else {
+      this.settings.setActiveTheme('dark-theme');
+    }
   }
 
   loadFromCache(vendorObservable: Observable<any>) {

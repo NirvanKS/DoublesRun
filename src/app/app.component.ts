@@ -9,7 +9,7 @@ import { TrendingPage } from '../pages/trending/trending';
 import { SuggestedPage } from '../pages/suggested/suggested';
 import { CacheService } from "ionic-cache";
 import { timer } from 'rxjs/observable/timer';
-
+import { ThemeSettingsProvider } from '../providers/theme-settings/theme-settings';
 @Component({
   templateUrl: 'app.html'
 })
@@ -18,11 +18,15 @@ export class MyApp {
 
   showSplash = true;
   pages: Array<{ title: string, component: any }>;
-
+  selectedTheme: String;
   rootPage: any = TabsPage;
 
 
-  constructor(platform: Platform, cache: CacheService, statusBar: StatusBar, splashScreen: SplashScreen) {
+  constructor(platform: Platform, cache: CacheService, statusBar: StatusBar, splashScreen: SplashScreen, public settings: ThemeSettingsProvider) {
+    this.settings.getActiveTheme().subscribe(val => {
+      this.selectedTheme = val;
+    });
+
     platform.ready().then(() => {
       // Okay, so the platform is ready and our plugins are available.
       // Here you can do any higher level native things you might need.
