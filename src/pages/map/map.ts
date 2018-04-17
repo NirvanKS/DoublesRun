@@ -203,7 +203,6 @@ export class MapPage implements AfterViewInit {
             'vendorID': element.id
           });
           vendorModal.present();
-
         });
       })
     });

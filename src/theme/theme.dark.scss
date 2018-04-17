@@ -172,4 +172,11 @@
     .tab-button[aria-selected=true]{
       background-color: #BD1D1F;
     }
+
+    ion-modal{
+      .show-page{
+        background-color:  #1C1C1C;
+      }
+    }
+    $modal-background-color: #1C1C1C;
   }

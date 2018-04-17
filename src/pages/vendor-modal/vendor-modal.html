@@ -5,74 +5,73 @@
   Ionic pages and navigation.
 -->
 
-
-
-<ion-content padding >
-  <div class="content">
-  <div class="outerdiv">
-    <img [src]="pic" id="vpic">
-    <div class="rating">
-      <p style="margin-bottom:0">{{avgRating}}</p>
-      <ion-icon small range-left name="md-star"></ion-icon>
-    </div>
-    <div class="daynight">
-      <div *ngIf="day==true"> 
-        <ion-icon small range-left name="md-sunny"></ion-icon>
-        <p style="margin-top:0">Day Vendor</p>
+<ion-content padding id="darkID">
+  <div [class]="content" [id]="darkID">
+    <div class="outerdiv">
+      <img [src]="pic" id="vpic">
+      <div class="rating">
+        <p style="margin-bottom:0">{{avgRating}}</p>
+        <ion-icon small range-left name="md-star"></ion-icon>
       </div>
-      <div *ngIf="day==false"> 
+      <div class="daynight">
+        <div *ngIf="day==true">
+          <ion-icon small range-left name="md-sunny"></ion-icon>
+          <p style="margin-top:0">Day Vendor</p>
+        </div>
+        <div *ngIf="day==false">
           <ion-icon small range-left name="md-moon"></ion-icon>
           <p style="margin-top:0">Night Vendor</p>
         </div>
+      </div>
     </div>
-  </div>
-  <div class = "venContent"> <!--[hidden]="!myParam" -->
+    <div class="venContent" [id]="darkID">
+      <!--[hidden]="!myParam" -->
 
-    <h3 id="title">{{name}}</h3>
-    <div *ngIf="type">
-      <h4 class="classes">{{thickness}} | {{spiciness}} | {{cuc}}</h4>
+      <h3 id="title">{{name}}</h3>
+      <div *ngIf="type">
+        <h4 class="classes">{{thickness}} | {{spiciness}} | {{cuc}}</h4>
         <!-- Doubles Specific attributes to this vendor, go here: Avg Thickness, Avg Spicy, Cucumber -->
-    </div>
-    <!--Avg Rating and Description goes outside of ngIf-->
-    <p class="desc" style="margin-top:0">{{description}}</p>
-    <!-- <div *ngFor = 'let star in vendor.rating'>
+      </div>
+      <!--Avg Rating and Description goes outside of ngIf-->
+      <p class="desc" [id]="darkID" style="margin-top:0">{{description}}</p>
+      <!-- <div *ngFor = 'let star in vendor.rating'>
       <ion-icon range-right name="md-star"></ion-icon>
     </div> -->
-    <!-- ^^ average rating in star form -->
-    
-    
+      <!-- ^^ average rating in star form -->
 
-    <div text-center>
+
+
+      <div text-center>
         <button ion-button color="danger" (click)="loadReviewPage()">Add Review</button>
         <br>
         <button ion-button color="danger" (click)="dismiss()">Back</button>
+      </div>
+
+
+      <!-- <h3 *ngIf='ratingsEmpty==false'>User Reviews</h3> -->
+      <div *ngFor='let rating of ratings; let i = index'>
+        <br>
+        <ion-card class="vendor-card" [id]="darkID">
+
+          <div>
+            <ion-icon *ngFor='let i of rating' range-right name="md-star" class="stars"></ion-icon>
+          </div>
+          <br>
+
+          <h3 class="desc" [id]="darkID">{{comments[i]}}</h3>
+          <h4 class="desc" [id]="darkID"> -{{names[i]}}</h4>
+
+          <br>
+        </ion-card>
+
+      </div>
+
+
     </div>
 
-
-    <!-- <h3 *ngIf='ratingsEmpty==false'>User Reviews</h3> -->
-    <div *ngFor='let rating of ratings; let i = index'>
-      <br>
-      <ion-card>
-        
-        <div>
-          <ion-icon *ngFor='let i of rating' range-right name="md-star" class="stars"></ion-icon>
-        </div>
-        <br>
-
-        <h3 class="desc">{{comments[i]}}</h3>
-        <h4 class="desc"> -{{names[i]}}</h4>
-        
-        <br>
-      </ion-card>
-      
-    </div>
-   
-    
-  </div>
-  
-  <!--
+    <!--
   <div [hidden]="myParam">
     <p>No parameters passed.</p>
   </div> -->
-</div>
+  </div>
 </ion-content>

@@ -3,8 +3,9 @@ import { IonicPage, NavController, NavParams, ViewController } from 'ionic-angul
 import { VendorReviewPage } from '../vendor-review/vendor-review';
 import { Http, Headers } from '@angular/http';
 import { LoginProvider } from '../../providers/login/login';
-import {ApiProvider} from '../../providers/api/api';
+import { ApiProvider } from '../../providers/api/api';
 import { AlertController } from 'ionic-angular';
+import { ThemeSettingsProvider } from '../../providers/theme-settings/theme-settings';
 /**
  * Generated class for the VendorModalPage page.
  *
@@ -18,50 +19,54 @@ import { AlertController } from 'ionic-angular';
   templateUrl: 'vendor-modal.html',
 })
 export class VendorModalPage {
+  public darkID: string = '';
+
   name: string;
   description: string;
   type: boolean;
   ratings: any = [];
-  ratingsEmpty:boolean = true;
+  ratingsEmpty: boolean = true;
   comments: any = [];
-  names:any = [];
+  names: any = [];
 
 
   avgRating: Number;
   pic: any;
   avgThickness: Number;
   avgTime: Number;
-  avgCucumber: boolean; 
+  avgCucumber: boolean;
   avgSpicy: Number;
   revList: any;
   reviews: any;
   vendorID: any;
 
-  day:boolean = true;
-  thickness:any='Thin Barra';
-  spiciness:string='Mild Pepper';
-  cuc:string='No Cucumber';
+  day: boolean = true;
+  thickness: any = 'Thin Barra';
+  spiciness: string = 'Mild Pepper';
+  cuc: string = 'No Cucumber';
   isLoggedIn: boolean = false;
-  apiUrl="https://dream-coast-60132.herokuapp.com/";
+  apiUrl = "https://dream-coast-60132.herokuapp.com/";
   constructor(public viewCtrl: ViewController, public navCtrl: NavController,
-    private http: Http, public navParams: NavParams, public loginProvider: LoginProvider, 
-    private alertCtrl: AlertController, public api: ApiProvider) {
+    private http: Http, public navParams: NavParams, public loginProvider: LoginProvider,
+    private alertCtrl: AlertController, public api: ApiProvider, public settings: ThemeSettingsProvider) {
 
     this.name = navParams.get('name');
     this.pic = navParams.get('img');
     this.description = navParams.get('description');
     this.type = navParams.get('type');
     this.revList = navParams.get('reviewList');
-    if (this.revList.length>0) this.ratingsEmpty = false;
+    if (this.revList.length > 0) this.ratingsEmpty = false;
     this.avgRating = navParams.get('avgRating'); this.avgCucumber = navParams.get('avgCucumber');
     this.avgThickness = navParams.get('avgThickness'); this.avgSpicy = navParams.get('avgSpicy');
-    if (this.avgThickness>5) this.thickness = 'Thick Barra';
-    if (this.avgSpicy>5) this.spiciness = 'Hell';
+    if (this.avgThickness > 5) this.thickness = 'Thick Barra';
+    if (this.avgSpicy > 5) this.spiciness = 'Hell';
     if (this.avgCucumber) this.cuc = 'Yes Cucumber';
     this.avgTime = navParams.get('avgTime');
-    
-    if (this.avgTime>18) this.day = false;
+
+    if (this.avgTime > 18) this.day = false;
     this.vendorID = navParams.get('vendorID');
+
+    if (this.settings.isDark) this.darkID = "contentMod";
   }
 
   ionViewDidLoad() {
@@ -136,17 +141,17 @@ export class VendorModalPage {
     for (var i = this.revList.length - 1; i > this.revList.length - 6; i--) {
       if (i < 0) break;
       //this.http.get('http://127.0.0.1:8000/reviews/' + this.revList[i] + '/')
-      this.http.get(this.apiUrl+'reviews/' + this.revList[i] + '/')
+      this.http.get(this.apiUrl + 'reviews/' + this.revList[i] + '/')
         .map(res => res.json())
         .subscribe((data: Object) => {
           this.reviews = Object.values(data);
           let r = (this.reviews[1])
-          var numbers = Array.from(new Array(r),(val,index)=>index+1);
+          var numbers = Array.from(new Array(r), (val, index) => index + 1);
           this.ratings.push(numbers);
           this.comments.push(this.reviews[5]);
 
           //this.http.get('http://127.0.0.1:8000/users/' + this.reviews[7] + '/')
-          this.http.get(this.apiUrl+'users/' + this.reviews[7] + '/')
+          this.http.get(this.apiUrl + 'users/' + this.reviews[7] + '/')
             .map(res => res.json())
             .subscribe((data: Object) => {
               let u = Object.values(data);

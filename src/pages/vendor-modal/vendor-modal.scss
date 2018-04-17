@@ -2,6 +2,20 @@ page-vendor-modal {
     .scroll-content{
         padding:0px !important;
     }
+    
+    #contentMod{
+        background-color:  #1C1C1C !important;
+        color:white;
+        .scroll-content{
+            padding:0px !important;
+            background-color:  #1C1C1C !important;
+        }
+    }
+
+    page-vendor-modal{
+        background-color:  #1C1C1C !important;
+    }
+   
 }
 @import url('https://fonts.googleapis.com/css?family=Itim');
 @import url('https://fonts.googleapis.com/css?family=Timmana');
