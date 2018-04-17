@@ -5,6 +5,7 @@ import { SnapToMapProvider } from '../../providers/snap-to-map/snap-to-map';
 import { CacheService } from 'ionic-cache';
 import { Http, Headers } from '@angular/http';
 import { TabsPage } from '../tabs/tabs';
+import { ThemeSettingsProvider } from '../../providers/theme-settings/theme-settings';
 
 /**
  * Generated class for the SuggestedPage page.
@@ -19,6 +20,7 @@ import { TabsPage } from '../tabs/tabs';
   templateUrl: 'suggested.html',
 })
 export class SuggestedPage {
+  public ionicNamedColor: string = 'danger';
   isLoggedIn: boolean= this.loginProvider.isLoggedIn;
   loggedUser: any;
   displayName: any= this.loginProvider.displayName;
@@ -36,8 +38,10 @@ export class SuggestedPage {
   geoLong: number;
   constructor(public navCtrl: NavController, public navParams: NavParams, 
     public loginProvider: LoginProvider, public snaptomap: SnapToMapProvider, 
-    private cache: CacheService, public http: Http) {
-    
+    private cache: CacheService, public http: Http, public settings: ThemeSettingsProvider) {
+    if (this.settings.isDark == true) {
+      this.ionicNamedColor = 'light';
+    }
   }
 
   ionViewDidLoad() {

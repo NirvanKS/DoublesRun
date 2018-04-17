@@ -173,10 +173,18 @@
       background-color: #BD1D1F;
     }
 
-    ion-modal{
-      .show-page{
-        background-color:  #1C1C1C;
-      }
+
+    //vendor modal
+    .outerdiv .daynight{
+      background-color:  #1C1C1C !important
     }
-    $modal-background-color: #1C1C1C;
+    .classes{
+      background-color:  #1C1C1C !important
+    }
+    .desc{
+      background-color:  #1C1C1C !important
+    }
+    .stars{
+      background-color:  #1C1C1C !important
+    }
   }

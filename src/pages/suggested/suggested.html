@@ -16,22 +16,22 @@
   <div *ngIf="isLoggedIn; else loginTemplate">
 
     <div *ngFor='let s of suggVendors'>
-      <ion-card>
+      <ion-card class="vendor-card">
 
         <img width="300" height="200" [src]="s.pic" />
 
         <ion-card-content>
-          <ion-card-title>
+          <ion-card-title class="vendor-title">
             {{s.Name}}
           </ion-card-title>
-          <p>
+          <p class="vendor-desc">
             {{s.Description}}
           </p>
         </ion-card-content>
 
         <ion-row no-padding>
           <ion-col text-right>
-            <button ion-button clear small color="danger" icon-start (click)="snapVendorToMap(s)">
+            <button ion-button clear small [color]="ionicNamedColor" icon-start (click)="snapVendorToMap(s)">
               <ion-icon name='map'></ion-icon>
               View On Map
             </button>
