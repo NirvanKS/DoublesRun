@@ -27,7 +27,7 @@ export class LoginProvider {
   suggVendors: any = [];
   cachedVendors: any;
 
-  isLoggedIn: boolean = true;
+  isLoggedIn: boolean = false;
 
   login() {
     return this.googlePlus.login({})
