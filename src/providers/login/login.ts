@@ -14,7 +14,7 @@ import { CacheService } from 'ionic-cache';
 
 export class LoginProvider {
   providers: [GooglePlus]
-  constructor(private http: Http,private cache: CacheService,private googlePlus: GooglePlus) {
+  constructor(private http: Http, private cache: CacheService, private googlePlus: GooglePlus) {
     console.log('Hello LoginProvider Provider');
   }
   displayName: any;
@@ -27,7 +27,7 @@ export class LoginProvider {
   suggVendors: any = [];
   cachedVendors: any;
 
-  isLoggedIn: boolean = false;
+  isLoggedIn: boolean = true;
 
   login() {
     return this.googlePlus.login({})
@@ -42,37 +42,37 @@ export class LoginProvider {
         this.isLoggedIn = true;
 
         let headers = new Headers();
-        headers.append('Content-Type', 'application/json'); 
+        headers.append('Content-Type', 'application/json');
         //this.http.get('http://127.0.0.1:8000/users/'+this.userId+'/')
-        this.http.get('https://dream-coast-60132.herokuapp.com/users/'+this.userId+'/')
-          .map(res=>res.json())
-          .subscribe(data=>{
+        this.http.get('https://dream-coast-60132.herokuapp.com/users/' + this.userId + '/')
+          .map(res => res.json())
+          .subscribe(data => {
             this.suggestions = data.suggestions;
             console.log("sugg", this.suggestions);
-            this.cachedVendors.subscribe((data:Object)=>{
+            this.cachedVendors.subscribe((data: Object) => {
               console.log(data)
-              for (let i=0;i<this.suggestions.length;i++){
+              for (let i = 0; i < this.suggestions.length; i++) {
                 let vend = (Object.values(data).find(element => element.id == this.suggestions[i]));
                 this.suggVendors.push(vend);
-                console.log("fwef",this.suggVendors, this.suggestions[i]);
+                console.log("fwef", this.suggVendors, this.suggestions[i]);
               }
             })
-          },err=>{
-            if (err.status == 404){
-              let newuser = {id:this.userId, name:this.givenName+' '+this.familyName, email: this.email};
+          }, err => {
+            if (err.status == 404) {
+              let newuser = { id: this.userId, name: this.givenName + ' ' + this.familyName, email: this.email };
               //this.http.post('http://127.0.0.1:8000/users/'+this.userId+'/', JSON.stringify(newuser),{headers: headers})
-              this.http.post('https://dream-coast-60132.herokuapp.com/users/', JSON.stringify(newuser),{headers: headers})
-              .map(res => res.json())
-              .subscribe(data => {
-                //fill suggestions for new user here maybe
-                console.log("httppost responsea:",data);
-              });
+              this.http.post('https://dream-coast-60132.herokuapp.com/users/', JSON.stringify(newuser), { headers: headers })
+                .map(res => res.json())
+                .subscribe(data => {
+                  //fill suggestions for new user here maybe
+                  console.log("httppost responsea:", data);
+                });
             }
           });
         let url = 'https://dream-coast-60132.herokuapp.com/vendors/';
         this.cachedVendors = this.cache.loadFromObservable(url, this.http.get(url).map(res => res.json()));
-        
-        
+
+
       })
       .catch(err => {
         console.log(this.googlePlus.getSigningCertificateFingerprint());

@@ -2,7 +2,8 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { Http, Headers } from '@angular/http';
 import { LoginProvider } from '../../providers/login/login';
-import {ApiProvider} from '../../providers/api/api';
+import { ApiProvider } from '../../providers/api/api';
+import { ThemeSettingsProvider } from '../../providers/theme-settings/theme-settings'
 /**
  * Generated class for the VendorReviewPage page.
  *
@@ -16,6 +17,8 @@ import {ApiProvider} from '../../providers/api/api';
   templateUrl: 'vendor-review.html',
 })
 export class VendorReviewPage {
+  public darkID: string = '';
+  public ionicNamedColor: string = 'danger';
   name: String;
   description: String;
   type: boolean;
@@ -23,7 +26,7 @@ export class VendorReviewPage {
   uFName: string;
   uLName: string;
   uEmail: string;
-  apiUrl="https://dream-coast-60132.herokuapp.com/";
+  apiUrl = "https://dream-coast-60132.herokuapp.com/";
 
   review = {
     userID: '',
@@ -43,19 +46,24 @@ export class VendorReviewPage {
     comment: "",
     vendorID: ""
   }
-  
-  constructor(public navCtrl: NavController, private http: Http, public navParams: NavParams, 
-    public loginProvider: LoginProvider, public api: ApiProvider) {
+
+  constructor(public navCtrl: NavController, private http: Http, public navParams: NavParams,
+    public loginProvider: LoginProvider, public api: ApiProvider, public settings: ThemeSettingsProvider) {
     this.name = navParams.get('vendorName');
     this.description = navParams.get('vendorDescription');
     this.type = navParams.get('vendorType');
     this.review.vendorID = navParams.get('vendorID');
     this.NonReview.vendorID = navParams.get('vendorID');
-    
-    this.currUserID  = this.loginProvider.userId;
+
+    this.currUserID = this.loginProvider.userId;
     this.uFName = this.loginProvider.givenName;
     this.uLName = this.loginProvider.familyName;
     this.uEmail = this.loginProvider.email;
+
+    if (this.settings.isDark) {
+      this.ionicNamedColor = 'dark';
+      this.darkID = "contentDark";
+    }
   }
 
 
@@ -89,13 +97,13 @@ export class VendorReviewPage {
     let headers = new Headers();
     headers.append('Content-Type', 'application/json');
     //this.http.post('http://127.0.0.1:8000/reviews/', JSON.stringify(review), { headers: headers })
-    this.http.post(this.apiUrl+'reviews/', JSON.stringify(review), { headers: headers })
+    this.http.post(this.apiUrl + 'reviews/', JSON.stringify(review), { headers: headers })
       .map(res => res.json())
       .subscribe(data => {
-        console.log("httppost responsea:",data);
-        
+        console.log("httppost responsea:", data);
+
       });
-    
+
   }
 
 }
