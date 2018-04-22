@@ -11,6 +11,8 @@ from surprise import SVD
 from surprise.model_selection import cross_validate
 from surprise import Reader, Dataset, evaluate
 from django.conf import settings
+from math import sqrt
+
 
 
 # Create your models here.
@@ -28,6 +30,14 @@ class Vendor(models.Model):
     avgCucumber = models.NullBooleanField(null=True, blank=True)
     avgSpicy = models.DecimalField(max_digits =3,decimal_places=1, default=0.0)
     reviews = ArrayField(models.CharField(max_length=50, blank=True, default="a"),default= list,blank=True)
+    positiveReviews = models.IntegerField(default=0)
+    negativeReviews = models.IntegerField(default=0)
+    oneStars = models.IntegerField(default=0)
+    twoStars = models.IntegerField(default=0)
+    threeStars = models.IntegerField(default=0)
+    fourStars = models.IntegerField(default=0)
+    fiveStars = models.IntegerField(default=0)
+    rankingScore = models.FloatField(default=0.0)
 
     def __str__(self):
         return self.Name
@@ -73,7 +83,7 @@ def my_handler(sender,instance,**kwargs):
     cucumberSum = 0
     cucumberYes = 0
     cucumberNo = 0
-    triggerSVD = 3
+    triggerSVD = 1
     
     for review in reviews:
         ratingSum = ratingSum + review.rating
@@ -100,6 +110,58 @@ def my_handler(sender,instance,**kwargs):
     #vendor.avgRating = avg_Rating
     vendor.avgRating = avg_Rating
     #vendor.save(update_fields= ["avgRating"])
+    
+    numOnes = vendor.oneStars
+    numTwos = vendor.twoStars
+    numThrees = vendor.threeStars
+    numFours = vendor.fourStars
+    numFives = vendor.fiveStars
+
+    
+    if(instance.rating==1):
+        numOnes+=1
+    elif(instance.rating==2):
+        numTwos+=1
+    elif(instance.rating==3):
+        numThrees+=1
+    elif(instance.rating==4):
+        numFours+=1
+    elif(instance.rating==5):
+        numFives+=1
+    
+    avgNumRatings = 1*numOnes + 2*numTwos + 3*numThrees + 4*numFours + 5*numFives
+    totalRatings = numOnes + numTwos + numThrees + numFours + numFives
+    xBar = avgNumRatings/totalRatings
+    xBar = (xBar-1)/4
+    z = 1.96
+    lowerBound = (xBar + z*z/(2*totalRatings) - z * sqrt((xBar*(1-xBar)+z*z/(4*totalRatings))/totalRatings))/(1+z*z/totalRatings)
+    answer = (1 + 4*lowerBound)
+    vendor.rankingScore = answer
+    vendor.oneStars = numOnes
+    vendor.twoStars = numTwos
+    vendor.threeStars = numThrees
+    vendor.fourStars = numFours
+    vendor.fiveStars = numFives
+   # positive = vendor.positiveReviews + 1
+   # negative = vendor.negativeReviews + 1
+    
+   # n = positive + negative
+    '''
+    if (n==0):
+        vendor.positiveReviews = vendor.positiveReviews + 1
+        vendor.negativeReviews = vendor.negativeReviews + 1
+        vendor.rankingScore = 0
+    else:
+        '''
+   # z = 1.96
+   # phat = float(positive)/n
+   # lowerBound = (phat + z*z/(2*n) - z * sqrt((phat*(1-phat)+z*z/(4*n))/n))/(1+z*z/n)
+   # if(instance.rating >=3):
+   #     vendor.positiveReviews = positive
+   # else:
+   #     vendor.negativeReviews = negative
+   # vendor.rankingScore = lowerBound * 100.0
+        
 
     vendor.avgSpicy = avg_Spicy
     vendor.avgThickness = avg_Thick
@@ -126,6 +188,7 @@ def my_handler(sender,instance,**kwargs):
         data = Dataset.load_from_file(settings.STATIC_ROOT+'/u.data', reader=reader)
         algo = SVD()
         trainset = data.build_full_trainset()
+        print("TRAINSETTTT:",trainset)
         # trainset, testset = train_test_split(data, test_size=.25)
         algo.fit(trainset)
         # p = algo.test(testset)
@@ -137,6 +200,7 @@ def my_handler(sender,instance,**kwargs):
         from collections import defaultdict
 
         antiTestSet = trainset.build_anti_testset()
+        print("ANTITESTSETT: ",antiTestSet)
         predictions = algo.test(antiTestSet)
         print("Predictiosssssssss:",predictions)
 
@@ -152,13 +216,39 @@ def my_handler(sender,instance,**kwargs):
             return top_recs
         myRecs = get_top3_recommendations(predictions, 3)
         
-        for u in User.objects.all():
-            v = myRecs[u.id].items()
-            for userID, vendorID, true_r, est, _ in v:
-                u.suggestions.append(vendorID)
-            print("HEEEEEEEEEEEEEERE: ", v)
+        #for u in User.objects.all():
+        allUsers = User.objects.values_list('id',flat=True)
+        userSuggestList = []
+        for uid, user_ratings in myRecs.items():
+            userSuggestList.append(uid)
+            u = User.objects.get(id = uid)
+            u.suggestions = []
+            print(uid,  user_ratings)
+            for iid, est in user_ratings:
+                print(iid)
+                u.suggestions.append(iid)
+            u.save()
+
+        noSuggestList = list(set(allUsers) - set(userSuggestList))
+
+        for element in noSuggestList:
+            userElement = User.objects.get(id = element)
+            userElement.suggestions = []
+            userElement.save()
+
+        
+           # u.suggestions.append
+
+            #v = myRecs[u.id].items()
+            #for userID, vendorID, true_r, est, _ in v:
+                #u.suggestions.append(vendorID)
+            print("HEEEEEEEEEEEEEERE: ", myRecs.items())
 
         print(myRecs.keys())
+        #smallChange
+        #smallerChange
+        #smallestChange
+
        
  
     
