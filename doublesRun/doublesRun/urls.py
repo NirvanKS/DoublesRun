@@ -20,6 +20,8 @@ from django.conf import settings
 from rest_framework import routers
 from adminRun import views
 
+from django.views.static import serve
+
 router = routers.DefaultRouter()
 router.register(r'vendors', views.VendorViewSet)
 router.register(r'users',views.UserViewSet)
@@ -28,6 +30,9 @@ router.register(r'reviews',views.ReviewViewSet)
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    url(r'^', include(router.urls)),
-    url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework'))
-] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+    url(r'^', include(router.urls)), #remove line when disabling browsable api
+    url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
+    url(r'^static/(?P<path>.*)$', serve, {
+            'document_root': settings.STATIC_ROOT,
+        }),
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) 

@@ -7,6 +7,10 @@ from django.db.models import F
 from django.db import models
 import uuid
 from django.contrib.postgres.fields import ArrayField
+from surprise import SVD
+from surprise.model_selection import cross_validate
+from surprise import Reader, Dataset, evaluate
+from django.conf import settings
 
 
 # Create your models here.
@@ -33,9 +37,11 @@ def defaultArray(self):
         return []
 
 class User(models.Model):
-    id = models.UUIDField(primary_key=True, default=uuid.uuid1, editable=False)
+    # id = models.UUIDField(primary_key=True, default=uuid.uuid1, editable=False)
+    id = models.CharField(primary_key=True, max_length=40)
     name = models.CharField(max_length=40)
     email = models.CharField(max_length=50)
+    suggestions = ArrayField(models.CharField(max_length=50, blank=True), default=list,blank=True)
     reviews = ArrayField(models.CharField(max_length=50, blank=True, default="a"),default= list,blank=True)
 
     def __str__(self):
@@ -49,7 +55,7 @@ class Review(models.Model):
     time = models.IntegerField(default=0)
     comment = models.CharField(max_length=240,blank=True)
     vendorID = models.UUIDField(default=uuid.uuid1)
-    userID =  models.UUIDField(default=uuid.uuid1)
+    userID = models.CharField(max_length=40)
     cucumber = models.NullBooleanField(null=True, blank=True)
 
     def __str__(self):
@@ -67,6 +73,7 @@ def my_handler(sender,instance,**kwargs):
     cucumberSum = 0
     cucumberYes = 0
     cucumberNo = 0
+    triggerSVD = 3
     
     for review in reviews:
         ratingSum = ratingSum + review.rating
@@ -102,10 +109,57 @@ def my_handler(sender,instance,**kwargs):
     vendor.save()
     
 
-    #user = User.objects.all.filter(id = instance.userID)
-    #user.reviews.append(instance.id)
-    #user.save()
+    user = User.objects.get(id = instance.userID)
+    user.reviews.append(instance.id)
+    user.save()
 
+    userReviews = Review.objects.filter(userID= instance.userID)
+
+    with open(settings.STATIC_ROOT+'/u.data', 'a+') as f:
+        reviewRating  = str(instance.rating)
+        vendorReviewed = str(instance.vendorID)
+        f.write(instance.userID +"\t"+ vendorReviewed +"\t"+ reviewRating +"\n")
+    rev = Review.objects.all()
+    if(len(rev)%triggerSVD ==0):
+        reader = Reader(line_format='user item rating', sep='\t')
+     #   data = Dataset.load_from_file('.static/ml-100k/u.data', reader=reader)
+        data = Dataset.load_from_file(settings.STATIC_ROOT+'/u.data', reader=reader)
+        algo = SVD()
+        trainset = data.build_full_trainset()
+        # trainset, testset = train_test_split(data, test_size=.25)
+        algo.fit(trainset)
+        # p = algo.test(testset)
+        p = algo.predict("117828282232280081254","c0c37e8c-3169-11e8-948b-5a6176fb166f")
+        print("AHHHHHHHHHHHHHHHHHHHHHHHH;",p)
+        # e = evaluate(algo, data, measures=['RMSE', 'MAE'])
+        print("eval: HERE::::::::: ")
+        # cross_validate(algo, data, measures=['RMSE', 'MAE'], cv=5, verbose=True)
+        from collections import defaultdict
+
+        antiTestSet = trainset.build_anti_testset()
+        predictions = algo.test(antiTestSet)
+        print("Predictiosssssssss:",predictions)
+
+        def get_top3_recommendations(predictions, topN = 3):
+            top_recs = defaultdict(list)
+            for userID, vendorID, true_r, est, _ in predictions:
+                top_recs[userID].append((vendorID, est))
+
+            for userID, user_ratings in top_recs.items():
+                user_ratings.sort(key = lambda x: x[1], reverse = True)
+                top_recs[userID] = user_ratings[:topN]
+
+            return top_recs
+        myRecs = get_top3_recommendations(predictions, 3)
+        
+        for u in User.objects.all():
+            v = myRecs[u.id].items()
+            for userID, vendorID, true_r, est, _ in v:
+                u.suggestions.append(vendorID)
+            print("HEEEEEEEEEEEEEERE: ", v)
+
+        print(myRecs.keys())
+       
  
     
     

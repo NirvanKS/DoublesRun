@@ -13,12 +13,12 @@
 </ion-header>
 
 
-<ion-content padding>
+<ion-content class="rev" padding>
   <h1>{{name}}</h1>
   <br>
   <br>
   <div *ngIf="type==true">
-      <form (ngSubmit)= "logReview()">
+      <form class="rev" (ngSubmit)= "logReview()" >
             <h4>General Rating</h4>
             <ion-list>
                 <ion-item>
@@ -56,7 +56,7 @@
                     <ion-textarea placeholder="Enter a comment" [(ngModel)] = "review.comment" name="comment"></ion-textarea>
                 </ion-item>
                 <div text-center>
-                    <button ion-button color="danger" type="submit">Submit</button>
+                    <button class="button1" ion-button color="danger" type="submit">Submit</button>
                 </div>
                   
 
@@ -67,7 +67,7 @@
 </div>
 
 <div *ngIf="type==false">
-  <form (ngSubmit)= "logNonReview()">
+  <form (ngSubmit)= "logNonReview()" class="form1">
       <h4>General Rating for Non Vendors</h4>
       <ion-list>
           <ion-item>
@@ -80,7 +80,7 @@
               <ion-textarea placeholder="Enter a comment" [(ngModel)]= "NonReview.comment" name="comment"></ion-textarea>
           </ion-item>
           <div text-center>
-              <button ion-button color="danger" type="submit">Submit</button>
+              <button class="button1" ion-button color="danger" type="submit">Submit</button>
           </div>
           
 

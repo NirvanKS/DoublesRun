@@ -82,7 +82,7 @@ export class VendorModalPage {
   }
 
   loadReviewPage() {
-    if (this.isLoggedIn == true) {
+    if (this.isLoggedIn == false) {
       this.navCtrl.push(VendorReviewPage, {
         vendorName: this.name,
         vendorDescription: this.description,

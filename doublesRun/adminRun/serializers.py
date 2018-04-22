@@ -9,7 +9,7 @@ class VendorSerializer(serializers.HyperlinkedModelSerializer):
 #'avgRating', 'avgThickness', 'avgTime','avgCucmber','avgSpicy','reviews
 
 class UserSerializer(serializers.HyperlinkedModelSerializer):
-    id = serializers.ReadOnlyField()
+    # id = serializers.ReadOnlyField()
     class Meta:
         model = User
         fields = ('id', 'name', 'email', 'reviews')
