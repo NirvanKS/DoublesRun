@@ -34,7 +34,7 @@ export class MyApp {
       cache.setOfflineInvalidate(false);   // Keep our cached results when device is offline
       statusBar.styleDefault();
       splashScreen.hide();
-      timer(3000).subscribe(() => this.showSplash = false)
+      //timer(3000).subscribe(() => this.showSplash = false) removing green animation loading screen
     });
 
     this.pages = [
