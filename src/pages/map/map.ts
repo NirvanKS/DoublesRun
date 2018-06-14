@@ -11,6 +11,7 @@ import { ApiProvider } from '../../providers/api/api';
 import { SnapToMapProvider } from '../../providers/snap-to-map/snap-to-map'
 import { CacheService } from 'ionic-cache';
 import { mapStyle } from './mapStyle';
+import * as MarkerClusterer from 'node-js-marker-clusterer';
 import { ThemeSettingsProvider } from '../../providers/theme-settings/theme-settings'
 declare var google;
 
@@ -22,7 +23,7 @@ declare var google;
 export class MapPage implements AfterViewInit {
   ngAfterViewInit(): void {
     // this.loadMap();
-
+//hi dweebs fed7
   }
   mapOptions: any;
   selectedTheme: String
@@ -125,6 +126,11 @@ export class MapPage implements AfterViewInit {
     // Listen for the dragend event
     var map = this.map;
     this.loadMarkers();
+
+    // var markerCluster = new MarkerClusterer(this.map, this.markers,
+    //   {imagePath: '../assets/imgs/cluster'});
+    
+
     if (this.snaptomap.shouldIBeVendorSnappo) {
       let latLng = new google.maps.LatLng(this.snaptomap.myLatParam, this.snaptomap.myLongParam);
       //this.navParams.get("myLatParam");
@@ -181,12 +187,13 @@ export class MapPage implements AfterViewInit {
         //console.log(element.Name);
         let markLatLon = new google.maps.LatLng(element.locLat, element.locLong);
         let marker = new google.maps.Marker({
-          map: this.map,
+          // map: this.map,
           icon: "assets/imgs/doubles.png",
-          animation: google.maps.Animation.DROP,
+          // animation: google.maps.Animation.DROP,
           position: markLatLon//this.map.getCenter()
 
         });
+        this.markers.push(marker);
 
         marker.addListener('click', function () {
           //navControl.push(VendorMarkerPage);
@@ -205,6 +212,13 @@ export class MapPage implements AfterViewInit {
           vendorModal.present();
         });
       })
+      var mcOptions = {
+        gridSize: 25,
+        minimumClusterSize: 2,
+        imagePath: 'assets/imgs/cluster/m'
+      };
+      var markerCluster = new MarkerClusterer(this.map, this.markers,mcOptions);
+      
     });
   }
 
@@ -228,13 +242,13 @@ export class MapPage implements AfterViewInit {
         //console.log(element.Name);
         let markLatLon = new google.maps.LatLng(element.locLat, element.locLong);
         let marker = new google.maps.Marker({
-          map: this.map,
-          icon: "assets/imgs/doubles.png",
-          animation: google.maps.Animation.DROP,
+          // map: this.map,
+          // icon: "assets/imgs/doubles.png",
+          // animation: google.maps.Animation.DROP,
           position: markLatLon//this.map.getCenter()
 
         });
-
+        this.markers.push(marker);
         marker.addListener('click', function () {
           //navControl.push(VendorMarkerPage);
           //alert(content);
@@ -252,11 +266,20 @@ export class MapPage implements AfterViewInit {
           vendorModal.present();
 
         });
+        
+    
 
 
         //console.log(x);
         //console.log(element);
       })
+      var mcOptions = {
+        gridSize: 50,
+        minimumClusterSize: 10,
+        imagePath: 'assets/imgs/cluster/m'
+    };
+      var markerCluster = new MarkerClusterer(this.map, this.markers,mcOptions);
+      
       //console.log(data);
     });
   }
