@@ -42,6 +42,8 @@ export class MapPage implements AfterViewInit {
     private http: Http, public api: ApiProvider, public snaptomap: SnapToMapProvider, private cache: CacheService, public settings: ThemeSettingsProvider) {
   }
   ionViewWillEnter() {
+    console.log("will enter - map.ts");
+    this.markers = [];
     this.loadMap();
   }
   ionViewDidLoad() {

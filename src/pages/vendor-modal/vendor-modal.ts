@@ -69,13 +69,18 @@ export class VendorModalPage {
     if (this.settings.isDark) this.darkID = "contentMod";
   }
 
-  ionViewDidLoad() {
+  ionViewDidEnter() {
     console.log('ionViewDidLoad VendorModalPage');
     console.log(this.revList[this.revList.length - 1]);
     this.isLoggedIn = this.loginProvider.isLoggedIn;
     // this.apiUrl = this.api.url;
+    this.ratings = [];
+    this.comments = [];
+    this.names = [];
+    this.ratings = [];
     this.loadSomeReviews();
   }
+  //change above event to ionviewwillenter, reset review arrays
 
   dismiss() {
     this.viewCtrl.dismiss();
