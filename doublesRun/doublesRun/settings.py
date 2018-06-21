@@ -97,7 +97,7 @@ DATABASES = {
         # If you are using Cloud SQL for MySQL rather than PostgreSQL, set
         # 'ENGINE': 'django.db.backends.mysql' instead of the following.
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'doublesRun',
+        'NAME': 'main',
         'USER': 'dolphin-alpha',
         'PASSWORD': 'dolphin-admin123',
         # For MySQL, set 'PORT': '3306' instead of the following. Any Cloud
