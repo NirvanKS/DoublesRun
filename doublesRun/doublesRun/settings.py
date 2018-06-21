@@ -108,7 +108,7 @@ DATABASES = {
 # In the flexible environment, you connect to CloudSQL using a unix socket.
 # Locally, you can use the CloudSQL proxy to proxy a localhost connection
 # to the instance
-DATABASES['default']['HOST'] = '/cloudsql/intense-dolphin-207823:us-east1:intense-dolphin'
+DATABASES['default']['HOST'] = '35.196.51.25'
 if os.getenv('GAE_INSTANCE'):
     pass
 else:
@@ -160,7 +160,7 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
 
-STATIC_URL = 'https://storage.googleapis.com/<your-gcs-bucket>/static/'
+STATIC_URL = 'https://storage.googleapis.com/intense-dolphin-207823.appspot.com/static/'
 STATIC_ROOT = os.path.join(BASE_DIR,'static/')
 MEDIA_URL = '/media/None/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
