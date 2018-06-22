@@ -37,6 +37,7 @@ export class MapPage implements AfterViewInit {
   geoLatLon: any;
   modalParam = 'https://google.com/';
   apiUrl = "https://dream-coast-60132.herokuapp.com/";
+  vendorsKey = "vendor-ranking-list"
   @ViewChild('map') mapElement: ElementRef;
   constructor(public navCtrl: NavController, public navParams: NavParams,
     public geolocation: Geolocation, public modalCtrl: ModalController,
@@ -46,13 +47,20 @@ export class MapPage implements AfterViewInit {
   ionViewWillEnter() {
     console.log("will enter - map.ts");
     this.markers = [];
-    this.loadMap();
+    //this.loadMap();
   }
   ionViewDidLoad() {
-    //this.loadMap();
+    this.loadMap();
 
   }
 
+  refreshMap(){
+    this.cache.clearAll().then(x=>{
+      this.markers = [];
+      this.loadMap();
+    })
+   
+  }
 
   loadNextPage() {
     this.navCtrl.push(VendorMarkerPage);
@@ -62,7 +70,6 @@ export class MapPage implements AfterViewInit {
     let myModal = this.modalCtrl.create(VendorModalPage, { 'myParam': this.modalParam });
     myModal.present();
   }
-
 
 
   addMarker() {
@@ -238,6 +245,7 @@ export class MapPage implements AfterViewInit {
   loadMarkers() {
     var Vmodal = this.modalCtrl;
     let url = 'https://dream-coast-60132.herokuapp.com/vendors/';
+    console.log(this.cachedVendors);
     this.cachedVendors = this.cache.loadFromObservable(url, this.http.get(this.apiUrl + 'vendors/').map(res => res.json()));
     if (this.cachedVendors != null) {
       console.log(this.cachedVendors);
@@ -245,7 +253,8 @@ export class MapPage implements AfterViewInit {
       this.loadFromCache(this.cachedVendors);
       return;
     }
-    //this.http.get('http://127.0.0.1:8000/vendors/').map(res => res.json()).subscribe((data: Object) => {
+    
+    this.http.get('http://127.0.0.1:8000/vendors/').map(res => res.json()).subscribe((data: Object) => {
     this.http.get(this.apiUrl + 'vendors/').map(res => res.json()).subscribe((data: Object) => {
       //this.markers = data;
       this.mark = Object.values(data);
@@ -294,24 +303,28 @@ export class MapPage implements AfterViewInit {
       
       //console.log(data);
     });
-  }
+  });
 
+  
+
+
+
+  }
   geoLocationNotFoundToast() {
     let toast = this.toastCtrl.create({
       message: 'Your geolocation was not loaded.',
       duration: 3000,
       position: 'bottom'
     });
-
+  
     toast.onDidDismiss(() => {
       console.log('Dismissed toast');
     });
-
+  
     toast.present();
   }
 
-
-
-
-
 }
+
+
+

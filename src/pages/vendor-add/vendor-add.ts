@@ -6,6 +6,7 @@ import { Http, Headers } from '@angular/http';
 import 'rxjs/add/operator/map';
 import { ToastController } from 'ionic-angular';
 import {ApiProvider} from '../../providers/api/api';
+import { CacheService } from 'ionic-cache';
 /**
  * Generated class for the VendorAddPage page.
  *
@@ -38,7 +39,7 @@ export class VendorAddPage {
   apiUrl="https://dream-coast-60132.herokuapp.com/";
   constructor(public viewCtrl: ViewController, public navCtrl: NavController,
     public navParams: NavParams, private camera: Camera, private http: Http, 
-    private toastCtrl: ToastController, public api: ApiProvider) {
+    private toastCtrl: ToastController, public api: ApiProvider,private cache: CacheService) {
   }
 
 
@@ -134,6 +135,7 @@ export class VendorAddPage {
       .map(res => res.json())
       .subscribe(data => {
         console.log(data);
+        
 
       })
   }
@@ -166,7 +168,7 @@ export class VendorAddPage {
 
   presentSuccessToast() {
     let toast = this.toastCtrl.create({
-      message: 'Vendor added!',
+      message: 'Vendor added! Refresh the map!',
       duration: 3000,
       position: 'bottom'
     });

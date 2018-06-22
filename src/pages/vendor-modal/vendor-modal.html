@@ -47,7 +47,20 @@
         <button ion-button color="danger" (click)="dismiss()">Back</button>
       </div>
 
+      <br>
+      <div id = "editCard">
+          <ion-card class="vendor-card" [id]="darkID">
 
+              <div>
+                <ion-icon *ngFor='let i of rating' range-right name="md-star" class="stars"></ion-icon>
+              </div>
+              <br>
+              <h3 class="desc" [id]="darkID">{{comments[i]}}</h3>
+              <h4 class="desc" [id]="darkID"> -{{names[i]}}</h4>
+              <br>
+      </ion-card>
+
+      </div>
       <!-- <h3 *ngIf='ratingsEmpty==false'>User Reviews</h3> -->
       <div *ngFor='let rating of ratings; let i = index'>
         <br>
