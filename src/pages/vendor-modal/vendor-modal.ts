@@ -144,35 +144,35 @@ export class VendorModalPage {
   }
 
   loadSomeReviews() {
+        
+    for (var i = this.revList.length - 1; i > this.revList.length - 6; i--) {
+      if (i < 0) break;
+      //this.http.get('http://127.0.0.1:8000/reviews/' + this.revList[i] + '/')
+      this.http.get(this.apiUrl + 'reviews/' + this.revList[i] + '/')
+        .map(res => res.json())
+        .subscribe((data: Object) => {
+          this.reviews = Object.values(data);
+          let r = (this.reviews[1])
+          var numbers = Array.from(new Array(r), (val, index) => index + 1);
+          this.ratings.push(numbers);
+          this.comments.push(this.reviews[5]);
+
+          //this.http.get('http://127.0.0.1:8000/users/' + this.reviews[7] + '/')
+          this.http.get(this.apiUrl + 'users/' + this.reviews[7] + '/')
+            .map(res => res.json())
+            .subscribe((data: Object) => {
+              let u = Object.values(data);
+              this.names.push(u[1]);
+            });
+        })
+    }
     
     this.vendorReviewed = this.revList.filter(element => element.userID == this.loginProvider.userId);
     if(this.vendorReviewed.length != 0){
       this.canEditReview = true;
       //vendor reviewed already. 
     }
-    
-    // for (var i = this.revList.length - 1; i > this.revList.length - 6; i--) {
-    //   if (i < 0) break;
-    //   //this.http.get('http://127.0.0.1:8000/reviews/' + this.revList[i] + '/')
-    //   this.http.get(this.apiUrl + 'reviews/' + this.revList[i] + '/')
-    //     .map(res => res.json())
-    //     .subscribe((data: Object) => {
-    //       this.reviews = Object.values(data);
-    //       let r = (this.reviews[1])
-    //       var numbers = Array.from(new Array(r), (val, index) => index + 1);
-    //       this.ratings.push(numbers);
-    //       this.comments.push(this.reviews[5]);
 
-    //       //this.http.get('http://127.0.0.1:8000/users/' + this.reviews[7] + '/')
-    //       this.http.get(this.apiUrl + 'users/' + this.reviews[7] + '/')
-    //         .map(res => res.json())
-    //         .subscribe((data: Object) => {
-    //           let u = Object.values(data);
-    //           this.names.push(u[1]);
-    //         });
-    //     })
-    // }
-    
 
   }
 

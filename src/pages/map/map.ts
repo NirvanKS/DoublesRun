@@ -45,10 +45,10 @@ export class MapPage implements AfterViewInit {
   ionViewWillEnter() {
     console.log("will enter - map.ts");
     this.markers = [];
-    //this.loadMap();
+    this.loadMap();
   }
   ionViewDidLoad() {
-    this.loadMap();
+    //this.loadMap();
 
   }
 
