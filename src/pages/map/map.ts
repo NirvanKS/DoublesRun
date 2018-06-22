@@ -13,6 +13,7 @@ import { CacheService } from 'ionic-cache';
 import { mapStyle } from './mapStyle';
 import * as MarkerClusterer from 'node-js-marker-clusterer';
 import { ThemeSettingsProvider } from '../../providers/theme-settings/theme-settings'
+import { ToastController } from 'ionic-angular';
 declare var google;
 
 @IonicPage()
@@ -39,7 +40,8 @@ export class MapPage implements AfterViewInit {
   @ViewChild('map') mapElement: ElementRef;
   constructor(public navCtrl: NavController, public navParams: NavParams,
     public geolocation: Geolocation, public modalCtrl: ModalController,
-    private http: Http, public api: ApiProvider, public snaptomap: SnapToMapProvider, private cache: CacheService, public settings: ThemeSettingsProvider) {
+    private http: Http, public api: ApiProvider, public snaptomap: SnapToMapProvider, private cache: CacheService, public settings: ThemeSettingsProvider, 
+    private toastCtrl: ToastController ) {
   }
   ionViewWillEnter() {
     console.log("will enter - map.ts");
@@ -148,8 +150,16 @@ export class MapPage implements AfterViewInit {
         this.geoLatLon = latLng;
         this.geoNumberLat = position.coords.latitude;
         this.geoNumberLon = position.coords.longitude;
-        map.setCenter(latLng);
-        map.setZoom(15);
+        if(this.geoNumberLat ==0 && this.geoNumberLon==0)
+        {
+            this.geoLocationNotFoundToast();
+        }
+        else
+        {
+          map.setCenter(latLng);
+          map.setZoom(15);
+        }
+        
       });
     }
     this.map.addListener('dragend', function () {
@@ -284,6 +294,20 @@ export class MapPage implements AfterViewInit {
       
       //console.log(data);
     });
+  }
+
+  geoLocationNotFoundToast() {
+    let toast = this.toastCtrl.create({
+      message: 'Your geolocation was not loaded.',
+      duration: 3000,
+      position: 'bottom'
+    });
+
+    toast.onDidDismiss(() => {
+      console.log('Dismissed toast');
+    });
+
+    toast.present();
   }
 
 
