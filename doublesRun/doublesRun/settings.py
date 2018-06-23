@@ -26,7 +26,7 @@ SECRET_KEY = 'a98_w=-^e7@-7%$1lu$g^+d3s@x0e3st8%3)3gb19zhrfvh9=!'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['127.0.0.1', '.herokuapp.com','.appspot.com']
+ALLOWED_HOSTS = ['127.0.0.1', '.herokuapp.com','35.207.58.208']
 
 
 # Application definition
@@ -109,10 +109,7 @@ DATABASES = {
 # Locally, you can use the CloudSQL proxy to proxy a localhost connection
 # to the instance
 DATABASES['default']['HOST'] = '35.196.51.25'
-if os.getenv('GAE_INSTANCE'):
-    pass
-else:
-    DATABASES['default']['HOST'] = '127.0.0.1'
+
 # [END dbconfig]
 
 # db_from_env = dj_database_url.config(conn_max_age=500)
