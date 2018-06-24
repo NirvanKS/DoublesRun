@@ -8,8 +8,7 @@ https://docs.djangoproject.com/en/1.11/howto/deployment/wsgi/
 """
 
 import os
-sys.path.append('/opt/bitnami/apps/django/django_projects/doublesRun')
-os.environ.setdefault("PYTHON_EGG_CACHE", "/opt/bitnami/apps/django/django_projects/doublesRun/egg_cache")
+
 from django.core.wsgi import get_wsgi_application
 from whitenoise.django import DjangoWhiteNoise
 

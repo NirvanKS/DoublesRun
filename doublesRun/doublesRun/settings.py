@@ -26,7 +26,7 @@ SECRET_KEY = 'a98_w=-^e7@-7%$1lu$g^+d3s@x0e3st8%3)3gb19zhrfvh9=!'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['127.0.0.1', '.herokuapp.com','35.207.58.208']
+ALLOWED_HOSTS = ['127.0.0.1', '.herokuapp.com','.appspot.com']
 
 
 # Application definition
@@ -110,14 +110,20 @@ DATABASES = {
 # to the instance
 <<<<<<< HEAD
 DATABASES['default']['HOST'] = '35.196.51.25'
+<<<<<<< HEAD
 
 =======
 DATABASES['default']['HOST'] = '/cloudsql/intense-dolphin-207823:us-east1:intense-dolphin'
+=======
+>>>>>>> parent of 8e36dac... trying to port to 2
 if os.getenv('GAE_INSTANCE'):
     pass
 else:
     DATABASES['default']['HOST'] = '127.0.0.1'
+<<<<<<< HEAD
 >>>>>>> parent of 4b93799... cloudsql ip and bucket
+=======
+>>>>>>> parent of 8e36dac... trying to port to 2
 # [END dbconfig]
 
 # db_from_env = dj_database_url.config(conn_max_age=500)
