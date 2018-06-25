@@ -97,7 +97,7 @@ DATABASES = {
         # If you are using Cloud SQL for MySQL rather than PostgreSQL, set
         # 'ENGINE': 'django.db.backends.mysql' instead of the following.
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'doublesRun',
+        'NAME': 'dolphin-alpha',
         'USER': 'dolphin-alpha',
         'PASSWORD': 'dolphin-admin123',
         # For MySQL, set 'PORT': '3306' instead of the following. Any Cloud
@@ -108,22 +108,14 @@ DATABASES = {
 # In the flexible environment, you connect to CloudSQL using a unix socket.
 # Locally, you can use the CloudSQL proxy to proxy a localhost connection
 # to the instance
-<<<<<<< HEAD
-DATABASES['default']['HOST'] = '35.196.51.25'
-<<<<<<< HEAD
 
-=======
-DATABASES['default']['HOST'] = '/cloudsql/intense-dolphin-207823:us-east1:intense-dolphin'
-=======
->>>>>>> parent of 8e36dac... trying to port to 2
-if os.getenv('GAE_INSTANCE'):
-    pass
-else:
-    DATABASES['default']['HOST'] = '127.0.0.1'
-<<<<<<< HEAD
->>>>>>> parent of 4b93799... cloudsql ip and bucket
-=======
->>>>>>> parent of 8e36dac... trying to port to 2
+DATABASES['default']['HOST'] = '/cloudsql/intense-dolphin-207823:us-east1:intense-dolphin-2'
+
+# if os.getenv('GAE_INSTANCE'):
+#     pass
+# else:
+#     DATABASES['default']['HOST'] = '127.0.0.1'
+
 # [END dbconfig]
 
 # db_from_env = dj_database_url.config(conn_max_age=500)
@@ -171,7 +163,7 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
 
-STATIC_URL = 'https://storage.googleapis.com/<your-gcs-bucket>/static/'
+STATIC_URL = 'https://storage.googleapis.com/intense-dolphin-207823.appspot.com/static/'
 STATIC_ROOT = os.path.join(BASE_DIR,'static/')
 MEDIA_URL = '/media/None/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
