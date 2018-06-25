@@ -26,7 +26,7 @@ SECRET_KEY = 'a98_w=-^e7@-7%$1lu$g^+d3s@x0e3st8%3)3gb19zhrfvh9=!'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['127.0.0.1', '.herokuapp.com']
+ALLOWED_HOSTS = ['127.0.0.1', '.herokuapp.com','.appspot.com']
 
 
 # Application definition
@@ -79,20 +79,47 @@ WSGI_APPLICATION = 'doublesRun.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/1.11/ref/settings/#databases
 
+# DATABASES = {
+#     'default': {
+#         #'ENGINE': 'django.db.backends.sqlite3',
+#         #'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+#          'ENGINE': 'django.db.backends.postgresql',
+#         'NAME': 'doublesRun',
+#         'USER': 'postgres',
+#         'PASSWORD': 'admin123',
+#         'HOST': 'localhost',
+#         'PORT': '5432',
+#     }
+# }
+
 DATABASES = {
     'default': {
-        #'ENGINE': 'django.db.backends.sqlite3',
-        #'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'doublesRun',
-        'USER': 'postgres',
-        'PASSWORD': 'admin123',
-        'HOST': 'localhost',
+        # If you are using Cloud SQL for MySQL rather than PostgreSQL, set
+        # 'ENGINE': 'django.db.backends.mysql' instead of the following.
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'dolphin-alpha',
+        'USER': 'dolphin-alpha',
+        'PASSWORD': 'dolphin-admin123',
+        # For MySQL, set 'PORT': '3306' instead of the following. Any Cloud
+        # SQL Proxy instances running locally must also be set to tcp:3306.
         'PORT': '5432',
     }
 }
-db_from_env = dj_database_url.config(conn_max_age=500)
-DATABASES['default'].update(db_from_env)
+# In the flexible environment, you connect to CloudSQL using a unix socket.
+# Locally, you can use the CloudSQL proxy to proxy a localhost connection
+# to the instance
+
+DATABASES['default']['HOST'] = '/cloudsql/intense-dolphin-207823:us-east1:intense-dolphin-2'
+
+# if os.getenv('GAE_INSTANCE'):
+#     pass
+# else:
+#     DATABASES['default']['HOST'] = '127.0.0.1'
+
+# [END dbconfig]
+
+# db_from_env = dj_database_url.config(conn_max_age=500)
+# DATABASES['default'].update(db_from_env)
 
 # REST_FRAMEWORK = {
 #     'DEFAULT_RENDERER_CLASSES': (
@@ -136,7 +163,7 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
 
-STATIC_URL = '/static/'
+STATIC_URL = 'https://storage.googleapis.com/intense-dolphin-207823.appspot.com/static/'
 STATIC_ROOT = os.path.join(BASE_DIR,'static/')
 MEDIA_URL = '/media/None/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
