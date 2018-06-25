@@ -38,6 +38,8 @@ class Vendor(models.Model):
     fourStars = models.IntegerField(default=0)
     fiveStars = models.IntegerField(default=0)
     rankingScore = models.FloatField(default=0.0)
+    reportCount = models.IntegerField(default = 0)
+    baseTrending = models.FloatField(default = 0.0)
 
     def __str__(self):
         return self.Name
@@ -249,7 +251,31 @@ def my_handler(sender,instance,**kwargs):
         #smallerChange
         #smallestChange
 
-       
+    @receiver(signals.pre_delete, sender=Review)
+    def editReview_handler(sender,instance,**kwargs):
+        linesOfReviews = []
+        with open(settings.STATIC_ROOT+'/u.data', 'w+') as f:
+            line = f.readline()
+            while line:
+                if(instance.userID not in line and instance.vendorID not in line):
+                    linesOfReviews.append(line)
+                line= f.readline()
+            f.writelines(linesOfReviews)
+
+    
+
+    # from django_cron import CronJobBase, Schedule
+    # class MyCronJob(CronJobBase):
+    # #   RUN_EVERY_MINS = 120 # every 2 hours
+    #     RUN_EVERY_MINS = 0.1 
+    #     schedule = Schedule(run_every_mins=RUN_EVERY_MINS)
+    #     #code = 'my_app.my_cron_job'    # a unique code
+
+    #     def do(self):
+    #         pass    # do your thing here
+    #         print("CRONJAB FROM CRAGMAW")
+    
+
  
     
     

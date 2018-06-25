@@ -28,8 +28,8 @@ export class VendorModalPage {
   ratingsEmpty: boolean = true;
   comments: any = [];
   names: any = [];
-  vendorReviewed : any;
-  canEditReview : Boolean = false;
+  vendorReviewed: any;
+  canEditReview: Boolean = false;
 
   avgRating: Number;
   pic: any;
@@ -60,8 +60,8 @@ export class VendorModalPage {
     this.avgRating = navParams.get('avgRating'); this.avgCucumber = navParams.get('avgCucumber');
     this.avgThickness = navParams.get('avgThickness'); this.avgSpicy = navParams.get('avgSpicy');
     if (this.avgThickness > 5) this.thickness = 'Thick Barra';
-    if (this.avgSpicy > 5) this.spiciness = 'Hell';
-    if (this.avgCucumber) this.cuc = 'Yes Cucumber';
+    if (this.avgSpicy > 5) this.spiciness = 'Very Hot';
+    if (this.avgCucumber) this.cuc = 'With Cucumber';
     this.avgTime = navParams.get('avgTime');
 
     if (this.avgTime > 18) this.day = false;
@@ -144,7 +144,7 @@ export class VendorModalPage {
   }
 
   loadSomeReviews() {
-        
+
     for (var i = this.revList.length - 1; i > this.revList.length - 6; i--) {
       if (i < 0) break;
       //this.http.get('http://127.0.0.1:8000/reviews/' + this.revList[i] + '/')
@@ -166,9 +166,9 @@ export class VendorModalPage {
             });
         })
     }
-    
+
     this.vendorReviewed = this.revList.filter(element => element.userID == this.loginProvider.userId);
-    if(this.vendorReviewed.length != 0){
+    if (this.vendorReviewed.length != 0) {
       this.canEditReview = true;
       //vendor reviewed already. 
     }

@@ -102,7 +102,7 @@ DATABASES = {
         'PASSWORD': 'dolphin-admin123',
         # For MySQL, set 'PORT': '3306' instead of the following. Any Cloud
         # SQL Proxy instances running locally must also be set to tcp:3306.
-        'PORT': '5432',
+        'PORT': '3306',
     }
 }
 # In the flexible environment, you connect to CloudSQL using a unix socket.
@@ -111,10 +111,10 @@ DATABASES = {
 
 DATABASES['default']['HOST'] = '/cloudsql/intense-dolphin-207823:us-east1:intense-dolphin-2'
 
-# if os.getenv('GAE_INSTANCE'):
-#     pass
-# else:
-#     DATABASES['default']['HOST'] = '127.0.0.1'
+if os.getenv('GAE_INSTANCE'):
+    pass
+else:
+    DATABASES['default']['HOST'] = '127.0.0.1'
 
 # [END dbconfig]
 
