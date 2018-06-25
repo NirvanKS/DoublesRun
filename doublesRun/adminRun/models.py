@@ -39,7 +39,7 @@ class Vendor(models.Model):
     fiveStars = models.IntegerField(default=0)
     rankingScore = models.FloatField(default=0.0)
     reportCount = models.IntegerField(default = 0)
-    baseTrending = models.FloatField(default = 0.0)
+    baseTrending = models.FloatField(default=0.0)
 
     def __str__(self):
         return self.Name

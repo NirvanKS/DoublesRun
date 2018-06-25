@@ -5,7 +5,7 @@ class VendorSerializer(serializers.HyperlinkedModelSerializer):
     id = serializers.ReadOnlyField()
     class Meta:
         model = Vendor
-        fields = ('id','Name', 'Description', 'locLat', 'locLong','pic', 'Type','avgRating', 'avgThickness', 'avgTime', 'avgCucumber','avgSpicy','reviews','positiveReviews','negativeReviews','oneStars','twoStars','threeStars','fourStars','fiveStars', 'rankingScore')
+        fields = ('id','Name', 'Description', 'locLat', 'locLong','pic', 'Type','avgRating', 'avgThickness', 'avgTime', 'avgCucumber','avgSpicy','reviews','positiveReviews','negativeReviews','oneStars','twoStars','threeStars','fourStars','fiveStars', 'rankingScore','reportCount','baseTrending')
 #'avgRating', 'avgThickness', 'avgTime','avgCucmber','avgSpicy','reviews
 
 class UserSerializer(serializers.HyperlinkedModelSerializer):
