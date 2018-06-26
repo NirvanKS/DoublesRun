@@ -44,7 +44,7 @@ export class LoginProvider {
         let headers = new Headers();
         headers.append('Content-Type', 'application/json');
         //this.http.get('http://127.0.0.1:8000/users/'+this.userId+'/')
-        this.http.get('https://dream-coast-60132.herokuapp.com/users/' + this.userId + '/')
+        this.http.get('https://intense-dolphin-207823.appspot.com/users/' + this.userId + '/')
           .map(res => res.json())
           .subscribe(data => {
             this.suggestions = data.suggestions;
@@ -61,7 +61,7 @@ export class LoginProvider {
             if (err.status == 404) {
               let newuser = { id: this.userId, name: this.givenName + ' ' + this.familyName, email: this.email };
               //this.http.post('http://127.0.0.1:8000/users/'+this.userId+'/', JSON.stringify(newuser),{headers: headers})
-              this.http.post('https://dream-coast-60132.herokuapp.com/users/', JSON.stringify(newuser), { headers: headers })
+              this.http.post('https://intense-dolphin-207823.appspot.com/users/', JSON.stringify(newuser), { headers: headers })
                 .map(res => res.json())
                 .subscribe(data => {
                   //fill suggestions for new user here maybe
@@ -69,7 +69,7 @@ export class LoginProvider {
                 });
             }
           });
-        let url = 'https://dream-coast-60132.herokuapp.com/vendors/';
+        let url = 'https://intense-dolphin-207823.appspot.com/vendors/';
         this.cachedVendors = this.cache.loadFromObservable(url, this.http.get(url).map(res => res.json()));
 
 

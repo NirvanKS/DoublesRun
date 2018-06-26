@@ -14,5 +14,5 @@ export class ApiProvider {
 
   constructor(private http: Http, private cache: CacheService) {
   }
-  url: "https://dream-coast-60132.herokuapp.com/"
+  url: "https://intense-dolphin-207823.appspot.com/"
 }

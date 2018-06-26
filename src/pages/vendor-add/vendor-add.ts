@@ -36,7 +36,7 @@ export class VendorAddPage {
   currGeoLocLong: number;
   vendorFormName: string;
   confirmVend: boolean = false;
-  apiUrl="https://dream-coast-60132.herokuapp.com/";
+  apiUrl="https://intense-dolphin-207823.appspot.com/";
   constructor(public viewCtrl: ViewController, public navCtrl: NavController,
     public navParams: NavParams, private camera: Camera, private http: Http, 
     private toastCtrl: ToastController, public api: ApiProvider,private cache: CacheService) {

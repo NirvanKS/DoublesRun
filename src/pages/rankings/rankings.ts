@@ -41,7 +41,7 @@ export class RankingsPage {
   }
   // Load either from API or Cache
   loadVendors(refresher?) {
-    let url = 'https://dream-coast-60132.herokuapp.com/vendors/';
+    let url = 'https://intense-dolphin-207823.appspot.com/vendors/';
     let req = this.http.get(url)
       .map(res => {
         return res.json();
@@ -78,7 +78,7 @@ export class RankingsPage {
         // return 0;
         return b.rankingScore - a.rankingScore;
       })
-      console.log("ordered" + this.orderedVendors[1].rankingScore);
+      // console.log("ordered" + this.orderedVendors[1].rankingScore);
     })
 
   }

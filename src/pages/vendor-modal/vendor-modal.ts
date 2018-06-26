@@ -46,7 +46,7 @@ export class VendorModalPage {
   spiciness: string = 'Mild Pepper';
   cuc: string = 'No Cucumber';
   isLoggedIn: boolean = false;
-  apiUrl = "https://dream-coast-60132.herokuapp.com/";
+  apiUrl = "https://intense-dolphin-207823.appspot.com/";
   constructor(public viewCtrl: ViewController, public navCtrl: NavController,
     private http: Http, public navParams: NavParams, public loginProvider: LoginProvider,
     private alertCtrl: AlertController, public api: ApiProvider, public settings: ThemeSettingsProvider) {

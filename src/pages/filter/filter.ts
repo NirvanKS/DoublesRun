@@ -21,7 +21,7 @@ export class FilterPage {
   selectedTheme: String;
   public ionicNamedColor: string = 'danger';
   nightMode = false;
-  apiUrl = "https://dream-coast-60132.herokuapp.com/";
+  apiUrl = "https://intense-dolphin-207823.appspot.com/";
   vendors: any;
   highRated: boolean = false;
   thick: boolean = false;
@@ -96,7 +96,7 @@ export class FilterPage {
 
   }
   openPage() {
-    let url = 'https://dream-coast-60132.herokuapp.com/vendors/';
+    let url = 'https://intense-dolphin-207823.appspot.com/';
     this.cachedVendors = this.cache.loadFromObservable(url, this.http.get(this.apiUrl + 'vendors/').map(res => res.json()));
     if (this.cachedVendors != null) {
       console.log("Loading from cache");
