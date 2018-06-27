@@ -5,6 +5,7 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 
 
 import { MapPage } from '../map/map';
+import { HomePage } from '../home/home';
 import { RankingsPage } from '../rankings/rankings';
 import { FilterPage } from '../filter/filter';
 

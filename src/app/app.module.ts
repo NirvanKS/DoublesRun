@@ -24,6 +24,7 @@ import { Camera } from '@ionic-native/camera';
 
 
 import { VendorModalPage } from '../pages/vendor-modal/vendor-modal';
+import { HomePage } from '../pages/home/home';
 import { IonicPageModule } from 'ionic-angular';
 import { LoginProvider } from '../providers/login/login';
 import { GooglePlus } from '@ionic-native/google-plus'
@@ -46,6 +47,7 @@ import { ThemeSettingsProvider } from '../providers/theme-settings/theme-setting
     VendorAddPage,
     VendorReviewPage,
     FilterListPage,
+    HomePage,
   ],
   imports: [
     BrowserModule,
@@ -69,6 +71,7 @@ import { ThemeSettingsProvider } from '../providers/theme-settings/theme-setting
     VendorAddPage,
     VendorReviewPage,
     FilterListPage,
+    HomePage,
   ],
   providers: [
     StatusBar,

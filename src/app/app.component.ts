@@ -7,6 +7,8 @@ import { TabsPage } from '../pages/tabs/tabs';
 import { VoWPage } from '../pages/vo-w/vo-w';
 import { TrendingPage } from '../pages/trending/trending';
 import { SuggestedPage } from '../pages/suggested/suggested';
+import { HomePage } from '../pages/home/home';
+import { RankingsPage } from '../pages/rankings/rankings';
 import { CacheService } from "ionic-cache";
 import { timer } from 'rxjs/observable/timer';
 import { ThemeSettingsProvider } from '../providers/theme-settings/theme-settings';
@@ -40,7 +42,7 @@ export class MyApp {
     this.pages = [
       { title: 'Vendor of the Week', component: VoWPage },
       { title: 'Trending', component: TrendingPage },
-      { title: 'Suggested', component: SuggestedPage }
+      { title: 'Suggested', component: SuggestedPage },
     ];
 
   }
