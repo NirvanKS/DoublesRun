@@ -24,7 +24,7 @@ declare var google;
 export class MapPage implements AfterViewInit {
   ngAfterViewInit(): void {
     // this.loadMap();
-//hi dweebs fed7
+    //hi dweebs fed7
   }
   mapOptions: any;
   selectedTheme: String
@@ -41,8 +41,8 @@ export class MapPage implements AfterViewInit {
   @ViewChild('map') mapElement: ElementRef;
   constructor(public navCtrl: NavController, public navParams: NavParams,
     public geolocation: Geolocation, public modalCtrl: ModalController,
-    private http: Http, public api: ApiProvider, public snaptomap: SnapToMapProvider, private cache: CacheService, public settings: ThemeSettingsProvider, 
-    private toastCtrl: ToastController ) {
+    private http: Http, public api: ApiProvider, public snaptomap: SnapToMapProvider, private cache: CacheService, public settings: ThemeSettingsProvider,
+    private toastCtrl: ToastController) {
   }
   ionViewWillEnter() {
     console.log("will enter - map.ts");
@@ -54,12 +54,12 @@ export class MapPage implements AfterViewInit {
 
   }
 
-  refreshMap(){
-    this.cache.clearAll().then(x=>{
+  refreshMap() {
+    this.cache.clearAll().then(x => {
       this.markers = [];
       this.loadMap();
     })
-   
+
   }
 
   loadNextPage() {
@@ -140,7 +140,7 @@ export class MapPage implements AfterViewInit {
 
     // var markerCluster = new MarkerClusterer(this.map, this.markers,
     //   {imagePath: '../assets/imgs/cluster'});
-    
+
 
     if (this.snaptomap.shouldIBeVendorSnappo) {
       let latLng = new google.maps.LatLng(this.snaptomap.myLatParam, this.snaptomap.myLongParam);
@@ -157,16 +157,14 @@ export class MapPage implements AfterViewInit {
         this.geoLatLon = latLng;
         this.geoNumberLat = position.coords.latitude;
         this.geoNumberLon = position.coords.longitude;
-        if(this.geoNumberLat ==0 && this.geoNumberLon==0)
-        {
-            this.geoLocationNotFoundToast();
+        if (this.geoNumberLat == 0 && this.geoNumberLon == 0) {
+          this.geoLocationNotFoundToast();
         }
-        else
-        {
+        else {
           map.setCenter(latLng);
           map.setZoom(15);
         }
-        
+
       });
     }
     this.map.addListener('dragend', function () {
@@ -236,8 +234,8 @@ export class MapPage implements AfterViewInit {
         minimumClusterSize: 2,
         imagePath: 'assets/imgs/cluster/m'
       };
-      var markerCluster = new MarkerClusterer(this.map, this.markers,mcOptions);
-      
+      var markerCluster = new MarkerClusterer(this.map, this.markers, mcOptions);
+
     });
   }
 
@@ -253,7 +251,7 @@ export class MapPage implements AfterViewInit {
       this.loadFromCache(this.cachedVendors);
       return;
     }
-    
+
     // this.http.get('http://127.0.0.1:8000/vendors/').map(res => res.json()).subscribe((data: Object) => {
     this.http.get(this.apiUrl + 'vendors/').map(res => res.json()).subscribe((data: Object) => {
       //this.markers = data;
@@ -287,8 +285,8 @@ export class MapPage implements AfterViewInit {
           vendorModal.present();
 
         });
-        
-    
+
+
 
 
         //console.log(x);
@@ -298,14 +296,14 @@ export class MapPage implements AfterViewInit {
         gridSize: 50,
         minimumClusterSize: 10,
         imagePath: 'assets/imgs/cluster/m'
-    };
-      var markerCluster = new MarkerClusterer(this.map, this.markers,mcOptions);
-      
+      };
+      var markerCluster = new MarkerClusterer(this.map, this.markers, mcOptions);
+
       //console.log(data);
     });
-  // });
+    // });
 
-  
+
 
 
 
@@ -316,11 +314,11 @@ export class MapPage implements AfterViewInit {
       duration: 3000,
       position: 'bottom'
     });
-  
+
     toast.onDidDismiss(() => {
       console.log('Dismissed toast');
     });
-  
+
     toast.present();
   }
 

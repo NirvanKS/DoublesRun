@@ -1,5 +1,7 @@
  @import "./ionic.globals";
-
+ @import url('https://fonts.googleapis.com/css?family=Signika:400,700');
+ @import url('https://fonts.googleapis.com/css?family=Muli');
+ @import url('https://fonts.googleapis.com/css?family=Bangers');
 
 
 
@@ -156,6 +158,10 @@
       background-color:#1C1C1C ;
       color:#fff;
     }
+    #descs{
+      // background-color:#1C1C1C !important;
+      color: #fff !important;
+    }
     .vendor-card{
       background-color:  #1C1C1C;
     }
@@ -190,5 +196,17 @@
     }
     .stars{
       background-color:  #1C1C1C !important
+    }
+
+
+    //fonts
+    .toolbar-title {
+      font-family: 'Signika', sans-serif !important;
+    }
+    .card-title{
+      font-family: 'Bangers', cursive !important;
+    }
+    .p{
+      font-family: 'Muli', sans-serif !important; 
     }
   }

@@ -17,12 +17,12 @@
     <ion-refresher-content refreshingText="Reload from API...">
     </ion-refresher-content>
   </ion-refresher>
-  <ion-img width="80" height="120" style="background:transparent !important" src="assets/imgs/number1icons/rank1.png" ></ion-img>
-  <ion-list>
+  <ion-img width="60" height="100" class="r1img" src="assets/imgs/number1icons/rank1.png" ></ion-img>
+  <!-- <ion-list>
     <ion-item *ngFor="let orderedVendor of orderedVendors" (click)="openVendor(orderedVendor)">
       {{ orderedVendor.Name }}
     </ion-item>
-  </ion-list> -->
+  </ion-list>  -->
   <div *ngFor='let orderedVendor of orderedVendors'>
       <ion-card class="vendor-card">
         <img [src]="orderedVendor.pic" id="vpic" />
