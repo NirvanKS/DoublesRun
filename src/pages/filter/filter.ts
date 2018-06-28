@@ -19,8 +19,6 @@ import { ThemeSettingsProvider } from '../../providers/theme-settings/theme-sett
 })
 export class FilterPage {
   selectedTheme: String;
-  public ionicNamedColor: string = 'danger';
-  nightMode = false;
   apiUrl = "https://intense-dolphin-207823.appspot.com/";
   vendors: any;
   highRated: boolean = false;
@@ -41,24 +39,6 @@ export class FilterPage {
     console.log('ionViewDidLoad FilterPage');
   }
 
-  enableNight() {
-    console.log("enabling night" + this.nightMode);
-    this.settings.isDark = this.nightMode;
-    // if (this.nightMode) this.settings.setActiveTheme('dark-theme');
-    // else this.settings.setActiveTheme('light-theme');
-    if (this.selectedTheme === 'dark-theme') {
-      this.settings.setActiveTheme('light-theme');
-    } else {
-      this.settings.setActiveTheme('dark-theme');
-    }
-
-    if (this.ionicNamedColor === 'danger') {
-      this.ionicNamedColor = 'dark'
-    } else {
-      this.ionicNamedColor = 'danger'
-    }
-
-  }
 
   loadFromCache(vendorObservable: Observable<any>) {
 
