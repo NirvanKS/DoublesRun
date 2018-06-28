@@ -11,6 +11,8 @@ import { BehaviorSubject } from 'rxjs/Rx';
 export class ThemeSettingsProvider {
   private theme: BehaviorSubject<String>;
   isDark = false;
+  reloadMap = false;
+
   constructor() {
     //this.theme = new BehaviorSubject('dark-theme');
     this.theme = new BehaviorSubject('light-theme');
@@ -23,6 +25,10 @@ export class ThemeSettingsProvider {
 
   getActiveTheme() {
     return this.theme.asObservable();
+  }
+
+  nightSwitchMapReload() {
+    this.reloadMap = true;
   }
 
 

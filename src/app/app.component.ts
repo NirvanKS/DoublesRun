@@ -12,6 +12,9 @@ import { RankingsPage } from '../pages/rankings/rankings';
 import { CacheService } from "ionic-cache";
 import { timer } from 'rxjs/observable/timer';
 import { ThemeSettingsProvider } from '../providers/theme-settings/theme-settings';
+import { MenuController } from 'ionic-angular';
+import { ToastController } from 'ionic-angular';
+
 @Component({
   templateUrl: 'app.html'
 })
@@ -22,9 +25,11 @@ export class MyApp {
   pages: Array<{ title: string, component: any }>;
   selectedTheme: String;
   rootPage: any = TabsPage;
+  public ionicNamedColor: string = 'danger';
+  nightMode = false;
 
-
-  constructor(platform: Platform, cache: CacheService, statusBar: StatusBar, splashScreen: SplashScreen, public settings: ThemeSettingsProvider) {
+  constructor(platform: Platform, cache: CacheService, statusBar: StatusBar, splashScreen: SplashScreen, public settings: ThemeSettingsProvider, public menuCtrl: MenuController,
+    private toastCtrl: ToastController) {
     this.settings.getActiveTheme().subscribe(val => {
       this.selectedTheme = val;
     });
@@ -52,4 +57,38 @@ export class MyApp {
     this.nav.push(page.component);
   }
 
+  enableNight() {
+    console.log("enabling night" + this.nightMode);
+    this.settings.isDark = this.nightMode;
+    // if (this.nightMode) this.settings.setActiveTheme('dark-theme');
+    // else this.settings.setActiveTheme('light-theme');
+    if (this.selectedTheme === 'dark-theme') {
+      this.settings.setActiveTheme('light-theme');
+    } else {
+      this.settings.setActiveTheme('dark-theme');
+    }
+
+    if (this.ionicNamedColor === 'danger') {
+      this.ionicNamedColor = 'dark'
+    } else {
+      this.ionicNamedColor = 'danger'
+    }
+    this.menuCtrl.close();
+    this.reloadMapToast();
+
+  }
+
+  reloadMapToast() {
+    let toast = this.toastCtrl.create({
+      message: 'If you are currently watching the map you may have to refresh the map to see theme changes.',
+      duration: 3000,
+      position: 'bottom'
+    });
+
+    toast.onDidDismiss(() => {
+      console.log('Dismissed toast');
+    });
+
+    toast.present();
+  }
 }
