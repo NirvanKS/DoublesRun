@@ -1,4 +1,7 @@
- @import "./ionic.globals"; // // A new dark theme for ionic2+
+ @import "./ionic.globals";
+ @import url('https://fonts.googleapis.com/css?family=Signika:400,700');
+ @import url('https://fonts.googleapis.com/css?family=Muli');
+ @import url('https://fonts.googleapis.com/css?family=Bangers'); // // A new dark theme for ionic2+
  // // ----------------------------------------
  // // this can go into variables.scss too - I like 
  // // it here so its in one place. If you move it to variables.scss,
@@ -106,6 +109,10 @@
      background-color: #1C1C1C;
      color: #fff;
    }
+   #descs {
+     // background-color:#1C1C1C !important;
+     color: #fff !important;
+   }
    .vendor-card {
      background-color: #1C1C1C;
    }
@@ -144,5 +151,14 @@
      background-image: linear-gradient(135deg, red, rgb(231, 136, 136));
      overflow: hidden;
      box-shadow: 0 8px 59px rgba(158, 7, 7, 0.199);
+   } //fonts
+   .toolbar-title {
+     font-family: 'Signika', sans-serif !important;
+   }
+   .card-title {
+     font-family: 'Bangers', cursive !important;
+   }
+   .p {
+     font-family: 'Muli', sans-serif !important;
    }
  }

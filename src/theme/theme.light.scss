@@ -1,3 +1,6 @@
+@import url('https://fonts.googleapis.com/css?family=Signika:400,700');
+@import url('https://fonts.googleapis.com/css?family=Muli');
+@import url('https://fonts.googleapis.com/css?family=Bangers');
 .light-theme {
     ion-content {
       background-color: #fff;
@@ -5,5 +8,17 @@
    
     .toolbar-background {
       background-color: #fff;
+    }
+    //fonts
+
+    
+    .toolbar-title {
+      font-family: 'Signika', sans-serif !important;
+    }
+    .card-title{
+      font-family: 'Bangers', cursive !important;
+    }
+    .p{
+      font-family: 'Muli', sans-serif !important; 
     }
   }
