@@ -17,9 +17,33 @@
     <ion-refresher-content refreshingText="Reload from API...">
     </ion-refresher-content>
   </ion-refresher>
+  <!--
   <ion-list>
     <ion-item *ngFor="let orderedVendor of orderedVendors" (click)="openVendor(orderedVendor)">
       {{ orderedVendor.Name }}
     </ion-item>
-  </ion-list>
+  </ion-list> -->
+  <div *ngFor='let orderedVendor of orderedVendors'>
+      <ion-card class="vendor-card">
+        <img [src]="orderedVendor.pic" id="vpic" />
+        <ion-card-content>
+          <ion-card-title class="vendor-title">
+            {{orderedVendor.Name}}
+          </ion-card-title>
+          <p class="vendor-desc">
+            {{orderedVendor.Description}}
+          </p>
+        </ion-card-content>
+  
+        <ion-row no-padding>
+          <ion-col text-right>
+            <button ion-button clear small [color]="ionicNamedColor" icon-start (click)="openVendor(orderedVendor)" class="viewMapButton">
+              <ion-icon name='md-globe'></ion-icon>
+              View On Map
+            </button>
+          </ion-col>
+        </ion-row>
+  
+      </ion-card>
+    </div>
 </ion-content>
