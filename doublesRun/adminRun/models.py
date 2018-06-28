@@ -78,6 +78,7 @@ class Review(models.Model):
 @receiver(signals.post_save, sender=Review)
 def my_handler(sender,instance,**kwargs):
     reviews = Review.objects.filter(vendorID = instance.vendorID)
+    #print(reviews)
     ratingSum = 0
     spicySum = 0
     thickSum = 0
@@ -88,6 +89,7 @@ def my_handler(sender,instance,**kwargs):
     triggerSVD = 1
     
     for review in reviews:
+        print( "=>>>>>>>>>>>>>>>sdlansidnaisndaisndiansd ",review.spicy,review.thickness,review.time,review.vendorID)
         ratingSum = ratingSum + review.rating
         spicySum = spicySum + review.spicy
         thickSum = thickSum + review.thickness
