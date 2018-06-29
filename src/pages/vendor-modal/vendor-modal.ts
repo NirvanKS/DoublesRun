@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { IonicPage, NavController, NavParams, ViewController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, ViewController, App } from 'ionic-angular';
 import { VendorReviewPage } from '../vendor-review/vendor-review';
 import { Http, Headers } from '@angular/http';
 import { LoginProvider } from '../../providers/login/login';
@@ -30,6 +30,9 @@ export class VendorModalPage {
   names: any = [];
   vendorReviewed: any;
   canEditReview: Boolean = false;
+  userRatingStars: any;
+  userComment: any;
+  userName: any;
 
   avgRating: Number;
   pic: any;
@@ -40,6 +43,8 @@ export class VendorModalPage {
   revList: any;
   reviews: any;
   vendorID: any;
+  userReview: any;
+  reviewID: any;
 
   day: boolean = true;
   thickness: any = 'Thin Barra';
@@ -49,7 +54,7 @@ export class VendorModalPage {
   apiUrl = "https://intense-dolphin-207823.appspot.com/";
   constructor(public viewCtrl: ViewController, public navCtrl: NavController,
     private http: Http, public navParams: NavParams, public loginProvider: LoginProvider,
-    private alertCtrl: AlertController, public api: ApiProvider, public settings: ThemeSettingsProvider) {
+    private alertCtrl: AlertController, public api: ApiProvider, public settings: ThemeSettingsProvider, public appCtrl: App) {
 
     this.name = navParams.get('name');
     this.pic = navParams.get('img');
@@ -167,12 +172,44 @@ export class VendorModalPage {
         })
     }
 
-    this.vendorReviewed = this.revList.filter(element => element.userID == this.loginProvider.userId);
-    if (this.vendorReviewed.length != 0) {
-      this.canEditReview = true;
-      //vendor reviewed already. 
+    for (var i = 0; i < this.revList.length; i++) {
+      console.log("Outer element = ", this.revList[i]);
+      this.http.get(this.apiUrl + 'reviews/' + this.revList[i] + '/')
+        .map(res => res.json())
+        .subscribe((data: Object) => {
+          this.reviews = Object.values(data);
+          let userID = this.reviews[7];
+          if (userID == this.loginProvider.userId) {
+            this.canEditReview = true;
+            this.userReview = this.reviews;
+            this.reviewID = this.reviews[0];
+            console.log("UserReview = ", this.userReview);
+            let r = (this.reviews[1]);
+            this.userRatingStars = Array.from(new Array(r), (val, index) => index + 1);
+            this.userComment = this.reviews[5];
+            this.http.get(this.apiUrl + 'users/' + this.reviews[7] + '/')
+              .map(res => res.json())
+              .subscribe((data: Object) => {
+                let u = Object.values(data);
+                this.userName = u[1];
+              });
+          }
+        });
     }
 
+
+  }
+
+  addOrEditReview() {
+    this.http.delete(this.apiUrl + 'reviews/' + this.reviewID + '/');
+    this.viewCtrl.dismiss();
+    this.navCtrl.push(VendorReviewPage, {
+      vendorName: this.name,
+      vendorDescription: this.description,
+      vendorType: this.type,
+      vendorID: this.vendorID,
+      oldComment: this.userComment
+    });
 
   }
 

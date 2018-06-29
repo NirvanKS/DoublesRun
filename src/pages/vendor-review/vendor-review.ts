@@ -27,6 +27,7 @@ export class VendorReviewPage {
   uLName: string;
   uEmail: string;
   apiUrl = "https://intense-dolphin-207823.appspot.com/";
+  comment: string = "";
 
   review = {
     userID: '',
@@ -54,6 +55,10 @@ export class VendorReviewPage {
     this.type = navParams.get('vendorType');
     this.review.vendorID = navParams.get('vendorID');
     this.NonReview.vendorID = navParams.get('vendorID');
+    if (navParams.get('oldComment') != "") {
+      this.review.comment = navParams.get('oldComment');
+    }
+
 
     this.currUserID = this.loginProvider.userId;
     this.uFName = this.loginProvider.givenName;

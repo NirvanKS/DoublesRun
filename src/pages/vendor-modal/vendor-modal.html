@@ -32,7 +32,7 @@
       <div *ngIf="type">
         <h4 class="classes">{{thickness}} | {{spiciness}} | {{cuc}}
           <br>
-          <i >
+          <i>
             <small id="descs"> The tags above are calculated from users' reviews </small>
           </i>
         </h4>
@@ -59,12 +59,13 @@
         <ion-card class="vendor-card" [id]="darkID">
 
           <div>
-            <ion-icon *ngFor='let i of rating' range-right name="md-star" class="stars"></ion-icon>
+            <ion-icon *ngFor='let i of userRatingStars' range-right name="md-star" class="stars"></ion-icon>
           </div>
           <br>
-          <h3 class="desc" [id]="darkID">{{comments[i]}}</h3>
-          <h4 class="desc" [id]="darkID"> -{{names[i]}}</h4>
+          <h3 class="desc" [id]="darkID">{{this.userComment}}</h3>
+          <h4 class="desc" [id]="darkID"> -{{this.userName}}</h4>
           <br>
+          <button id="editReviewButton" ion-button round outline color="danger" (click)="addOrEditReview()">Edit Review</button>
         </ion-card>
       </div>
       <!-- <h3 *ngIf='ratingsEmpty==false'>User Reviews</h3> -->
