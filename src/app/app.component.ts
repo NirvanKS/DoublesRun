@@ -4,6 +4,7 @@ import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 
 import { TabsPage } from '../pages/tabs/tabs';
+import { IntroPage } from '../pages/intro/intro';
 import { VoWPage } from '../pages/vo-w/vo-w';
 import { TrendingPage } from '../pages/trending/trending';
 import { SuggestedPage } from '../pages/suggested/suggested';
@@ -14,6 +15,8 @@ import { timer } from 'rxjs/observable/timer';
 import { ThemeSettingsProvider } from '../providers/theme-settings/theme-settings';
 import { MenuController } from 'ionic-angular';
 import { ToastController } from 'ionic-angular';
+import { Storage } from '@ionic/storage';
+import { LoadingController } from 'ionic-angular';
 
 @Component({
   templateUrl: 'app.html'
@@ -25,15 +28,18 @@ export class MyApp {
   pages: Array<{ title: string, component: any }>;
   selectedTheme: String;
   rootPage: any = TabsPage;
+  loader: any;
   public ionicNamedColor: string = 'danger';
   nightMode = false;
 
   constructor(platform: Platform, cache: CacheService, statusBar: StatusBar, splashScreen: SplashScreen, public settings: ThemeSettingsProvider, public menuCtrl: MenuController,
-    private toastCtrl: ToastController) {
+    private toastCtrl: ToastController,
+    public loadingCtrl: LoadingController, public storage: Storage) {
     this.settings.getActiveTheme().subscribe(val => {
       this.selectedTheme = val;
     });
 
+    this.presentLoading();
     platform.ready().then(() => {
       // Okay, so the platform is ready and our plugins are available.
       // Here you can do any higher level native things you might need.
@@ -42,6 +48,21 @@ export class MyApp {
       statusBar.styleDefault();
       splashScreen.hide();
       //timer(3000).subscribe(() => this.showSplash = false) removing green animation loading screen
+
+      this.storage.get('introShown').then((result) => {
+ 
+        if(result){
+          // this.rootPage = TabsPage;
+        } else {
+          this.rootPage = IntroPage;
+          this.storage.set('introShown', true);
+        }
+ 
+        this.loader.dismiss();
+ 
+      });
+
+
     });
 
     this.pages = [
@@ -90,5 +111,15 @@ export class MyApp {
     });
 
     toast.present();
+  }
+
+  presentLoading() {
+ 
+    this.loader = this.loadingCtrl.create({
+      content: "Loading..."
+    });
+ 
+    this.loader.present();
+ 
   }
 }

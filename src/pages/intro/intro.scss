@@ -1,0 +1,32 @@
+@import url('https://fonts.googleapis.com/css?family=Muli');
+@import url('https://fonts.googleapis.com/css?family=Paytone+One');
+page-intro {
+    // .ios, .md {
+        .swiper-wrapper {
+            background: rgb(248,255,254);
+            background: radial-gradient(circle, rgba(248,255,254,1) 9%, rgba(145,229,251,1) 100%, rgba(0,212,255,1) 100%);
+        }
+        
+        .swiper-slide .img {
+            height: 70vh !important;
+            width: auto !important;
+        }
+
+        .butt{
+            position: absolute;
+            right:33%;
+            top: 50%;
+        }
+
+        .pee {
+            font-family: 'Muli', sans-serif !important;
+            font-size: 0.8em;
+            color: rgb(72, 138, 255);
+          }
+        h3{
+            font-family: 'Paytone One', sans-serif;
+            color: rgb(72, 138, 255);
+        }
+        
+    // }
+}

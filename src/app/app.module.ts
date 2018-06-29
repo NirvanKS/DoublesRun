@@ -1,6 +1,7 @@
 import { NgModule, ErrorHandler } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
+import { IonicStorageModule } from '@ionic/storage';
 import { MyApp } from './app.component';
 import { Geolocation } from '@ionic-native/geolocation';
 import { HttpModule } from '@angular/http';
@@ -17,6 +18,10 @@ import { VendorMarkerPage } from '../pages/vendor-marker/vendor-marker';
 import { VendorAddPage } from '../pages/vendor-add/vendor-add';
 import { VendorReviewPage } from '../pages/vendor-review/vendor-review';
 import { FilterListPage } from '../pages/filter-list/filter-list';
+import { IntroPage } from '../pages/intro/intro';
+import { AddVendorIntroPage } from '../pages/add-vendor-intro/add-vendor-intro';
+import { SuggIntroPage } from '../pages/sugg-intro/sugg-intro';
+
 
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
@@ -48,13 +53,17 @@ import { ThemeSettingsProvider } from '../providers/theme-settings/theme-setting
     VendorReviewPage,
     FilterListPage,
     HomePage,
+    IntroPage,
+    AddVendorIntroPage,
+    SuggIntroPage,
   ],
   imports: [
     BrowserModule,
     HttpModule,
     IonicModule.forRoot(MyApp),
     IonicPageModule.forChild(VendorModalPage),
-    CacheModule.forRoot()
+    CacheModule.forRoot(),
+    IonicStorageModule.forRoot()
   ],
   bootstrap: [IonicApp],
   entryComponents: [
@@ -72,6 +81,9 @@ import { ThemeSettingsProvider } from '../providers/theme-settings/theme-setting
     VendorReviewPage,
     FilterListPage,
     HomePage,
+    IntroPage,
+    AddVendorIntroPage,
+    SuggIntroPage,
   ],
   providers: [
     StatusBar,

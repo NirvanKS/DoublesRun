@@ -4,9 +4,11 @@ import { Vendor } from './vendor';
 import { Camera, CameraOptions } from '@ionic-native/camera';
 import { Http, Headers } from '@angular/http';
 import 'rxjs/add/operator/map';
-import { ToastController } from 'ionic-angular';
+import { ToastController, Platform, ModalController } from 'ionic-angular';
 import {ApiProvider} from '../../providers/api/api';
 import { CacheService } from 'ionic-cache';
+import { Storage } from '@ionic/storage';
+import { AddVendorIntroPage } from '../add-vendor-intro/add-vendor-intro';
 /**
  * Generated class for the VendorAddPage page.
  *
@@ -39,7 +41,21 @@ export class VendorAddPage {
   apiUrl="https://intense-dolphin-207823.appspot.com/";
   constructor(public viewCtrl: ViewController, public navCtrl: NavController,
     public navParams: NavParams, private camera: Camera, private http: Http, 
-    private toastCtrl: ToastController, public api: ApiProvider,private cache: CacheService) {
+    private toastCtrl: ToastController, public api: ApiProvider,private cache: CacheService,
+    platform: Platform,public storage: Storage, public modalCtrl: ModalController) {
+      platform.ready().then(() => {
+        this.storage.get('vendorTutShown').then((result) => {
+ 
+          if(result){
+            //do nothing
+          } else {
+            let tutModal = this.modalCtrl.create(AddVendorIntroPage);
+            tutModal.present();
+            this.storage.set('vendorTutShown', true);
+          }
+   
+        });
+      });
   }
 
 
