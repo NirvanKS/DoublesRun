@@ -200,8 +200,8 @@ export class VendorModalPage {
 
   }
 
-  addOrEditReview() {
-    this.http.delete(this.apiUrl + 'reviews/' + this.reviewID + '/');
+  async addOrEditReview() {
+    await this.http.delete(this.apiUrl + 'reviews/' + this.reviewID + '/');
     this.viewCtrl.dismiss();
     this.navCtrl.push(VendorReviewPage, {
       vendorName: this.name,

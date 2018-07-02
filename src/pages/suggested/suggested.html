@@ -14,7 +14,11 @@
 
 <ion-content padding>
   <div *ngIf="isLoggedIn; else loginTemplate">
-
+    <div id="suggestionDesc2">
+      <p>The
+        <em>more</em> you use our app and review vendors, the
+        <em>better</em> our app can recommend new doubles vendors you may enjoy!</p>
+    </div>
     <div *ngFor='let s of suggVendors'>
       <ion-card class="vendor-card">
 
