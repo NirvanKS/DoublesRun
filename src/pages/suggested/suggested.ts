@@ -1,11 +1,13 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, ModalController, Platform } from 'ionic-angular';
 import { LoginProvider } from '../../providers/login/login';
 import { SnapToMapProvider } from '../../providers/snap-to-map/snap-to-map';
 import { CacheService } from 'ionic-cache';
 import { Http, Headers } from '@angular/http';
 import { TabsPage } from '../tabs/tabs';
 import { ThemeSettingsProvider } from '../../providers/theme-settings/theme-settings';
+import { Storage } from '@ionic/storage';
+import { SuggIntroPage } from '../sugg-intro/sugg-intro';
 
 /**
  * Generated class for the SuggestedPage page.
@@ -38,10 +40,24 @@ export class SuggestedPage {
   geoLong: number;
   constructor(public navCtrl: NavController, public navParams: NavParams, 
     public loginProvider: LoginProvider, public snaptomap: SnapToMapProvider, 
-    private cache: CacheService, public http: Http, public settings: ThemeSettingsProvider) {
+    private cache: CacheService, public http: Http, public settings: ThemeSettingsProvider,
+    platform: Platform,public storage: Storage, public modalCtrl: ModalController) {
     if (this.settings.isDark == true) {
       this.ionicNamedColor = 'light';
     }
+    platform.ready().then(() => {
+      this.storage.get('suggTutShown').then((result) => {
+
+        if(result){
+          //do nothing
+        } else {
+          let tutModal = this.modalCtrl.create(SuggIntroPage);
+          tutModal.present();
+          this.storage.set('suggTutShown', true);
+        }
+ 
+      });
+    });
   }
 
   ionViewDidLoad() {

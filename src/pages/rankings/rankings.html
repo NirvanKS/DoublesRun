@@ -25,7 +25,7 @@
   </ion-list>  -->
   <div *ngFor='let orderedVendor of orderedVendors'>
       <ion-card class="vendor-card">
-        <img [src]="orderedVendor.pic" id="vpic" />
+        <img [src]="orderedVendor.pic" class="vpic" />
         <ion-card-content>
           <ion-card-title class="vendor-title">
             {{orderedVendor.Name}}
