@@ -36,7 +36,7 @@ export class MapPage implements AfterViewInit {
   geoNumberLon: number = 0;
   geoLatLon: any;
   modalParam = 'https://google.com/';
-  apiUrl = "https://intense-dolphin-207823.appspot.com/";
+  apiUrl = "https://dream-coast-60132.herokuapp.com/";
   vendorsKey = "vendor-ranking-list"
   @ViewChild('map') mapElement: ElementRef;
   constructor(public navCtrl: NavController, public navParams: NavParams,
@@ -242,7 +242,7 @@ export class MapPage implements AfterViewInit {
 
   loadMarkers() {
     var Vmodal = this.modalCtrl;
-    let url = 'https://intense-dolphin-207823.appspot.com/';
+    let url = 'https://dream-coast-60132.herokuapp.com/';
     console.log(this.cachedVendors);
     this.cachedVendors = this.cache.loadFromObservable(url, this.http.get(this.apiUrl + 'vendors/').map(res => res.json()));
     if (this.cachedVendors != null) {

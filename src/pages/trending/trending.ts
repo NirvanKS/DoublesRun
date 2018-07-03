@@ -35,7 +35,7 @@ export class TrendingPage {
   ionViewDidLoad() {
     console.log('ionViewDidLoad TrendingPage');
 
-    let url = 'https://intense-dolphin-207823.appspot.com/';
+    let url = 'https://dream-coast-60132.herokuapp.com/';
     this.cachedVendors = this.cache.loadFromObservable(url, this.http.get(url + 'vendors/').map(res => res.json()));
     console.log("cash vendors", this.cachedVendors);
     if (this.cachedVendors != null) {
@@ -56,7 +56,7 @@ export class TrendingPage {
       this.cachedVendors.forEach(element => {
         if (element.reviews.length > 0) {
           for (let i = 1; i <= 1; i++) {
-            this.http.get('https://intense-dolphin-207823.appspot.com/reviews/' + element.reviews[element.reviews.length - i] + '/')
+            this.http.get('https://dream-coast-60132.herokuapp.com/reviews/' + element.reviews[element.reviews.length - i] + '/')
               .map(res => res.json())
               .subscribe(data => {
                 if (data.rating >= 3) {

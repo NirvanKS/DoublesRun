@@ -26,7 +26,7 @@ export class VendorReviewPage {
   uFName: string;
   uLName: string;
   uEmail: string;
-  apiUrl = "https://intense-dolphin-207823.appspot.com/";
+  apiUrl = "https://dream-coast-60132.herokuapp.com/";
   comment: string = "";
 
   review = {

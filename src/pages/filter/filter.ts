@@ -19,7 +19,7 @@ import { ThemeSettingsProvider } from '../../providers/theme-settings/theme-sett
 })
 export class FilterPage {
   selectedTheme: String;
-  apiUrl = "https://intense-dolphin-207823.appspot.com/";
+  apiUrl = "https://dream-coast-60132.herokuapp.com/";
   vendors: any;
   highRated: boolean = false;
   thick: boolean = false;
@@ -76,7 +76,7 @@ export class FilterPage {
 
   }
   openPage() {
-    let url = 'https://intense-dolphin-207823.appspot.com/';
+    let url = 'https://dream-coast-60132.herokuapp.com/';
     this.cachedVendors = this.cache.loadFromObservable(url, this.http.get(this.apiUrl + 'vendors/').map(res => res.json()));
     if (this.cachedVendors != null) {
       console.log("Loading from cache");
