@@ -5,7 +5,7 @@ class VendorSerializer(serializers.HyperlinkedModelSerializer):
     id = serializers.ReadOnlyField()
     class Meta:
         model = Vendor
-        fields = ('id','Name', 'Description', 'locLat', 'locLong','pic', 'Type','avgRating', 'avgThickness', 'avgTime', 'avgCucumber','avgSpicy','reviews','positiveReviews','negativeReviews','oneStars','twoStars','threeStars','fourStars','fiveStars', 'rankingScore','reportCount','baseTrending')
+        fields = ('id','Name', 'Description', 'locLat', 'locLong','pic', 'Type','avgRating', 'avgThickness', 'avgTime', 'avgCucumber','avgSpicy','reviews','positiveReviews','negativeReviews','oneStars','twoStars','threeStars','fourStars','fiveStars', 'rankingScore','reportCount','baseTrending','avgChanna')
 #'avgRating', 'avgThickness', 'avgTime','avgCucmber','avgSpicy','reviews
 
 class UserSerializer(serializers.HyperlinkedModelSerializer):
@@ -18,7 +18,7 @@ class ReviewSerializer(serializers.HyperlinkedModelSerializer):
     id = serializers.ReadOnlyField()
     class Meta:
         model = Review
-        fields = ('id', 'rating', 'spicy', 'thickness', 'time', 'comment', 'vendorID', 'userID', 'cucumber')
+        fields = ('id', 'rating', 'spicy', 'thickness', 'time', 'comment', 'vendorID', 'userID', 'cucumber','channa')
     
     def create(self, validated_data):
         return Review.objects.create(**validated_data)
