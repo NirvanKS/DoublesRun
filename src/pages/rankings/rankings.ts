@@ -33,7 +33,7 @@ export class RankingsPage {
   ionViewDidLoad() {
     console.log('ionViewDidLoad RankingsPage');
     this.loadVendors();  //can be loadVendors(false)
-this.loadim = true;
+    this.loadim = true;
   }
 
   openVendor(vendor) {
@@ -47,7 +47,7 @@ this.loadim = true;
       .map(res => {
         
         return res.json();
-        
+        this.loadim = true;
       });
 
     let ttl = 60 * 60 * 3;
@@ -79,6 +79,7 @@ this.loadim = true;
         // if (a.avgRating > b.avgRating)
         //   return 1;
         // return 0;
+        this.loadim = true;
         return b.rankingScore - a.rankingScore;
       })
       // console.log("ordered" + this.orderedVendors[1].rankingScore);

@@ -86,6 +86,7 @@ def my_handler(sender,instance,**kwargs):
     thickSum = 0
     timeSum = 0
     cucumberSum = 0
+    channaSum = 0
     cucumberYes = 0
     cucumberNo = 0
     triggerSVD = 1
@@ -96,6 +97,7 @@ def my_handler(sender,instance,**kwargs):
         spicySum = spicySum + review.spicy
         thickSum = thickSum + review.thickness
         timeSum = timeSum + review.time
+        channaSum = channaSum + review.channa
         if(review.cucumber==True):
             cucumberYes = cucumberYes + 1
         else:
@@ -111,6 +113,7 @@ def my_handler(sender,instance,**kwargs):
     avg_Spicy = spicySum / numberReviews
     avg_Thick = thickSum/ numberReviews
     avg_Time = timeSum/ numberReviews
+    avg_channa = channaSum/numberReviews
     avg_Cucumber = cucumberAvail
     vendor = Vendor.objects.get(id=instance.vendorID)
     #vendor.avgRating = avg_Rating
@@ -173,13 +176,38 @@ def my_handler(sender,instance,**kwargs):
     vendor.avgThickness = avg_Thick
     vendor.avgTime = avg_Time
     vendor.avgCucumber = avg_Cucumber
-    vendor.reviews.append(instance.id)
-    vendor.save()
+    vendor.avgChanna = avg_channa
+    flag = True
+    for r in vendor.reviews:
+        # print("false", instance.id, r)
+        if (str(instance.id)==str(r)):
+            # print("false", instance.id, r)
+            flag = False
+            linesOfReviews = []
+            with open(settings.STATIC_ROOT+'/u.data', 'w+') as f:
+                line = f.readline()
+                print(line)
+                while line:
+                    if(instance.userID not in line and instance.vendorID not in line):
+                        linesOfReviews.append(line)
+                        print("YAHOOOOOO - ", line)
+                    line= f.readline()
+                f.writelines(linesOfReviews)
+    
+    if flag:
+        vendor.reviews.append(instance.id)
+        vendor.save()
     
 
     user = User.objects.get(id = instance.userID)
-    user.reviews.append(instance.id)
-    user.save()
+    flag = True
+    for r in user.reviews:
+        if (str(instance.id)==str(r)):
+            flag = False
+    
+    if flag:
+        user.reviews.append(instance.id)
+        user.save()
 
     userReviews = Review.objects.filter(userID= instance.userID)
 
@@ -260,24 +288,15 @@ def my_handler(sender,instance,**kwargs):
         linesOfReviews = []
         with open(settings.STATIC_ROOT+'/u.data', 'w+') as f:
             line = f.readline()
+            print(line)
             while line:
                 if(instance.userID not in line and instance.vendorID not in line):
                     linesOfReviews.append(line)
+                    print("YAHOOOOOO - ", line)
                 line= f.readline()
             f.writelines(linesOfReviews)
 
-    
-
-    # from django_cron import CronJobBase, Schedule
-    # class MyCronJob(CronJobBase):
-    # #   RUN_EVERY_MINS = 120 # every 2 hours
-    #     RUN_EVERY_MINS = 0.1 
-    #     schedule = Schedule(run_every_mins=RUN_EVERY_MINS)
-    #     #code = 'my_app.my_cron_job'    # a unique code
-
-    #     def do(self):
-    #         pass    # do your thing here
-    #         print("CRONJAB FROM CRAGMAW")
+   
     
 
  

@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'adminRun',
     'rest_framework',
     'corsheaders',
+     "django_cron",
 ]
 
 MIDDLEWARE = [
@@ -191,3 +192,8 @@ CORS_ALLOW_HEADERS = (
     'x-csrftoken',
     'x-requested-with',
 )
+
+CRON_CLASSES = [
+    "adminRun.cron.MyCronJob",
+    # ...
+]

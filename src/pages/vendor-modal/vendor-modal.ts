@@ -30,6 +30,7 @@ export class VendorModalPage {
   names: any = [];
   vendorReviewed: any;
   canEditReview: Boolean = false;
+  cantEditReview: Boolean = true;
   userRatingStars: any;
   userComment: any;
   userName: any;
@@ -162,30 +163,11 @@ export class VendorModalPage {
         .map(res => res.json())
         .subscribe((data: Object) => {
           this.reviews = Object.values(data);
-          let r = (this.reviews[1])
-          var numbers = Array.from(new Array(r), (val, index) => index + 1);
-          this.ratings.push(numbers);
-          this.comments.push(this.reviews[5]);
-
-          //this.http.get('http://127.0.0.1:8000/users/' + this.reviews[7] + '/')
-          this.http.get(this.apiUrl + 'users/' + this.reviews[7] + '/')
-            .map(res => res.json())
-            .subscribe((data: Object) => {
-              let u = Object.values(data);
-              this.names.push(u[1]);
-            });
-        })
-    }
-
-    for (var i = 0; i < this.revList.length; i++) {
-      console.log("Outer element = ", this.revList[i]);
-      this.http.get(this.apiUrl + 'reviews/' + this.revList[i] + '/')
-        .map(res => res.json())
-        .subscribe((data: Object) => {
           this.reviews = Object.values(data);
           let userID = this.reviews[7];
           if (userID == this.loginProvider.userId) {
             this.canEditReview = true;
+            this.cantEditReview = false;
             this.userReview = this.reviews;
             this.reviewID = this.reviews[0];
             console.log("UserReview = ", this.userReview);
@@ -199,14 +181,53 @@ export class VendorModalPage {
                 this.userName = u[1];
               });
           }
-        });
+
+          else {
+          let r = (this.reviews[1])
+          var numbers = Array.from(new Array(r), (val, index) => index + 1);
+          this.ratings.push(numbers);
+          this.comments.push(this.reviews[5]);
+          //this.http.get('http://127.0.0.1:8000/users/' + this.reviews[7] + '/')
+          this.http.get(this.apiUrl + 'users/' + this.reviews[7] + '/')
+            .map(res => res.json())
+            .subscribe((data: Object) => {
+              let u = Object.values(data);
+              this.names.push(u[1]);
+            });
+          }
+        })
     }
+
+    // for (var i = 0; i < this.revList.length; i++) {
+    //   console.log("Outer element = ", this.revList[i]);
+    //   this.http.get(this.apiUrl + 'reviews/' + this.revList[i] + '/')
+    //     .map(res => res.json())
+    //     .subscribe((data: Object) => {
+    //       this.reviews = Object.values(data);
+    //       let userID = this.reviews[7];
+    //       if (userID == this.loginProvider.userId) {
+    //         this.canEditReview = true;
+    //         this.userReview = this.reviews;
+    //         this.reviewID = this.reviews[0];
+    //         console.log("UserReview = ", this.userReview);
+    //         let r = (this.reviews[1]);
+    //         this.userRatingStars = Array.from(new Array(r), (val, index) => index + 1);
+    //         this.userComment = this.reviews[5];
+    //         this.http.get(this.apiUrl + 'users/' + this.reviews[7] + '/')
+    //           .map(res => res.json())
+    //           .subscribe((data: Object) => {
+    //             let u = Object.values(data);
+    //             this.userName = u[1];
+    //           });
+    //       }
+    //     });
+    // }
 
 
   }
 
   async addOrEditReview() {
-    await this.http.delete(this.apiUrl + 'reviews/' + this.reviewID + '/');
+    // await this.http.delete(this.apiUrl + 'reviews/' + this.reviewID + '/');
     this.viewCtrl.dismiss();
     this.navCtrl.push(VendorReviewPage, {
       vendorName: this.name,

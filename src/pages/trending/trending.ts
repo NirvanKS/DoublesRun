@@ -6,6 +6,7 @@ import { Http } from '@angular/http';
 import { TabsPage } from '../tabs/tabs';
 import { Observable } from 'rxjs/Observable';
 import { ThemeSettingsProvider } from '../../providers/theme-settings/theme-settings';
+import { ELEMENT_PROBE_PROVIDERS } from '@angular/platform-browser/src/dom/debug/ng_probe';
 
 /**
  * Generated class for the TrendingPage page.
@@ -54,22 +55,54 @@ export class TrendingPage {
     vendorObservable.subscribe((data: Object) => {
       this.cachedVendors = Object.values(data);
       console.log("cash2", this.cachedVendors);
-      
+      var t1=-1;var t2=-1; var t3=-1; var t4=-1; var t5 = -1;   
       this.cachedVendors.forEach(element => {
         if (element.reviews.length > 0) {
-          for (let i = 1; i <= 3; i++) {
-            this.http.get('https://dream-coast-60132.herokuapp.com/reviews/' + element.reviews[element.reviews.length - i] + '/')
-              .map(res => res.json())
-              .subscribe(data => {
-                if (data.rating >= 3) {
-                  this.trendingVendors.push(element);
-                  console.log("trendy", this.trendingVendors);
-                  this.loadim = true;
+          this.loadim = true;
+          let trendingScore =  (element.threeStars + element.fourStars + element.fiveStars)-element.baseTrending;
+          if (trendingScore>t5){
+            if (trendingScore>t4){
+              if (trendingScore>t3){
+                if (trendingScore>t2){
+                  if (trendingScore>t1){
+                    t1 = trendingScore;
+                    this.trendingVendors[0] = element;
+                  }
+                  else {
+                    t2 = trendingScore;
+                    this.trendingVendors[1] = element;
+                  }
                 }
-              });
+                else {
+                  t3 = trendingScore;
+                  this.trendingVendors[2] = element;
+                }
+              }
+              else {
+                t4 = trendingScore;
+                this.trendingVendors[3] = element;
+              }
+            }
+            else {
+              t5 = trendingScore;
+              this.trendingVendors[4] = element;
+            }
           }
+
+          // for (let i = 1; i <= 3; i++) {
+          //   this.http.get('https://dream-coast-60132.herokuapp.com/reviews/' + element.reviews[element.reviews.length - i] + '/')
+          //     .map(res => res.json())
+          //     .subscribe(data => {
+          //       if (data.rating >= 3) {
+          //         this.trendingVendors.push(element);
+          //         console.log("trendy", this.trendingVendors);
+          //         this.loadim = true;
+          //       }
+          //     });
+          // }
         }
       });
+      console.log(this.trendingVendors);
 
     });
 
