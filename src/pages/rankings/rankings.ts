@@ -25,6 +25,7 @@ export class RankingsPage {
   vendors: Observable<any>;
   vendorList: any;
   orderedVendors: any;
+  loadim: Boolean = false;
   constructor(public navCtrl: NavController, public navParams: NavParams, private http: Http, private cache: CacheService, public api: ApiProvider
     , public snaptomap: SnapToMapProvider) {
   }
@@ -32,7 +33,7 @@ export class RankingsPage {
   ionViewDidLoad() {
     console.log('ionViewDidLoad RankingsPage');
     this.loadVendors();  //can be loadVendors(false)
-
+this.loadim = true;
   }
 
   openVendor(vendor) {
@@ -44,7 +45,9 @@ export class RankingsPage {
     let url = 'https://dream-coast-60132.herokuapp.com/vendors/';
     let req = this.http.get(url)
       .map(res => {
+        
         return res.json();
+        
       });
 
     let ttl = 60 * 60 * 3;

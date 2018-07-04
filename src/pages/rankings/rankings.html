@@ -17,7 +17,9 @@
     <ion-refresher-content refreshingText="Reload from API...">
     </ion-refresher-content>
   </ion-refresher>
+  <div *ngIf="loadim">
   <ion-img width="60" height="100" class="r1img" src="assets/imgs/number1icons/rank1.png" ></ion-img>
+  </div>
   <!-- <ion-list>
     <ion-item *ngFor="let orderedVendor of orderedVendors" (click)="openVendor(orderedVendor)">
       {{ orderedVendor.Name }}
@@ -25,7 +27,8 @@
   </ion-list>  -->
   <div *ngFor='let orderedVendor of orderedVendors'>
       <ion-card class="vendor-card">
-        <img [src]="orderedVendor.pic" class="vpic" />
+        
+          <img [src]="orderedVendor.pic" class="vpic" />
         <ion-card-content>
           <ion-card-title class="vendor-title">
             {{orderedVendor.Name}}

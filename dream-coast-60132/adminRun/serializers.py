@@ -31,7 +31,7 @@ class ReviewSerializer(serializers.HyperlinkedModelSerializer):
         instance.time = validated_data.get('time', instance.time)
         instance.comment = validated_data.get('comment',instance.comment)
         instance.vendorID = validated_data.get('vendorID',instance.vendorID)
-        isntance.userID = validated_data.get('userID',instance.userID)
+        instance.userID = validated_data.get('userID',instance.userID)
         instance.cucumber = validated_data.get('cucumber', instance.cucumber)
         instance.save()
         return instance

@@ -36,6 +36,14 @@
           </ion-range>
         </ion-item>
         <br>
+        <h2>How good was the channa?</h2>
+        <ion-item [id]="darkID">
+          <ion-range min="0" max="10" pin=true color="danger" [(ngModel)]="review.channa" name="channa" [id]="darkID">
+            <ion-label range-left [id]="darkID">Okay</ion-label>
+            <ion-label range-right [id]="darkID">Best</ion-label>
+          </ion-range>
+        </ion-item>
+        <br>
         <h2>Spiciness</h2>
         <ion-item [id]="darkID">
           <ion-range min="0" max="10" pin=true color="danger" [(ngModel)]="review.spicy" name="spicy">

@@ -24,6 +24,7 @@ export class TrendingPage {
   cachedVendors: any;
   trendingVendors: any = [];
   tabsPage: any = TabsPage;
+  loadim: Boolean = false;
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
     private http: Http, private cache: CacheService, public snaptomap: SnapToMapProvider, public settings: ThemeSettingsProvider) {
@@ -53,15 +54,17 @@ export class TrendingPage {
     vendorObservable.subscribe((data: Object) => {
       this.cachedVendors = Object.values(data);
       console.log("cash2", this.cachedVendors);
+      
       this.cachedVendors.forEach(element => {
         if (element.reviews.length > 0) {
-          for (let i = 1; i <= 1; i++) {
+          for (let i = 1; i <= 3; i++) {
             this.http.get('https://dream-coast-60132.herokuapp.com/reviews/' + element.reviews[element.reviews.length - i] + '/')
               .map(res => res.json())
               .subscribe(data => {
                 if (data.rating >= 3) {
                   this.trendingVendors.push(element);
                   console.log("trendy", this.trendingVendors);
+                  this.loadim = true;
                 }
               });
           }

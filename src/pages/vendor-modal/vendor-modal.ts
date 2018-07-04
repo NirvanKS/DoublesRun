@@ -40,6 +40,7 @@ export class VendorModalPage {
   avgTime: Number;
   avgCucumber: boolean;
   avgSpicy: Number;
+  avgChanna: Number;
   revList: any;
   reviews: any;
   vendorID: any;
@@ -50,6 +51,7 @@ export class VendorModalPage {
   thickness: any = 'Thin Barra';
   spiciness: string = 'Mild Pepper';
   cuc: string = 'No Cucumber';
+  channa: string = 'Okay Channa';
   isLoggedIn: boolean = false;
   apiUrl = "https://dream-coast-60132.herokuapp.com/";
   constructor(public viewCtrl: ViewController, public navCtrl: NavController,
@@ -64,8 +66,11 @@ export class VendorModalPage {
     if (this.revList.length > 0) this.ratingsEmpty = false;
     this.avgRating = navParams.get('avgRating'); this.avgCucumber = navParams.get('avgCucumber');
     this.avgThickness = navParams.get('avgThickness'); this.avgSpicy = navParams.get('avgSpicy');
+    this.avgChanna = navParams.get('avgChanna');
     if (this.avgThickness > 5) this.thickness = 'Thick Barra';
     if (this.avgSpicy > 5) this.spiciness = 'Very Hot';
+    if (this.avgChanna >= 8) this.channa = 'The Best Channa';
+    if (this.avgChanna >3 && this.avgChanna <8) this.channa = 'Good Channa';
     if (this.avgCucumber) this.cuc = 'With Cucumber';
     this.avgTime = navParams.get('avgTime');
 
@@ -208,7 +213,13 @@ export class VendorModalPage {
       vendorDescription: this.description,
       vendorType: this.type,
       vendorID: this.vendorID,
-      oldComment: this.userComment
+      oldComment: this.userComment,
+      oldReviewID: this.userReview[0],
+      oldRating: this.userReview[1],
+      oldSpicy: this.userReview[2],
+      oldThick: this.userReview[3],
+      oldCuc: this.userReview[8],
+      oldChanna: this.userReview[9]
     });
 
   }

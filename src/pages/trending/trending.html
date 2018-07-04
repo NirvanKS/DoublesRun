@@ -14,12 +14,13 @@
 
 
 <ion-content padding>
-
+  <div *ngIf="loadim">
   <ion-img width="40" height="60" class="t1img" src="assets/imgs/number1icons/trending1.png" ></ion-img>
-
+  </div>
   <div *ngFor='let t of trendingVendors'>
     <ion-card class="vendor-card">
-      <img [src]="t.pic" class="vpic"/>
+      
+        <img [src]="t.pic" class="vpic"/>
       <ion-card-content>
         <ion-card-title class="vendor-title">
           {{t.Name}}

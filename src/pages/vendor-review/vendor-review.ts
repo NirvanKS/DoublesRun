@@ -28,6 +28,7 @@ export class VendorReviewPage {
   uEmail: string;
   apiUrl = "https://dream-coast-60132.herokuapp.com/";
   comment: string = "";
+  edit: Boolean = false;
 
   review = {
     userID: '',
@@ -37,9 +38,22 @@ export class VendorReviewPage {
     cucumber: false,
     time: 0,
     comment: "",
-    vendorID: ""
-
+    vendorID: "",
+    channa: 0
   }
+  Editreview = {
+    id: '',
+    userID: '',
+    rating: 0,
+    thickness: 0,
+    spicy: 0,
+    cucumber: false,
+    time: 0,
+    comment: "",
+    vendorID: "",
+    channa: 0
+  }
+
   NonReview = {
     userID: '',
     rating: 0,
@@ -55,8 +69,16 @@ export class VendorReviewPage {
     this.type = navParams.get('vendorType');
     this.review.vendorID = navParams.get('vendorID');
     this.NonReview.vendorID = navParams.get('vendorID');
+    this.Editreview.vendorID = navParams.get('vendorID');
     if (navParams.get('oldComment') != "") {
-      this.review.comment = navParams.get('oldComment');
+      this.Editreview.rating = navParams.get('oldRating');
+      this.Editreview.spicy = navParams.get('oldSpicy');
+      this.Editreview.thickness = navParams.get('oldThick');
+      this.Editreview.cucumber = navParams.get('oldCuc');
+      this.Editreview.channa = navParams.get('oldChanna');
+      this.Editreview.comment = navParams.get('oldComment');
+      this.edit = true;
+      this.Editreview.id = navParams.get('oldReviewID');
     }
 
 
@@ -79,12 +101,20 @@ export class VendorReviewPage {
 
   logReview(form) {
     var d = new Date();
-    this.review.time = d.getHours();
-    this.review.userID = this.currUserID;
-    console.log(this.review);
-    this.addReview(this.review);
-    this.navCtrl.pop();
-
+    if (this.edit){
+      this.Editreview.time = d.getHours();
+      this.Editreview.userID = this.currUserID;
+      console.log(this.Editreview);
+      this.addReview(this.Editreview);
+      this.navCtrl.pop();
+    }
+    else {
+      this.review.time = d.getHours();
+      this.review.userID = this.currUserID;
+      console.log(this.review);
+      this.addReview(this.review);
+      this.navCtrl.pop();
+    }
 
   }
 
@@ -99,15 +129,28 @@ export class VendorReviewPage {
 
   addReview(review) {
 
-    let headers = new Headers();
-    headers.append('Content-Type', 'application/json');
-    //this.http.post('http://127.0.0.1:8000/reviews/', JSON.stringify(review), { headers: headers })
-    this.http.post(this.apiUrl + 'reviews/', JSON.stringify(review), { headers: headers })
-      .map(res => res.json())
-      .subscribe(data => {
-        console.log("httppost responsea:", data);
+    if (this.edit){
+      let headers = new Headers();
+      headers.append('Content-Type', 'application/json');
+      //this.http.post('http://127.0.0.1:8000/reviews/', JSON.stringify(review), { headers: headers })
+      this.http.put(this.apiUrl + 'reviews/' + this.Editreview.id, JSON.stringify(review), { headers: headers })
+        .map(res => res.json())
+        .subscribe(data => {
+          console.log("httppost responsea:", data);
 
-      });
+        });
+    }
+    else {
+      let headers = new Headers();
+      headers.append('Content-Type', 'application/json');
+      //this.http.post('http://127.0.0.1:8000/reviews/', JSON.stringify(review), { headers: headers })
+      this.http.post(this.apiUrl + 'reviews/', JSON.stringify(review), { headers: headers })
+        .map(res => res.json())
+        .subscribe(data => {
+          console.log("httppost responsea:", data);
+
+        });
+      }
 
   }
 
