@@ -96,5 +96,20 @@ export class LoginProvider {
       .catch(err => console.error(err));
   }
 
+  silentLogin() {
+    console.log("trying to silently logging in");
+    this.googlePlus.trySilentLogin({}).then(res => {
+      this.displayName = res.displayName;
+      this.email = res.email;
+      this.familyName = res.familyName;
+      this.givenName = res.givenName;
+      this.userId = res.userId;
+      this.imageUrl = res.imageUrl;
+      this.isLoggedIn = true;
+      console.log("finished silently logging in");
+    }).catch(err => console.error(err));
+
+  }
+
 
 }

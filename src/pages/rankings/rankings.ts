@@ -45,9 +45,9 @@ export class RankingsPage {
     let url = 'https://dream-coast-60132.herokuapp.com/vendors/';
     let req = this.http.get(url)
       .map(res => {
+
         this.loadim = true;
         return res.json();
-        
       });
 
     let ttl = 60 * 60 * 3;
