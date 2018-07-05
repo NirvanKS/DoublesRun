@@ -26,6 +26,10 @@
       </ion-label>
       <ion-toggle [(ngModel)]="nightMode" color="positive" checked="false" (ionChange)="enableNight()" [ngModelOptions]="{standalone: true}"></ion-toggle>
     </ion-item>
+    <button ion-button round outline icon-start color="danger" id="logoutBtn" (click)="logoutUser()">
+      <ion-icon name="log-out"></ion-icon>
+      Log Out
+    </button>
   </ion-content>
 
 </ion-menu>

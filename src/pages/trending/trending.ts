@@ -25,7 +25,7 @@ export class TrendingPage {
   cachedVendors: any;
   trendingVendors: any = [];
   tabsPage: any = TabsPage;
-  loadim: Boolean = false;
+  loadim: Boolean = true;
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
     private http: Http, private cache: CacheService, public snaptomap: SnapToMapProvider, public settings: ThemeSettingsProvider) {

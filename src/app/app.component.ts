@@ -17,6 +17,7 @@ import { MenuController } from 'ionic-angular';
 import { ToastController } from 'ionic-angular';
 import { Storage } from '@ionic/storage';
 import { LoadingController } from 'ionic-angular';
+import { LoginProvider } from '../providers/login/login'
 
 @Component({
   templateUrl: 'app.html'
@@ -34,7 +35,7 @@ export class MyApp {
 
   constructor(platform: Platform, cache: CacheService, statusBar: StatusBar, splashScreen: SplashScreen, public settings: ThemeSettingsProvider, public menuCtrl: MenuController,
     private toastCtrl: ToastController,
-    public loadingCtrl: LoadingController, public storage: Storage) {
+    public loadingCtrl: LoadingController, public storage: Storage, public loginProvider: LoginProvider) {
     this.settings.getActiveTheme().subscribe(val => {
       this.selectedTheme = val;
     });
@@ -50,16 +51,16 @@ export class MyApp {
       //timer(3000).subscribe(() => this.showSplash = false) removing green animation loading screen
 
       this.storage.get('introShown').then((result) => {
- 
-        if(result){
+
+        if (result) {
           // this.rootPage = TabsPage;
         } else {
           this.rootPage = IntroPage;
           this.storage.set('introShown', true);
         }
- 
+
         this.loader.dismiss();
- 
+
       });
 
 
@@ -70,6 +71,9 @@ export class MyApp {
       { title: 'Trending', component: TrendingPage },
       { title: 'Suggested', component: SuggestedPage },
     ];
+
+    //trying silent login so that the user doesn't always have to login every session
+    this.loginProvider.silentLogin();
 
   }
   openPage(page) {
@@ -114,12 +118,29 @@ export class MyApp {
   }
 
   presentLoading() {
- 
+
     this.loader = this.loadingCtrl.create({
       content: "Loading..."
     });
- 
+
     this.loader.present();
- 
+
+  }
+
+  logoutUser() {
+    this.loginProvider.logout().then(res => {
+      console.log("logged out");
+      let toast = this.toastCtrl.create({
+        message: 'Succesfully logged out.',
+        duration: 3000,
+        position: 'bottom'
+      });
+
+      toast.onDidDismiss(() => {
+        console.log('Dismissed toast');
+      });
+
+      toast.present();
+    });
   }
 }

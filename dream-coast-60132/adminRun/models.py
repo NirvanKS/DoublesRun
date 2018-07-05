@@ -90,7 +90,11 @@ def my_handler(sender,instance,**kwargs):
     cucumberYes = 0
     cucumberNo = 0
     triggerSVD = 1
-    
+    numOnes = 0;
+    numTwos = 0;
+    numThrees = 0;
+    numFours = 0;
+    numFives = 0;
     for review in reviews:
         print( "=>>>>>>>>>>>>>>>sdlansidnaisndaisndiansd ",review.spicy,review.thickness,review.time,review.vendorID)
         ratingSum = ratingSum + review.rating
@@ -98,6 +102,16 @@ def my_handler(sender,instance,**kwargs):
         thickSum = thickSum + review.thickness
         timeSum = timeSum + review.time
         channaSum = channaSum + review.channa
+        if(review.rating==1):
+            numOnes+=1
+        elif(review.rating==2):
+            numTwos+=1
+        elif(review.rating==3):
+            numThrees+=1
+        elif(review.rating==4):
+            numFours+=1
+        else:
+            numFives+=1
         if(review.cucumber==True):
             cucumberYes = cucumberYes + 1
         else:
@@ -120,23 +134,23 @@ def my_handler(sender,instance,**kwargs):
     vendor.avgRating = avg_Rating
     #vendor.save(update_fields= ["avgRating"])
     
-    numOnes = vendor.oneStars
-    numTwos = vendor.twoStars
-    numThrees = vendor.threeStars
-    numFours = vendor.fourStars
-    numFives = vendor.fiveStars
+    # numOnes = vendor.oneStars
+    # numTwos = vendor.twoStars
+    # numThrees = vendor.threeStars
+    # numFours = vendor.fourStars
+    # numFives = vendor.fiveStars
 
     
-    if(instance.rating==1):
-        numOnes+=1
-    elif(instance.rating==2):
-        numTwos+=1
-    elif(instance.rating==3):
-        numThrees+=1
-    elif(instance.rating==4):
-        numFours+=1
-    elif(instance.rating==5):
-        numFives+=1
+    # if(instance.rating==1):
+    #     numOnes+=1
+    # elif(instance.rating==2):
+    #     numTwos+=1
+    # elif(instance.rating==3):
+    #     numThrees+=1
+    # elif(instance.rating==4):
+    #     numFours+=1
+    # elif(instance.rating==5):
+    #     numFives+=1
     
     avgNumRatings = 1*numOnes + 2*numTwos + 3*numThrees + 4*numFours + 5*numFives
     totalRatings = numOnes + numTwos + numThrees + numFours + numFives
@@ -196,7 +210,7 @@ def my_handler(sender,instance,**kwargs):
     
     if flag:
         vendor.reviews.append(instance.id)
-        vendor.save()
+    vendor.save()
     
 
     user = User.objects.get(id = instance.userID)
