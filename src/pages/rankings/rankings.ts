@@ -25,7 +25,7 @@ export class RankingsPage {
   vendors: Observable<any>;
   vendorList: any;
   orderedVendors: any;
-  loadim: Boolean = false;
+  loadim: Boolean = true;
   constructor(public navCtrl: NavController, public navParams: NavParams, private http: Http, private cache: CacheService, public api: ApiProvider
     , public snaptomap: SnapToMapProvider) {
   }
@@ -33,7 +33,7 @@ export class RankingsPage {
   ionViewDidLoad() {
     console.log('ionViewDidLoad RankingsPage');
     this.loadVendors();  //can be loadVendors(false)
-    this.loadim = true;
+    //this.loadim = true;
   }
 
   openVendor(vendor) {
@@ -45,9 +45,9 @@ export class RankingsPage {
     let url = 'https://dream-coast-60132.herokuapp.com/vendors/';
     let req = this.http.get(url)
       .map(res => {
-        
+        //this.loadim = true;
         return res.json();
-        this.loadim = true;
+        
       });
 
     let ttl = 60 * 60 * 3;
@@ -59,6 +59,7 @@ export class RankingsPage {
       // Hide the refresher once loading is done
       this.vendors.subscribe(data => {
         refresher.complete();
+        //console.log(data); //testing cache stuff
         //let x = this.cache.loadFromObservable(url, req);    //url here in this case is the actual key, but not the GROUP KEY
         //console.log(x);
       });
@@ -79,7 +80,7 @@ export class RankingsPage {
         // if (a.avgRating > b.avgRating)
         //   return 1;
         // return 0;
-        this.loadim = true;
+        //this.loadim = true;
         return b.rankingScore - a.rankingScore;
       })
       // console.log("ordered" + this.orderedVendors[1].rankingScore);
