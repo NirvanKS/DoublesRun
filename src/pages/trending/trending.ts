@@ -36,9 +36,8 @@ export class TrendingPage {
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad TrendingPage');
-
-    let url = 'https://dream-coast-60132.herokuapp.com/';
-    this.cachedVendors = this.cache.loadFromObservable(url, this.http.get(url + 'vendors/').map(res => res.json()));
+    this.cachedVendors = this.getCache();
+    //this.cachedVendors = this.cache.loadFromObservable(url, this.http.get(url + 'vendors/').map(res => res.json()));
     console.log("cash vendors", this.cachedVendors);
     if (this.cachedVendors != null) {
       console.log("Loading from cache");
@@ -50,21 +49,28 @@ export class TrendingPage {
 
   }
 
+  async getCache() {
+    let key = "https://dream-coast-60132.herokuapp.com/vendors/"
+    let data = await this.cache.getItem(key);
+    console.log("DIS BE CACHED DATA TOTALLY ", data);
+    return data;
+  }
+
   loadFromCache(vendorObservable: Observable<any>) {
 
     vendorObservable.subscribe((data: Object) => {
       this.cachedVendors = Object.values(data);
       console.log("cash2", this.cachedVendors);
-      var t1=-1;var t2=-1; var t3=-1; var t4=-1; var t5 = -1;   
+      var t1 = -1; var t2 = -1; var t3 = -1; var t4 = -1; var t5 = -1;
       this.cachedVendors.forEach(element => {
         if (element.reviews.length > 0) {
           this.loadim = true;
-          let trendingScore =  (element.threeStars + element.fourStars + element.fiveStars)-element.baseTrending;
-          if (trendingScore>t5){
-            if (trendingScore>t4){
-              if (trendingScore>t3){
-                if (trendingScore>t2){
-                  if (trendingScore>t1){
+          let trendingScore = (element.threeStars + element.fourStars + element.fiveStars) - element.baseTrending;
+          if (trendingScore > t5) {
+            if (trendingScore > t4) {
+              if (trendingScore > t3) {
+                if (trendingScore > t2) {
+                  if (trendingScore > t1) {
                     t1 = trendingScore;
                     this.trendingVendors[0] = element;
                   }
