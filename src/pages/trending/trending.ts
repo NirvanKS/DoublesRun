@@ -23,7 +23,7 @@ import { ELEMENT_PROBE_PROVIDERS } from '@angular/platform-browser/src/dom/debug
 export class TrendingPage {
   public ionicNamedColor: string = 'danger';
   cachedVendors: any;
-  trendingVendors: any = [];
+  trendingVendors: any = [0,0,0,0,0];
   tabsPage: any = TabsPage;
   loadim: Boolean = true;
 
@@ -57,35 +57,61 @@ export class TrendingPage {
       console.log("cash2", this.cachedVendors);
       var t1=-1;var t2=-1; var t3=-1; var t4=-1; var t5 = -1;   
       this.cachedVendors.forEach(element => {
-        if (element.reviews.length > 0) {
-          this.loadim = true;
+        console.log("here", element);
+        // if (element.reviews.length > 0) { **************************REMEMBER TO UNDO DIS***************
+          // this.loadim = true;
           let trendingScore =  (element.threeStars + element.fourStars + element.fiveStars)-element.baseTrending;
           if (trendingScore>t5){
             if (trendingScore>t4){
               if (trendingScore>t3){
                 if (trendingScore>t2){
                   if (trendingScore>t1){
+                    t5 = t4;
+                    t4 = t3;
+                    t3 = t2;
+                    t2 = t1;
                     t1 = trendingScore;
-                    this.trendingVendors[0] = element;
+                    this.trendingVendors[4] = this.trendingVendors[3];
+                    this.trendingVendors[3] = this.trendingVendors[2];
+                    this.trendingVendors[2] = this.trendingVendors[1];
+                    this.trendingVendors[1] = this.trendingVendors[0];
+                    this.trendingVendors[0] = element; 
+                    console.log("fuss place",element);
                   }
                   else {
+                    t5 = t4;
+                    t4 = t3;
+                    t3 = t2;
                     t2 = trendingScore;
+                    this.trendingVendors[4] = this.trendingVendors[3];
+                    this.trendingVendors[3] = this.trendingVendors[2];
+                    this.trendingVendors[2] = this.trendingVendors[1];
                     this.trendingVendors[1] = element;
+                    console.log("second", element);
                   }
                 }
                 else {
+                  t5 = t4;
+                  t4 = t3;
                   t3 = trendingScore;
+                  this.trendingVendors[4] = this.trendingVendors[3];
+                  this.trendingVendors[3] = this.trendingVendors[2];
                   this.trendingVendors[2] = element;
+                  console.log("thud", element);
                 }
               }
               else {
+                t5 = t4;
                 t4 = trendingScore;
+                this.trendingVendors[4] = this.trendingVendors[3];
                 this.trendingVendors[3] = element;
+                console.log("futt", element);
               }
             }
             else {
               t5 = trendingScore;
               this.trendingVendors[4] = element;
+              console.log("lassss", element);
             }
           }
 
@@ -100,7 +126,7 @@ export class TrendingPage {
           //       }
           //     });
           // }
-        }
+        // }
       });
       console.log(this.trendingVendors);
 
