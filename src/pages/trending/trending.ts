@@ -34,14 +34,14 @@ export class TrendingPage {
     }
   }
 
-  ionViewDidLoad() {
+  async ionViewDidLoad() {
     console.log('ionViewDidLoad TrendingPage');
-    this.cachedVendors = this.getCache();
+    this.cachedVendors = await this.getCache();
     //this.cachedVendors = this.cache.loadFromObservable(url, this.http.get(url + 'vendors/').map(res => res.json()));
     console.log("cash vendors", this.cachedVendors);
     if (this.cachedVendors != null) {
       console.log("Loading from cache");
-      this.loadFromCache(this.cachedVendors);
+      this.loadFromCache();
       return;
     }
 
@@ -56,10 +56,10 @@ export class TrendingPage {
     return data;
   }
 
-  loadFromCache(vendorObservable: Observable<any>) {
+  loadFromCache() {
 
-    vendorObservable.subscribe((data: Object) => {
-      this.cachedVendors = Object.values(data);
+    // vendorObservable.subscribe((data: Object) => {
+      // this.cachedVendors = Object.values(data);
       console.log("cash2", this.cachedVendors);
       var t1 = -1; var t2 = -1; var t3 = -1; var t4 = -1; var t5 = -1;
       this.cachedVendors.forEach(element => {
@@ -136,7 +136,7 @@ export class TrendingPage {
       });
       console.log(this.trendingVendors);
 
-    });
+    // });
 
 
   }

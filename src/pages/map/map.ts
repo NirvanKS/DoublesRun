@@ -30,7 +30,7 @@ export class MapPage implements AfterViewInit {
   selectedTheme: String
   cachedVendors: any;
   map: any;
-  markers: Observable<any>[] = [];
+  markers = [];
   mark: any;
   geoNumberLat: number = 0;
   geoNumberLon: number = 0;
@@ -55,7 +55,8 @@ export class MapPage implements AfterViewInit {
   }
 
   refreshMap() {
-    this.cache.clearAll().then(x => {
+    let key = 'https://dream-coast-60132.herokuapp.com/vendors/';
+    this.cache.removeItem(key).then(x => {
       this.markers = [];
       this.loadMap();
     })
@@ -242,7 +243,7 @@ export class MapPage implements AfterViewInit {
 
   loadMarkers() {
     var Vmodal = this.modalCtrl;
-    let url = 'https://dream-coast-60132.herokuapp.com/';
+    let url = 'https://dream-coast-60132.herokuapp.com/vendors/';
     console.log(this.cachedVendors);
     this.cachedVendors = this.cache.loadFromObservable(url, this.http.get(this.apiUrl + 'vendors/').map(res => res.json()));
     if (this.cachedVendors != null) {

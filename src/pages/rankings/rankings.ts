@@ -55,7 +55,7 @@ export class RankingsPage {
     if (refresher) {
       // Reload data even if it is cached
       let delayType = 'all';
-      this.vendors = this.cache.loadFromDelayedObservable(url, req, this.vendorsKey, ttl, delayType);
+      this.vendors = this.cache.loadFromDelayedObservable(url, req, 'none',ttl, delayType);
       // Hide the refresher once loading is done
       this.vendors.subscribe(data => {
         refresher.complete();
@@ -65,7 +65,7 @@ export class RankingsPage {
       });
     } else {
       // Load with Group key and custom TTL
-      this.vendors = this.cache.loadFromObservable(url, req, this.vendorsKey, ttl);
+      this.vendors = this.cache.loadFromObservable(url, req);
 
       // Or just load without additional settings
       // this.films = this.cache.loadFromObservable(url, req);
@@ -89,9 +89,9 @@ export class RankingsPage {
   }
 
   // Invalidate for a specific group key
-  invalidateCache() {
-    this.cache.clearGroup(this.vendorsKey);
-  }
+  // invalidateCache() {
+  //   this.cache.clearGroup(this.vendorsKey);
+  // }
 
   // Pull to refresh and force reload
   forceReload(refresher) {
