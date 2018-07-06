@@ -8,6 +8,7 @@
 
   <ion-navbar color="danger">
     <ion-title>Trending</ion-title>
+
   </ion-navbar>
 
 </ion-header>
@@ -15,12 +16,12 @@
 
 <ion-content padding>
   <div *ngIf="loadim">
-  <ion-img width="40" height="65" class="t1img" src="assets/imgs/number1icons/trending1.png" ></ion-img>
+    <ion-img width="40" height="65" class="t1img" src="assets/imgs/number1icons/trending1.png"></ion-img>
   </div>
   <div *ngFor='let t of trendingVendors'>
     <ion-card class="vendor-card">
-      
-        <img [src]="t.pic" class="vpic"/>
+
+      <img [src]="t.pic" class="vpic" />
       <ion-card-content>
         <ion-card-title class="vendor-title">
           {{t.Name}}
@@ -40,6 +41,10 @@
       </ion-row>
 
     </ion-card>
+    <button ion-button round outline icon-start color="danger" id="logoutBtn" (click)="getCache()">
+      <ion-icon name="log-out"></ion-icon>
+      Cacheload
+    </button>
   </div>
 
 </ion-content>

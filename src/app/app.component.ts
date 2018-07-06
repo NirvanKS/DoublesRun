@@ -31,6 +31,7 @@ export class MyApp {
   rootPage: any = TabsPage;
   loader: any;
   public ionicNamedColor: string = 'danger';
+  isLoggedIn = false;
   nightMode = false;
 
   constructor(platform: Platform, cache: CacheService, statusBar: StatusBar, splashScreen: SplashScreen, public settings: ThemeSettingsProvider, public menuCtrl: MenuController,
@@ -74,7 +75,7 @@ export class MyApp {
 
     //trying silent login so that the user doesn't always have to login every session
     this.loginProvider.silentLogin();
-
+    this.isLoggedIn = this.loginProvider.isLoggedIn;
   }
   openPage(page) {
     // Reset the content nav to have just this page
@@ -128,10 +129,9 @@ export class MyApp {
   }
 
   logoutUser() {
-    this.loginProvider.logout().then(res => {
-      console.log("logged out");
+    if (this.loginProvider.isLoggedIn == false) {
       let toast = this.toastCtrl.create({
-        message: 'Succesfully logged out.',
+        message: 'You are not currently logged in.',
         duration: 3000,
         position: 'bottom'
       });
@@ -141,6 +141,23 @@ export class MyApp {
       });
 
       toast.present();
-    });
+
+    }
+    else {
+      this.loginProvider.logout().then(res => {
+        console.log("logged out");
+        let toast = this.toastCtrl.create({
+          message: 'Succesfully logged out.',
+          duration: 3000,
+          position: 'bottom'
+        });
+
+        toast.onDidDismiss(() => {
+          console.log('Dismissed toast');
+        });
+
+        toast.present();
+      });
+    }
   }
 }
