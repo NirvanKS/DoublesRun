@@ -17,6 +17,8 @@ import { ToastController } from 'ionic-angular';
 import { Storage } from '@ionic/storage';
 import { LoadingController } from 'ionic-angular';
 import { LoginProvider } from '../providers/login/login'
+import { Network } from '@ionic-native/network';
+import { NetworkProvider } from '../providers/network/network';
 
 @Component({
   templateUrl: 'app.html'
@@ -36,7 +38,8 @@ export class MyApp {
 
   constructor(platform: Platform, cache: CacheService, statusBar: StatusBar, splashScreen: SplashScreen, public settings: ThemeSettingsProvider, public menuCtrl: MenuController,
     private toastCtrl: ToastController,
-    public loadingCtrl: LoadingController, public storage: Storage, public loginProvider: LoginProvider, public events: Events) {
+    public loadingCtrl: LoadingController, public storage: Storage, public loginProvider: LoginProvider, public events: Events, public network: Network,
+    public networkProvider: NetworkProvider) {
 
     this.listenToLoginEvents();
     this.settings.getActiveTheme().subscribe(val => {
@@ -49,6 +52,10 @@ export class MyApp {
       // Here you can do any higher level native things you might need.
       cache.setDefaultTTL(60 * 60 * 6); //cached data valid for 6 hours, could decrease or increase depending on what we want
       cache.setOfflineInvalidate(false);   // Keep our cached results when device is offline
+      console.log(this.network.type, "  -network type");
+      this.networkProvider.initializeNetworkEvents();
+      this.listenToNetworkEvents()
+
       statusBar.styleDefault();
       splashScreen.hide();
       //timer(3000).subscribe(() => this.showSplash = false) removing green animation loading screen
@@ -177,6 +184,19 @@ export class MyApp {
 
     this.events.subscribe('user:logout', () => {
       this.isLoggedIn = false;
+    });
+  }
+
+  listenToNetworkEvents() {
+    this.events.subscribe('network:offline', () => {
+      console.log('network:offline');
+      this.networkProvider.isOnline = false;
+    });
+
+    // Online event
+    this.events.subscribe('network:online', () => {
+      console.log('network:online');
+      this.networkProvider.isOnline = true;
     });
   }
 
