@@ -1,8 +1,7 @@
 import { Component, ViewChild } from '@angular/core';
-import { Nav, Platform } from 'ionic-angular';
+import { Nav, Platform, Events } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
-
 import { TabsPage } from '../pages/tabs/tabs';
 import { IntroPage } from '../pages/intro/intro';
 import { VoWPage } from '../pages/vo-w/vo-w';
@@ -33,10 +32,13 @@ export class MyApp {
   public ionicNamedColor: string = 'danger';
   isLoggedIn = false;
   nightMode = false;
+  imageUrl: any;
 
   constructor(platform: Platform, cache: CacheService, statusBar: StatusBar, splashScreen: SplashScreen, public settings: ThemeSettingsProvider, public menuCtrl: MenuController,
     private toastCtrl: ToastController,
-    public loadingCtrl: LoadingController, public storage: Storage, public loginProvider: LoginProvider) {
+    public loadingCtrl: LoadingController, public storage: Storage, public loginProvider: LoginProvider, public events: Events) {
+
+    this.listenToLoginEvents();
     this.settings.getActiveTheme().subscribe(val => {
       this.selectedTheme = val;
     });
@@ -74,8 +76,7 @@ export class MyApp {
     ];
 
     //trying silent login so that the user doesn't always have to login every session
-    this.loginProvider.silentLogin();
-    this.isLoggedIn = this.loginProvider.isLoggedIn;
+
   }
   openPage(page) {
     // Reset the content nav to have just this page
@@ -160,4 +161,23 @@ export class MyApp {
       });
     }
   }
+
+  loginUser() {
+    this.loginProvider.login();
+  }
+
+  listenToLoginEvents() {
+    console.log("currently - ", this.isLoggedIn);
+    this.events.subscribe('user:login', (imageUrl) => {
+      this.isLoggedIn = true;
+      console.log(imageUrl);
+      this.imageUrl = imageUrl;
+      console.log("WOW logged in should be true!! so ", this.isLoggedIn);
+    });
+
+    this.events.subscribe('user:logout', () => {
+      this.isLoggedIn = false;
+    });
+  }
+
 }

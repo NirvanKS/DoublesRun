@@ -26,10 +26,19 @@
       </ion-label>
       <ion-toggle [(ngModel)]="nightMode" color="positive" checked="false" (ionChange)="enableNight()" [ngModelOptions]="{standalone: true}"></ion-toggle>
     </ion-item>
-    <div *ngIf="this.isLoggedIn==true">
-      <button ion-button round outline icon-start color="danger" id="logoutBtn" (click)="logoutUser()">
+    <div *ngIf="this.isLoggedIn">
+      <ion-avatar item-right id="profilepic">
+        <img src="{{this.imageUrl}}">
+      </ion-avatar>
+      <button *ngIf="this.isLoggedIn" ion-button round outline icon-start color="danger" id="logoutBtn" (click)="logoutUser()">
         <ion-icon name="log-out"></ion-icon>
         Log Out
+      </button>
+    </div>
+    <div>
+      <button *ngIf="!this.isLoggedIn" ion-button round outline icon-start color="danger" id="logoutBtn" (click)="loginUser()">
+        <ion-icon name="log-in"></ion-icon>
+        Log In
       </button>
     </div>
   </ion-content>

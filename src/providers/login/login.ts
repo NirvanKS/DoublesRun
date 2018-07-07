@@ -3,6 +3,8 @@ import { Injectable, Component } from '@angular/core';
 import { Http, Headers } from '@angular/http';
 import { GooglePlus } from '@ionic-native/google-plus';
 import { CacheService } from 'ionic-cache';
+import { Events } from 'ionic-angular';
+
 /*
   Generated class for the LoginProvider provider.
 
@@ -14,7 +16,7 @@ import { CacheService } from 'ionic-cache';
 
 export class LoginProvider {
   providers: [GooglePlus]
-  constructor(private http: Http, private cache: CacheService, private googlePlus: GooglePlus) {
+  constructor(private http: Http, private cache: CacheService, private googlePlus: GooglePlus, public events: Events) {
     console.log('Hello LoginProvider Provider');
   }
   displayName: any;
@@ -40,6 +42,10 @@ export class LoginProvider {
         this.userId = res.userId;
         this.imageUrl = res.imageUrl;
         this.isLoggedIn = true;
+
+        console.log('User logged in!')
+        this.events.publish('user:login', this.imageUrl);
+
 
         let headers = new Headers();
         headers.append('Content-Type', 'application/json');
@@ -92,6 +98,8 @@ export class LoginProvider {
         this.imageUrl = "";
 
         this.isLoggedIn = false;
+        console.log('User logged out!')
+        this.events.publish('user:logout');
       })
       .catch(err => console.error(err));
   }
@@ -106,6 +114,8 @@ export class LoginProvider {
       this.userId = res.userId;
       this.imageUrl = res.imageUrl;
       this.isLoggedIn = true;
+      console.log('User logged in!')
+      this.events.publish('user:login', this.imageUrl);
       console.log("finished silently logging in");
     }).catch(err => console.error(err));
 
