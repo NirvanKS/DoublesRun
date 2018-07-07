@@ -235,7 +235,7 @@ export class VendorAddPage {
 
   GeoToast() {
     let toast = this.toastCtrl.create({
-      message: 'Please turn on location services!',
+      message: 'Please allow us access to your location services!',
       duration: 3000,
       position: 'bottom'
     });
