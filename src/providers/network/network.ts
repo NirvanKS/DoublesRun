@@ -19,7 +19,7 @@ export enum ConnectionStatusEnum {
 @Injectable()
 export class NetworkProvider {
   previousStatus: any;
-  isOnline: any;
+  isOnline: Boolean = true;
   constructor(public alertCtrl: AlertController,
     public network: Network,
     public eventCtrl: Events) {

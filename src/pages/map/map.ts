@@ -181,6 +181,8 @@ export class MapPage implements AfterViewInit {
         this.geoLatLon = latLng;
         this.geoNumberLat = position.coords.latitude;
         this.geoNumberLon = position.coords.longitude;
+        let geoLoc = { "geoLat": this.geoNumberLat, "geoLong": this.geoNumberLon };
+        this.cache.saveItem("geoLoc", JSON.stringify(geoLoc));
         if (this.geoNumberLat == 0 && this.geoNumberLon == 0) {
           this.geoLocationNotFoundToast();
         }
