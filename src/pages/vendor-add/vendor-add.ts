@@ -32,6 +32,7 @@ export class VendorAddPage {
     pic: ''
   }
   successValidate: boolean = false;
+  validateGeoLoc: boolean = false;
   vendorType: any = "dv";
   mark: any;
   notFound: boolean = true;
@@ -85,14 +86,19 @@ export class VendorAddPage {
     
     if (this.vendorForm.locLat != 0 && this.vendorForm.locLong !=0)
     { 
+      this.validateGeoLoc = true;
       if ((this.vendorForm.pic != '') && (this.vendorForm.Name!= '') && (this.vendorForm.Description!= ''))
       {
         this.successValidate = true;
       }
     }
-    if (this.successValidate == false)
+    if (this.successValidate == false && this.validateGeoLoc ==true)
     {
       this.failValidateToast();
+    }
+    else if(this.successValidate == false && this.validateGeoLoc == false)
+    {
+      this.GeoToast();
     }
     else
     {
@@ -216,6 +222,20 @@ export class VendorAddPage {
   failValidateToast() {
     let toast = this.toastCtrl.create({
       message: 'All fields required!',
+      duration: 3000,
+      position: 'bottom'
+    });
+
+    toast.onDidDismiss(() => {
+      console.log('Dismissed toast');
+    });
+
+    toast.present();
+  }
+
+  GeoToast() {
+    let toast = this.toastCtrl.create({
+      message: 'Please turn on location services!',
       duration: 3000,
       position: 'bottom'
     });
