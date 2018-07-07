@@ -31,7 +31,8 @@ export class VendorAddPage {
     locLong: 0,
     pic: ''
   }
-  vendorType: any;
+  successValidate: boolean = false;
+  vendorType: any = "dv";
   mark: any;
   notFound: boolean = true;
   currGeoLocLat: number;
@@ -81,48 +82,67 @@ export class VendorAddPage {
     this.currGeoLocLong = this.navParams.get('geoNumberLon');
     this.vendor = this.vendorForm;
     this.vendorFormName = this.vendorForm.Name;
-    /*if Vendor Info is NOT in the Database (the Vendoris legit and does NOT exist yet){
-      this.confirmVend = true;
-      this.dismiss();
-      this.confirmVend = false;
+    console.log("1LocLatLocLong== " + this.vendorForm.locLat + " and " + this.vendorForm.locLong);
+    console.log("picVal==" + this.vendorForm.pic);
+    if (this.vendorForm.locLat != 0 && this.vendorForm.locLong !=0)
+    { 
+      
+      console.log("2LocLatLocLong== " + this.vendorForm.locLat + " and " + this.vendorForm.locLong);
+      if ((this.vendorForm.pic != "") && (this.vendorForm.Name!= "") && (this.vendorForm.Description!= ""))
+      {
+        this.successValidate = true;
+      }
     }
-    else if Vendor Info is ALREADY in the database ( the vendor already exists)
+    if (this.successValidate == false)
     {
-      this.dismiss();
+      this.failValidateToast();
     }
-    */
-    this.checkForVendorDuplicates().subscribe((data: Object) => {
-      //this.markers = data;
-      this.mark = Object.values(data);
-      this.mark.forEach(element => {
-        if (element.locLong <= (this.currGeoLocLong + 0.09) || element.locLong >= (this.currGeoLocLong - 0.09)) {
-
-          if (element.locLat <= (this.currGeoLocLat + 0.09) || element.locLat >= (this.currGeoLocLat - 0.09)) {
-
-            if (element.Name == this.vendorFormName) {
-              console.log("Same Name Found!" + element.Name);
-              this.notFound = false;
-            }
-          }
-          //
+    else
+    {
+        /*if Vendor Info is NOT in the Database (the Vendoris legit and does NOT exist yet){
+          this.confirmVend = true;
+          this.dismiss();
+          this.confirmVend = false;
         }
-      })
-      if (this.notFound == true) {
-        this.addVendor();
-        this.presentSuccessToast();
-      }
-      else {
-        this.presentFailToast()
-      }
+        else if Vendor Info is ALREADY in the database ( the vendor already exists)
+        {
+          this.dismiss();
+        }
+        */
+        this.checkForVendorDuplicates().subscribe((data: Object) => {
+          //this.markers = data;
+          this.mark = Object.values(data);
+          this.mark.forEach(element => {
+            if (element.locLong <= (this.currGeoLocLong + 0.09) || element.locLong >= (this.currGeoLocLong - 0.09)) {
 
-    });;
+              if (element.locLat <= (this.currGeoLocLat + 0.09) || element.locLat >= (this.currGeoLocLat - 0.09)) {
 
+                if (element.Name == this.vendorFormName) {
+                  console.log("Same Name Found!" + element.Name);
+                  this.notFound = false;
+                }
+              }
+              //
+            }
+          })
+          if (this.notFound == true) {
+            this.addVendor();
+            this.presentSuccessToast();
+          }
+          else {
+            this.presentFailToast()
+          }
 
-    this.confirmVend = true;
-    //this.dismiss();
-    this.navCtrl.pop();
-    //this.weep = false;
-    console.log(this.vendor);
+        });;
+
+        
+        this.confirmVend = true;
+
+      //this.dismiss();
+      this.navCtrl.pop();
+      //this.weep = false;
+      console.log(this.vendor);
+    }
   }
 
   takePhoto() {
@@ -185,6 +205,20 @@ export class VendorAddPage {
   presentSuccessToast() {
     let toast = this.toastCtrl.create({
       message: 'Vendor added! Refresh the map!',
+      duration: 3000,
+      position: 'bottom'
+    });
+
+    toast.onDidDismiss(() => {
+      console.log('Dismissed toast');
+    });
+
+    toast.present();
+  }
+
+  failValidateToast() {
+    let toast = this.toastCtrl.create({
+      message: 'All fields required!',
       duration: 3000,
       position: 'bottom'
     });
