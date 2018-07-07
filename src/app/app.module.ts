@@ -51,6 +51,8 @@ import { GooglePlus } from '@ionic-native/google-plus'
 import { ApiProvider } from '../providers/api/api';
 import { SnapToMapProvider } from '../providers/snap-to-map/snap-to-map';
 import { ThemeSettingsProvider } from '../providers/theme-settings/theme-settings';
+import { NetworkProvider } from '../providers/network/network';
+import { Network } from '@ionic-native/network';
 
 @NgModule({
   declarations: [
@@ -128,6 +130,8 @@ import { ThemeSettingsProvider } from '../providers/theme-settings/theme-setting
     ApiProvider,
     SnapToMapProvider,
     ThemeSettingsProvider,
+    NetworkProvider,
+    Network,
   ]
 })
 export class AppModule { }

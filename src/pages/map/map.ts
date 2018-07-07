@@ -14,6 +14,8 @@ import { mapStyle } from './mapStyle';
 import * as MarkerClusterer from 'node-js-marker-clusterer';
 import { ThemeSettingsProvider } from '../../providers/theme-settings/theme-settings'
 import { ToastController } from 'ionic-angular';
+import { NetworkProvider } from '../../providers/network/network'
+import { Network } from '@ionic-native/network';
 declare var google;
 
 @IonicPage()
@@ -42,12 +44,18 @@ export class MapPage implements AfterViewInit {
   constructor(public navCtrl: NavController, public navParams: NavParams,
     public geolocation: Geolocation, public modalCtrl: ModalController,
     private http: Http, public api: ApiProvider, public snaptomap: SnapToMapProvider, private cache: CacheService, public settings: ThemeSettingsProvider,
-    private toastCtrl: ToastController) {
+    private toastCtrl: ToastController, public networkProvider: NetworkProvider, public network: Network) {
   }
   ionViewWillEnter() {
+    console.log("The network is currently type -", this.network.type);
     console.log("will enter - map.ts");
     this.markers = [];
     this.loadMap();
+    console.log("network online?", this.networkProvider.isOnline);
+
+
+
+
   }
   ionViewDidLoad() {
     //this.loadMap();
@@ -70,6 +78,21 @@ export class MapPage implements AfterViewInit {
   openModalWithParams() {
     let myModal = this.modalCtrl.create(VendorModalPage, { 'myParam': this.modalParam });
     myModal.present();
+  }
+
+  addOfflineMarker() {
+    this.geolocation.getCurrentPosition().then((position) => {
+      console.log("got location?");
+      this.geoNumberLat = position.coords.latitude;
+      this.geoNumberLon = position.coords.longitude;
+      this.navCtrl.push(VendorAddPage, {
+        geoNumberLat: this.geoNumberLat,
+        geoNumberLon: this.geoNumberLon,
+  
+      });
+    });
+    
+
   }
 
 
@@ -158,6 +181,8 @@ export class MapPage implements AfterViewInit {
         this.geoLatLon = latLng;
         this.geoNumberLat = position.coords.latitude;
         this.geoNumberLon = position.coords.longitude;
+        let geoLoc = { "geoLat": this.geoNumberLat, "geoLong": this.geoNumberLon };
+        this.cache.saveItem("geoLoc", JSON.stringify(geoLoc));
         if (this.geoNumberLat == 0 && this.geoNumberLon == 0) {
           this.geoLocationNotFoundToast();
         }
