@@ -9,6 +9,8 @@ import {ApiProvider} from '../../providers/api/api';
 import { CacheService } from 'ionic-cache';
 import { Storage } from '@ionic/storage';
 import { AddVendorIntroPage } from '../add-vendor-intro/add-vendor-intro';
+import { NetworkProvider } from '../../providers/network/network'
+import { Network } from '@ionic-native/network';
 /**
  * Generated class for the VendorAddPage page.
  *
@@ -44,7 +46,7 @@ export class VendorAddPage {
   constructor(public viewCtrl: ViewController, public navCtrl: NavController,
     public navParams: NavParams, private camera: Camera, private http: Http, 
     private toastCtrl: ToastController, public api: ApiProvider,private cache: CacheService,
-    platform: Platform,public storage: Storage, public modalCtrl: ModalController) {
+    platform: Platform,public storage: Storage, public modalCtrl: ModalController,  public networkProvider: NetworkProvider, public network: Network) {
       platform.ready().then(() => {
         this.storage.get('vendorTutShown').then((result) => {
  
@@ -83,6 +85,16 @@ export class VendorAddPage {
     this.currGeoLocLong = this.navParams.get('geoNumberLon');
     this.vendor = this.vendorForm;
     this.vendorFormName = this.vendorForm.Name;
+
+    if(this.networkProvider.isOnline == false)
+    {
+      //cache vendor object
+      this.cache.saveItem("vendorData", this.vendorForm);
+    }
+
+
+
+
     
     if (this.vendorForm.locLat != 0 && this.vendorForm.locLong !=0)
     { 

@@ -19,6 +19,9 @@ import { LoadingController } from 'ionic-angular';
 import { LoginProvider } from '../providers/login/login'
 import { Network } from '@ionic-native/network';
 import { NetworkProvider } from '../providers/network/network';
+import { Http, Headers } from '@angular/http';
+import { ApiProvider } from '../providers/api/api';
+
 
 @Component({
   templateUrl: 'app.html'
@@ -35,11 +38,29 @@ export class MyApp {
   isLoggedIn = false;
   nightMode = false;
   imageUrl: any;
+  validateGeoLoc: boolean = false;
+  successValidate: boolean = false;
+  notFound: boolean = true;
+  confirmVend: boolean = false;
+  mark: any;
+  currGeoLocLat: number;
+  currGeoLocLong: number;
+  vendorFormName: string;
+  apiUrl = "https://dream-coast-60132.herokuapp.com/";
 
-  constructor(platform: Platform, cache: CacheService, statusBar: StatusBar, splashScreen: SplashScreen, public settings: ThemeSettingsProvider, public menuCtrl: MenuController,
+  vendorForm = {
+    Type: true,
+    Name: '',
+    Description: '',
+    locLat: 0,
+    locLong: 0,
+    pic: ''
+  }
+
+  constructor(platform: Platform, statusBar: StatusBar, splashScreen: SplashScreen, public settings: ThemeSettingsProvider, public menuCtrl: MenuController,
     private toastCtrl: ToastController,
     public loadingCtrl: LoadingController, public storage: Storage, public loginProvider: LoginProvider, public events: Events, public network: Network,
-    public networkProvider: NetworkProvider) {
+    public networkProvider: NetworkProvider, private cache: CacheService, public api: ApiProvider, private http: Http) {
 
     this.listenToLoginEvents();
     this.settings.getActiveTheme().subscribe(val => {
@@ -194,10 +215,146 @@ export class MyApp {
     });
 
     // Online event
-    this.events.subscribe('network:online', () => {
+    this.events.subscribe('network:online', async () => {
       console.log('network:online');
       this.networkProvider.isOnline = true;
+      this.vendorForm = await this.cache.getItem("vendorData");
+
+      if (this.vendorForm.locLat != 0 && this.vendorForm.locLong != 0) {
+        this.validateGeoLoc = true;
+        if ((this.vendorForm.pic != '') && (this.vendorForm.Name != '') && (this.vendorForm.Description != '')) {
+          this.successValidate = true;
+        }
+      }
+      if (this.successValidate == false && this.validateGeoLoc == true) {
+        this.failValidateToast();
+      }
+      else if (this.successValidate == false && this.validateGeoLoc == false) {
+        this.GeoToast();
+      }
+      else {
+        /*if Vendor Info is NOT in the Database (the Vendoris legit and does NOT exist yet){
+          this.confirmVend = true;
+          this.dismiss();
+          this.confirmVend = false;
+        }
+        else if Vendor Info is ALREADY in the database ( the vendor already exists)
+        {
+          this.dismiss();
+        }
+        */
+        this.checkForVendorDuplicates().subscribe((data: Object) => {
+          //this.markers = data;
+          this.mark = Object.values(data);
+          this.mark.forEach(element => {
+            if (element.locLong <= (this.currGeoLocLong + 0.09) || element.locLong >= (this.currGeoLocLong - 0.09)) {
+
+              if (element.locLat <= (this.currGeoLocLat + 0.09) || element.locLat >= (this.currGeoLocLat - 0.09)) {
+
+                if (element.Name == this.vendorFormName) {
+                  console.log("Same Name Found!" + element.Name);
+                  this.notFound = false;
+                }
+              }
+              //
+            }
+          })
+          if (this.notFound == true) {
+            this.addVendor();
+            this.presentSuccessToast();
+          }
+          else {
+            this.presentFailToast()
+          }
+
+        });;
+
+
+        this.confirmVend = true;
+      }
     });
   }
+  addVendor() {
+    let headers = new Headers();
+    headers.append('Content-Type', 'application/json');
+    //this.http.post('http://127.0.0.1:8000/vendors/', JSON.stringify(this.vendorForm), { headers: headers })
+    this.http.post(this.apiUrl + 'vendors/', JSON.stringify(this.vendorForm), { headers: headers })
+      .map(res => res.json())
+      .subscribe(data => {
+        console.log(data);
+
+
+      })
+  }
+
+  checkForVendorDuplicates(): any {
+    //return this.http.get('http://127.0.0.1:8000/vendors/').map(res => res.json());
+    return this.http.get(this.apiUrl + 'vendors/').map(res => res.json());
+    /*
+    if(this.notFound == false)
+    {
+      return false;
+    }
+    return true;
+    */
+  }
+
+  presentFailToast() {
+    let toast = this.toastCtrl.create({
+      message: 'Vendor already exists!',
+      duration: 3000,
+      position: 'bottom'
+    });
+
+    toast.onDidDismiss(() => {
+      console.log('Dismissed toast');
+    });
+
+    toast.present();
+  }
+
+  presentSuccessToast() {
+    let toast = this.toastCtrl.create({
+      message: 'Vendor added! Refresh the map!',
+      duration: 3000,
+      position: 'bottom'
+    });
+
+    toast.onDidDismiss(() => {
+      console.log('Dismissed toast');
+    });
+
+    toast.present();
+  }
+
+  failValidateToast() {
+    let toast = this.toastCtrl.create({
+      message: 'All fields required!',
+      duration: 3000,
+      position: 'bottom'
+    });
+
+    toast.onDidDismiss(() => {
+      console.log('Dismissed toast');
+    });
+
+    toast.present();
+  }
+
+  GeoToast() {
+    let toast = this.toastCtrl.create({
+      message: 'Please turn on location services!',
+      duration: 3000,
+      position: 'bottom'
+    });
+
+    toast.onDidDismiss(() => {
+      console.log('Dismissed toast');
+    });
+
+    toast.present();
+  }
+
+
 
 }

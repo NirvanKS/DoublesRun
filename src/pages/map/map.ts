@@ -52,6 +52,10 @@ export class MapPage implements AfterViewInit {
     this.markers = [];
     this.loadMap();
     console.log("network online?", this.networkProvider.isOnline);
+
+
+
+
   }
   ionViewDidLoad() {
     //this.loadMap();
@@ -74,6 +78,21 @@ export class MapPage implements AfterViewInit {
   openModalWithParams() {
     let myModal = this.modalCtrl.create(VendorModalPage, { 'myParam': this.modalParam });
     myModal.present();
+  }
+
+  addOfflineMarker() {
+    this.geolocation.getCurrentPosition().then((position) => {
+      console.log("got location?");
+      this.geoNumberLat = position.coords.latitude;
+      this.geoNumberLon = position.coords.longitude;
+      this.navCtrl.push(VendorAddPage, {
+        geoNumberLat: this.geoNumberLat,
+        geoNumberLon: this.geoNumberLon,
+  
+      });
+    });
+    
+
   }
 
 
