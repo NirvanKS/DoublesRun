@@ -82,13 +82,10 @@ export class VendorAddPage {
     this.currGeoLocLong = this.navParams.get('geoNumberLon');
     this.vendor = this.vendorForm;
     this.vendorFormName = this.vendorForm.Name;
-    console.log("1LocLatLocLong== " + this.vendorForm.locLat + " and " + this.vendorForm.locLong);
-    console.log("picVal==" + this.vendorForm.pic);
+    
     if (this.vendorForm.locLat != 0 && this.vendorForm.locLong !=0)
     { 
-      
-      console.log("2LocLatLocLong== " + this.vendorForm.locLat + " and " + this.vendorForm.locLong);
-      if ((this.vendorForm.pic != "") && (this.vendorForm.Name!= "") && (this.vendorForm.Description!= ""))
+      if ((this.vendorForm.pic != '') && (this.vendorForm.Name!= '') && (this.vendorForm.Description!= ''))
       {
         this.successValidate = true;
       }
