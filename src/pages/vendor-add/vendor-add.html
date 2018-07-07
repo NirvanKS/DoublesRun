@@ -13,7 +13,7 @@
       <ion-list radio-group [(ngModel)]="vendorType" name="VendorType">
         <ion-item>
           <ion-label>Doubles Vendor</ion-label>
-          <ion-radio value="dv"></ion-radio>
+          <ion-radio checked="true" value="dv"></ion-radio>
         </ion-item>
         <ion-item>
           <ion-label>Not a Doubles Vendor</ion-label>
@@ -22,11 +22,11 @@
       </ion-list>
       <ion-item>
         <ion-label>Vendor Name: </ion-label>
-        <ion-input type="text" [(ngModel)]="vendorForm.Name" name="Name"></ion-input>
+        <ion-input type="text" required [(ngModel)]="vendorForm.Name" name="Name"></ion-input>
       </ion-item>
       <ion-item>
         <ion-label>Description</ion-label>
-        <ion-textarea type="text" [(ngModel)]="vendorForm.Description" name="Description"></ion-textarea>
+        <ion-textarea type="text" required [(ngModel)]="vendorForm.Description" name="Description"></ion-textarea>
       </ion-item>
       <br>
 
