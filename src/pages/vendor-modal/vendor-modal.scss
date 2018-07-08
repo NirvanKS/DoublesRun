@@ -15,10 +15,34 @@ page-vendor-modal {
   }
 }
 
-@import url('https://fonts.googleapis.com/css?family=Itim');
-@import url('https://fonts.googleapis.com/css?family=Timmana');
-@import url('https://fonts.googleapis.com/css?family=Playfair+Display');
-@import url('https://fonts.googleapis.com/css?family=Source+Sans+Pro:600');
+@font-face {
+  font-family: Itim;
+  src: url('../assets/fonts/Itim-Regular.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: Timmana;
+  src: url('../assets/fonts/Timmana-Regular.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: Playfair Display;
+  src: url('../assets/fonts/PlayfairDisplay-Regular.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: Source Sans Pro;
+  src: url('../assets/fonts/SourceSansPro-SemiBold.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: Cabin Sketch;
+  src: url('../assets/fonts/CabinSketch-Bold.ttf') format('truetype');
+}
+
+
+
+
 @import url('https://fonts.googleapis.com/css?family=Cabin+Sketch:700');
 $itim: 'Itim',
 serif;
