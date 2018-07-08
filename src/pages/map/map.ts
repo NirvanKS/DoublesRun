@@ -1,5 +1,5 @@
 import { Component, ViewChild, ElementRef } from '@angular/core';
-import { IonicPage, NavController, NavParams, ModalController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, ModalController, Platform } from 'ionic-angular';
 import { VendorMarkerPage } from '../vendor-marker/vendor-marker';
 import { Geolocation } from '@ionic-native/geolocation';
 import { VendorModalPage } from '../vendor-modal/vendor-modal';
@@ -44,12 +44,13 @@ export class MapPage implements AfterViewInit {
   constructor(public navCtrl: NavController, public navParams: NavParams,
     public geolocation: Geolocation, public modalCtrl: ModalController,
     private http: Http, public api: ApiProvider, public snaptomap: SnapToMapProvider, private cache: CacheService, public settings: ThemeSettingsProvider,
-    private toastCtrl: ToastController, public networkProvider: NetworkProvider, public network: Network) {
+    private toastCtrl: ToastController, public networkProvider: NetworkProvider, public network: Network, public platform: Platform) {
   }
-  ionViewWillEnter() {
+  async ionViewWillEnter() {
     console.log("The network is currently type -", this.network.type);
     console.log("will enter - map.ts");
     this.markers = [];
+    await this.platform.ready();
     this.loadMap();
     console.log("network online?", this.networkProvider.isOnline);
 
@@ -175,9 +176,14 @@ export class MapPage implements AfterViewInit {
       //return; //optional? dont wanna have a gigantic else statement for the rest of this function tho
     }
     else {
-      this.geolocation.getCurrentPosition().then((position) => {
-        console.log("got location?");
+      let options= {
+        enableHighAccuracy: true,
+        timeout: 15000
+      }
+      this.geolocation.getCurrentPosition(options).then((position) => {
+        
         let latLng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+        console.log("got location?", position.coords.accuracy,"m");
         this.geoLatLon = latLng;
         this.geoNumberLat = position.coords.latitude;
         this.geoNumberLon = position.coords.longitude;
@@ -191,6 +197,12 @@ export class MapPage implements AfterViewInit {
           map.setZoom(15);
         }
 
+      }).catch((error) => {
+        if (error.code==3){
+          this.geolocationRebootError()
+        }
+        console.log('Error getting location', error);
+        
       });
     }
     this.map.addListener('dragend', function () {
@@ -344,6 +356,19 @@ export class MapPage implements AfterViewInit {
   geoLocationNotFoundToast() {
     let toast = this.toastCtrl.create({
       message: 'Your geolocation was not loaded.',
+      duration: 3000,
+      position: 'bottom'
+    });
+
+    toast.onDidDismiss(() => {
+      console.log('Dismissed toast');
+    });
+
+    toast.present();
+  }
+  geolocationRebootError() {
+    let toast = this.toastCtrl.create({
+      message: "Can't get your location, restart your device!",
       duration: 3000,
       position: 'bottom'
     });
