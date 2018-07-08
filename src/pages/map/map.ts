@@ -105,6 +105,9 @@ export class MapPage implements AfterViewInit {
       this.geoNumberLon = position.coords.longitude;
       map.setCenter(latLng);
       map.setZoom(15);
+      
+
+      
     });
     this.navCtrl.push(VendorAddPage, {
       geoNumberLat: this.geoNumberLat,
@@ -189,6 +192,21 @@ export class MapPage implements AfterViewInit {
         else {
           map.setCenter(latLng);
           map.setZoom(15);
+          var yourWindow = new google.maps.InfoWindow({
+            content: '<p>You are here<p>'
+          });
+  
+          var YourMarker = new google.maps.Marker({
+            position: latLng,
+            map: map,
+            
+            
+          });
+          this.markers.push(YourMarker);
+          YourMarker.addListener('click', function() {
+            yourWindow.open(map, YourMarker);
+          });
+  
         }
 
       });

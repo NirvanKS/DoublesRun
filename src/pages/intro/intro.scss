@@ -1,5 +1,13 @@
-@import url('https://fonts.googleapis.com/css?family=Muli');
-@import url('https://fonts.googleapis.com/css?family=Paytone+One');
+//@import url('https://fonts.googleapis.com/css?family=Muli');
+@font-face {
+    font-family: Muli;
+    src: url('../../assets/fonts/Muli-Regular.ttf') format('truetype');
+  }
+  //@import url('https://fonts.googleapis.com/css?family=Paytone+One');
+  @font-face {
+    font-family: PaytoneOne;
+    src: url('../../assets/fonts/PaytoneOne-Regular.ttf') format('truetype');
+  }
 page-intro {
     // .ios, .md {
         .swiper-wrapper {

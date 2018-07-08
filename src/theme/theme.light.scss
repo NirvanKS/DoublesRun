@@ -1,6 +1,24 @@
-@import url('https://fonts.googleapis.com/css?family=Signika:400,700');
-@import url('https://fonts.googleapis.com/css?family=Muli');
-@import url('https://fonts.googleapis.com/css?family=Bangers');
+//@import url('https://fonts.googleapis.com/css?family=Signika:400,700');
+@font-face {
+  font-family: Signika;
+  src: url('../assets/fonts/Signika-Regular.ttf') format('truetype');
+  src: url('../assets/fonts/Signika-Bold.ttf') format('truetype');
+}
+
+
+//@import url('https://fonts.googleapis.com/css?family=Muli');
+@font-face {
+  font-family: Muli;
+  src: url('../assets/fonts/Muli-Regular.ttf') format('truetype');
+}
+
+//@import url('https://fonts.googleapis.com/css?family=Bangers');
+@font-face {
+  font-family: Bangers;
+  src: url('../assets/fonts/Bangers-Regular.ttf') format('truetype');
+}
+
+
 .light-theme {
     ion-content {
       background-color: #fff;
