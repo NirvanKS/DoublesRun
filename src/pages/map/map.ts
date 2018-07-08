@@ -229,9 +229,15 @@ export class MapPage implements AfterViewInit {
       this.mark.forEach(element => {
         //console.log(element.Name);
         let markLatLon = new google.maps.LatLng(element.locLat, element.locLong);
+        let image = {
+          url: "assets/imgs/doubles.png",
+          size: new google.maps.Size(60, 47),
+          origin: new google.maps.Point(0, 0),
+          anchor: new google.maps.Point(30,47)
+        }
         let marker = new google.maps.Marker({
           // map: this.map,
-          icon: "assets/imgs/doubles.png",
+          icon: image,
           // animation: google.maps.Animation.DROP,
           position: markLatLon//this.map.getCenter()
 
