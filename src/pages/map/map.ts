@@ -17,6 +17,7 @@ import { ToastController } from 'ionic-angular';
 import { NetworkProvider } from '../../providers/network/network'
 import { Network } from '@ionic-native/network';
 declare var google;
+declare var navigator;
 
 @IonicPage()
 @Component({
@@ -39,7 +40,7 @@ export class MapPage implements AfterViewInit {
   geoLatLon: any;
   modalParam = 'https://google.com/';
   apiUrl = "https://dream-coast-60132.herokuapp.com/";
-  vendorsKey = "vendor-ranking-list"
+  vendorsKey = "vendor-ranking-list";
   @ViewChild('map') mapElement: ElementRef;
   constructor(public navCtrl: NavController, public navParams: NavParams,
     public geolocation: Geolocation, public modalCtrl: ModalController,
@@ -181,10 +182,24 @@ export class MapPage implements AfterViewInit {
     else {
       let options= {
         enableHighAccuracy: true,
-        timeout: 15000
-      }
-      this.geolocation.getCurrentPosition(options).then((position) => {
-        
+        timeout: 15000,
+        maximumAge: 0
+      };
+      console.log('im gonna try!');
+      let watchLoc = this.geolocation.watchPosition(options)
+      .subscribe((position) =>{
+        console.log(position);
+        if(position.coords == undefined){
+          //this MIGHT mean timeout error, position becomes the error object if one occurs :)
+          this.geolocationRebootError();
+          console.log('Error getting location');
+          watchLoc.unsubscribe();
+          return;
+        }
+        console.log("trying my best here ", position.coords.accuracy,"m");
+        if (position.coords.accuracy>50){
+          return;
+        }
         let latLng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
         console.log("got location?", position.coords.accuracy,"m");
         this.geoLatLon = latLng;
@@ -212,16 +227,56 @@ export class MapPage implements AfterViewInit {
           YourMarker.addListener('click', function() {
             yourWindow.open(map, YourMarker);
           });
+          watchLoc.unsubscribe();
   
         }
-
-      }).catch((error) => {
+      },(error:any) => { //errors aren't being picked up on watchPosition
         if (error.code==3){
           this.geolocationRebootError()
         }
         console.log('Error getting location', error);
         
       });
+      
+      // this.geolocation.getCurrentPosition(options).then((position) => {
+        
+      //   let latLng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+      //   console.log("got location?", position.coords.accuracy,"m");
+      //   this.geoLatLon = latLng;
+      //   this.geoNumberLat = position.coords.latitude;
+      //   this.geoNumberLon = position.coords.longitude;
+      //   let geoLoc = { "geoLat": this.geoNumberLat, "geoLong": this.geoNumberLon };
+      //   this.cache.saveItem("geoLoc", JSON.stringify(geoLoc));
+      //   if (this.geoNumberLat == 0 && this.geoNumberLon == 0) {
+      //     this.geoLocationNotFoundToast();
+      //   }
+      //   else {
+      //     map.setCenter(latLng);
+      //     map.setZoom(15);
+      //     var yourWindow = new google.maps.InfoWindow({
+      //       content: '<p>You are here<p>'
+      //     });
+  
+      //     var YourMarker = new google.maps.Marker({
+      //       position: latLng,
+      //       map: map,
+            
+            
+      //     });
+      //     this.markers.push(YourMarker);
+      //     YourMarker.addListener('click', function() {
+      //       yourWindow.open(map, YourMarker);
+      //     });
+  
+      //   }
+
+      // }).catch((error) => {
+      //   if (error.code==3){
+      //     this.geolocationRebootError()
+      //   }
+      //   console.log('Error getting location', error);
+        
+      // });
     }
     this.map.addListener('dragend', function () {
       var center = map.getCenter();
@@ -386,7 +441,7 @@ export class MapPage implements AfterViewInit {
   }
   geolocationRebootError() {
     let toast = this.toastCtrl.create({
-      message: "Can't get your location, restart your device!",
+      message: "Can't get your location, try restarting your device!",
       duration: 3000,
       position: 'bottom'
     });

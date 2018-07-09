@@ -1,9 +1,11 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, LoadingController } from 'ionic-angular';
 import { Http } from '@angular/http';
 import { CacheService } from 'ionic-cache';
 import { Observable } from 'rxjs/Observable';
 import { ApiProvider } from '../../providers/api/api';
+import { NetworkProvider } from '../../providers/network/network'
+import { Network } from '@ionic-native/network';
 import { SnapToMapProvider } from '../../providers/snap-to-map/snap-to-map'
 import { MapPage } from '../map/map'
 /**
@@ -24,14 +26,21 @@ export class RankingsPage {
   vendorsKey = "vendor-ranking-list"
   vendors: Observable<any>;
   vendorList: any;
-  orderedVendors: any;
+  orderedVendors: any = [];
   loadim: Boolean = true;
-  constructor(public navCtrl: NavController, public navParams: NavParams, private http: Http, private cache: CacheService, public api: ApiProvider
-    , public snaptomap: SnapToMapProvider) {
+  loader: any;
+  constructor(public navCtrl: NavController, public navParams: NavParams, private http: Http, private cache: CacheService, public api: ApiProvider,
+    public loadingCtrl: LoadingController, public snaptomap: SnapToMapProvider,
+    public networkProvider: NetworkProvider, public network: Network) {
   }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad RankingsPage');
+    console.log("network online?", this.networkProvider.isOnline);
+    if (this.networkProvider.isOnline){
+      this.presentLoading();
+    }
+    
     this.loadVendors();  //can be loadVendors(false)
     //this.loadim = true;
   }
@@ -85,6 +94,9 @@ export class RankingsPage {
       })
       // console.log("ordered" + this.orderedVendors[1].rankingScore);
     })
+    if (this.orderedVendors != [] && this.loader!=undefined){
+      this.loader.dismiss();
+    }
 
   }
 
@@ -96,5 +108,15 @@ export class RankingsPage {
   // Pull to refresh and force reload
   forceReload(refresher) {
     this.loadVendors(refresher);
+  }
+
+  presentLoading() {
+
+    this.loader = this.loadingCtrl.create({
+      content: "Loading Vendors..."
+    });
+
+    this.loader.present();
+
   }
 }
