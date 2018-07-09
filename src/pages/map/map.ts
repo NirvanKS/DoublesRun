@@ -1,5 +1,5 @@
 import { Component, ViewChild, ElementRef } from '@angular/core';
-import { IonicPage, NavController, NavParams, ModalController, Platform } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, ModalController, Platform, LoadingController } from 'ionic-angular';
 import { VendorMarkerPage } from '../vendor-marker/vendor-marker';
 import { Geolocation } from '@ionic-native/geolocation';
 import { VendorModalPage } from '../vendor-modal/vendor-modal';
@@ -38,25 +38,29 @@ export class MapPage implements AfterViewInit {
   geoNumberLat: number = 0;
   geoNumberLon: number = 0;
   geoLatLon: any;
+  loader: any;
   modalParam = 'https://google.com/';
   apiUrl = "https://dream-coast-60132.herokuapp.com/";
   vendorsKey = "vendor-ranking-list";
+  offline: Boolean;
   @ViewChild('map') mapElement: ElementRef;
   constructor(public navCtrl: NavController, public navParams: NavParams,
     public geolocation: Geolocation, public modalCtrl: ModalController,
     private http: Http, public api: ApiProvider, public snaptomap: SnapToMapProvider, private cache: CacheService, public settings: ThemeSettingsProvider,
-    private toastCtrl: ToastController, public networkProvider: NetworkProvider, public network: Network, public platform: Platform) {
+    private toastCtrl: ToastController, public networkProvider: NetworkProvider, public network: Network, 
+    public platform: Platform, public loadingCtrl: LoadingController) {
   }
   async ionViewWillEnter() {
     console.log("The network is currently type -", this.network.type);
     console.log("will enter - map.ts");
     this.markers = [];
     await this.platform.ready();
+    if (this.networkProvider.isOnline == false && this.network.type == "none") {
+      this.offline = true;
+    }
     this.loadMap();
     console.log("network online?", this.networkProvider.isOnline);
-
-
-
+    
 
   }
   ionViewDidLoad() {
@@ -83,45 +87,55 @@ export class MapPage implements AfterViewInit {
   }
 
   addOfflineMarker() {
-    this.geolocation.getCurrentPosition().then((position) => {
-      console.log("got location?");
-      this.geoNumberLat = position.coords.latitude;
-      this.geoNumberLon = position.coords.longitude;
-      this.navCtrl.push(VendorAddPage, {
-        geoNumberLat: this.geoNumberLat,
-        geoNumberLon: this.geoNumberLon,
-  
+    let options = {
+      enableHighAccuracy: true,
+      timeout: 15000,
+      maximumAge: 0
+    };
+    this.presentLoading();
+    console.log('im gonna try!');
+    let watchLoc = this.geolocation.watchPosition(options)
+      .subscribe((position) => {
+        console.log(position);
+        if (position.coords == undefined) {
+          //this MIGHT mean timeout error, position becomes the error object if one occurs :)
+          this.geolocationRebootError();
+          console.log('Error getting location');
+          this.loader.dismiss();
+          watchLoc.unsubscribe();
+          return;
+        }
+        console.log("trying my best here ", position.coords.accuracy, "m");
+        if (position.coords.accuracy > 30) {
+          return;
+        }
+        console.log("got location?", position.coords.accuracy, "m");
+        this.geoNumberLat = position.coords.latitude;
+        this.geoNumberLon = position.coords.longitude;
+        if (this.geoNumberLat == 0 && this.geoNumberLon == 0) {
+          this.geoLocationNotFoundToast();
+        }
+        else {
+          watchLoc.unsubscribe();
+          this.loader.dismiss();
+          this.navCtrl.push(VendorAddPage, {
+            geoNumberLat: this.geoNumberLat,
+            geoNumberLon: this.geoNumberLon,
+          });
+        }
+      }, (error: any) => { //errors aren't being picked up on watchPosition
+        if (error.code == 3) {
+          this.geolocationRebootError()
+        }
+        console.log('Error getting location', error);
+
       });
-    });
-    
 
   }
 
 
   addMarker() {
-    this.geolocation.getCurrentPosition().then((position) => {
-      console.log("got location?");
-      let latLng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
-      this.geoLatLon = latLng;
-      this.geoNumberLat = position.coords.latitude;
-      this.geoNumberLon = position.coords.longitude;
-      map.setCenter(latLng);
-      map.setZoom(15);
-      
-
-      
-    });
-    this.navCtrl.push(VendorAddPage, {
-      geoNumberLat: this.geoNumberLat,
-      geoNumberLon: this.geoNumberLon,
-
-    });
-
-    var map = this.map;
-    var navControl = this.navCtrl;
-    var modal = this.modalCtrl;
-    var params = this.modalParam;
-
+    this.addOfflineMarker(); // sheer laziness btw
 
   }
 
@@ -451,6 +465,16 @@ export class MapPage implements AfterViewInit {
     });
 
     toast.present();
+  }
+
+  presentLoading() {
+
+    this.loader = this.loadingCtrl.create({
+      content: "Getting your location..."
+    });
+
+    this.loader.present();
+
   }
 
 }
