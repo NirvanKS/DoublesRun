@@ -40,44 +40,46 @@ export class FilterPage {
   }
 
 
-  loadFromCache(vendorObservable: Observable<any>) {
-
-    vendorObservable.subscribe((data: Object) => {
-      this.vendors = Object.values(data);
+  loadFromCache(vendorObservable) {
+    console.log("from cache : ");
+    if (this.highRated) {
+      this.vendors = this.cachedVendors.filter(element => element.avgRating >= 4.0);
       //console.log(this.vendors);
-      if (this.highRated) {
-        this.vendors = this.vendors.filter(element => element.avgRating >= 4.0);
-        //console.log(this.vendors);
-      }
-      if (this.thick) {
-        this.vendors = this.vendors.filter(element => element.avgThickness > 5.0);
-        //console.log(this.vendors);
-      }
-      if (this.thin) {
-        this.vendors = this.vendors.filter(element => element.avgThickness <= 5.0);
-        //console.log(this.vendors);
-      }
-      if (this.cucumber) {
-        this.vendors = this.vendors.filter(element => element.avgCucumber == true);
-        //console.log(this.vendors);
-      }
-      if (this.spicy) {
-        this.vendors = this.vendors.filter(element => element.avgSpicy > 5.0);
-        //console.log(this.vendors);
-      }
+    }
+    if (this.thick) {
+      this.vendors = this.cachedVendors.filter(element => element.avgThickness > 5.0);
+      // console.log(this.vendors);
+    }
+    if (this.thin) {
+      this.vendors = this.cachedVendors.filter(element => element.avgThickness <= 5.0);
       //console.log(this.vendors);
-      this.navCtrl.push(FilterListPage, {
-        vendors: this.vendors
-      });
-
-
+    }
+    if (this.cucumber) {
+      this.vendors = this.cachedVendors.filter(element => element.avgCucumber == true);
+      //console.log(this.vendors);
+    }
+    if (this.spicy) {
+      this.vendors = this.cachedVendors.filter(element => element.avgSpicy > 5.0);
+      //console.log(this.vendors);
+    }
+    //console.log(this.vendors);
+    this.navCtrl.push(FilterListPage, {
+      vendors: this.vendors
     });
 
-
   }
-  openPage() {
+
+  async getCache() {
+    let key = "https://dream-coast-60132.herokuapp.com/vendors/"
+    let data = await this.cache.getItem(key);
+    return data;
+  }
+
+
+  async openPage() {
     let url = 'https://dream-coast-60132.herokuapp.com/';
-    this.cachedVendors = this.cache.loadFromObservable(url, this.http.get(this.apiUrl + 'vendors/').map(res => res.json()));
+    this.cachedVendors = await this.getCache();
+    console.log("vendors - ", this.cachedVendors);
     if (this.cachedVendors != null) {
       console.log("Loading from cache");
       this.loadFromCache(this.cachedVendors);

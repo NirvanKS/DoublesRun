@@ -104,7 +104,7 @@ export class MyApp {
     ];
 
     //trying silent login so that the user doesn't always have to login every session
-
+    this.loginProvider.silentLogin();
   }
   openPage(page) {
     // Reset the content nav to have just this page
