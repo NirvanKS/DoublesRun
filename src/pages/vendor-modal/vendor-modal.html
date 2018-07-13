@@ -13,7 +13,7 @@
         <p style="margin-bottom:0">{{avgRating}}</p>
         <ion-icon small range-left name="md-star"></ion-icon>
       </div>
-      <button ion-button color="danger" id="reportBtn">Report</button>
+      <button ion-button color="danger" id="reportBtn" (click)="report()">Report</button>
       <!-- <div class="daynight">
         <div *ngIf="day==true">
           <ion-icon small range-left name="md-sunny"></ion-icon>
@@ -30,7 +30,8 @@
 
       <h3 id="title">{{name}}</h3>
       <div *ngIf="type">
-        <h4 class="classes">{{thickness}} | {{channa}} <br> {{spiciness}} | {{cuc}}
+        <h4 class="classes">{{thickness}} | {{channa}}
+          <br> {{spiciness}} | {{cuc}}
           <br>
           <i>
             <small id="descs"> The tags above are calculated from users' reviews </small>
@@ -52,7 +53,7 @@
         <div id="editCard" *ngIf="this.cantEditReview">
           <button ion-button color="danger" (click)="loadReviewPage()">Add Review</button>
         </div>
-          <br>
+        <br>
         <button ion-button color="danger" (click)="dismiss()">Back</button>
       </div>
 

@@ -37,10 +37,10 @@ export class RankingsPage {
   ionViewDidLoad() {
     console.log('ionViewDidLoad RankingsPage');
     console.log("network online?", this.networkProvider.isOnline);
-    if (this.networkProvider.isOnline){
+    if (this.networkProvider.isOnline) {
       this.presentLoading();
     }
-    
+
     this.loadVendors();  //can be loadVendors(false)
     //this.loadim = true;
   }
@@ -56,7 +56,7 @@ export class RankingsPage {
       .map(res => {
         //this.loadim = true;
         return res.json();
-        
+
       });
 
     let ttl = 60 * 60 * 3;
@@ -64,7 +64,7 @@ export class RankingsPage {
     if (refresher) {
       // Reload data even if it is cached
       let delayType = 'all';
-      this.vendors = this.cache.loadFromDelayedObservable(url, req, 'none',ttl, delayType);
+      this.vendors = this.cache.loadFromDelayedObservable(url, req, 'none', ttl, delayType);
       // Hide the refresher once loading is done
       this.vendors.subscribe(data => {
         refresher.complete();
@@ -83,7 +83,7 @@ export class RankingsPage {
     this.vendors.subscribe((data: Object) => {
       this.vendorList = Object.values(data);
       console.log(this.vendorList);
-      this.orderedVendors = this.vendorList.sort(function compare(a, b) {
+      let o = this.vendorList.sort(function compare(a, b) {
         // if (a.avgRating < b.avgRating)
         //   return -1;
         // if (a.avgRating > b.avgRating)
@@ -92,9 +92,11 @@ export class RankingsPage {
         //this.loadim = true;
         return b.rankingScore - a.rankingScore;
       })
+      this.orderedVendors = o.slice(0, 10);
+
       // console.log("ordered" + this.orderedVendors[1].rankingScore);
     })
-    if (this.orderedVendors != [] && this.loader!=undefined){
+    if (this.orderedVendors != [] && this.loader != undefined) {
       this.loader.dismiss();
     }
 

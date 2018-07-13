@@ -113,7 +113,7 @@ export class VendorAddPage {
       }
 
     }
-
+   
 
     if (this.vendorForm.locLat != 0 && this.vendorForm.locLong != 0) {
       this.validateGeoLoc = true;
@@ -204,6 +204,8 @@ export class VendorAddPage {
 
       })
   }
+
+  
 
   checkForVendorDuplicates(): any {
     //return this.http.get('http://127.0.0.1:8000/vendors/').map(res => res.json());
