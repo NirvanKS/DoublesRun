@@ -221,9 +221,9 @@ export class MyApp {
       this.vendorForm = await this.cache.getItem("vendorData");
       //deal with a single vendor or an array of vendors here.
 
-      if(this.vendorForm instanceof Array)//start of array hadnling
+      if (this.vendorForm instanceof Array)//start of array hadnling
       {
-        this.vendorForm.forEach(vendor=>{
+        this.vendorForm.forEach(vendor => {
           this.validateGeoLoc = false;
           this.successValidate = false;
           this.notFound = true;
@@ -256,16 +256,16 @@ export class MyApp {
               if (this.notFound == true) {
                 this.addVendor2(vendor);
                 //we should be clearing the cache of all old offline vendors here
-                
+
                 this.presentSuccessToast();
               }
               else {
                 this.presentFailToast()
               }
-    
+
             });;
-    
-    
+
+
             this.confirmVend = true;
           }
 
@@ -273,8 +273,7 @@ export class MyApp {
         });
         this.cache.removeItem("vendorData");
       }//end of array handling
-      else
-      { //start of single vendor handling
+      else { //start of single vendor handling
         if (this.vendorForm.locLat != 0 && this.vendorForm.locLong != 0) {
           this.validateGeoLoc = true;
           if ((this.vendorForm.pic != '') && (this.vendorForm.Name != '') && (this.vendorForm.Description != '')) {
@@ -303,9 +302,9 @@ export class MyApp {
             this.mark = Object.values(data);
             this.mark.forEach(element => {
               if (element.locLong <= (this.currGeoLocLong + 0.09) || element.locLong >= (this.currGeoLocLong - 0.09)) {
-  
+
                 if (element.locLat <= (this.currGeoLocLat + 0.09) || element.locLat >= (this.currGeoLocLat - 0.09)) {
-  
+
                   if (element.Name == this.vendorFormName) {
                     console.log("Same Name Found!" + element.Name);
                     this.notFound = false;
@@ -323,16 +322,16 @@ export class MyApp {
             else {
               this.presentFailToast()
             }
-  
+
           });;
-  
-  
+
+
           this.confirmVend = true;
         }
 
       } //end of single vendor handling
-     
-      
+
+
     });
   }
   addVendor() {
@@ -359,7 +358,7 @@ export class MyApp {
       })
   }
 
-  
+
 
   checkForVendorDuplicates(): any {
     //return this.http.get('http://127.0.0.1:8000/vendors/').map(res => res.json());

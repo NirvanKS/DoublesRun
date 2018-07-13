@@ -179,7 +179,7 @@ export class MapPage implements AfterViewInit {
       this.mapOptions = {
         center: new google.maps.LatLng(10.4568902, -61.2991011),
         zoom: 10.35,
-        minZoom: 10,
+        minZoom: 8,
         mapTypeId: google.maps.MapTypeId.ROADMAP,
         styles: style
       }
