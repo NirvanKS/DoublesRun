@@ -220,60 +220,119 @@ export class MyApp {
       this.networkProvider.isOnline = true;
       this.vendorForm = await this.cache.getItem("vendorData");
       //deal with a single vendor or an array of vendors here.
-      if (this.vendorForm.locLat != 0 && this.vendorForm.locLong != 0) {
-        this.validateGeoLoc = true;
-        if ((this.vendorForm.pic != '') && (this.vendorForm.Name != '') && (this.vendorForm.Description != '')) {
-          this.successValidate = true;
-        }
-      }
-      if (this.successValidate == false && this.validateGeoLoc == true) {
-        this.failValidateToast();
-      }
-      else if (this.successValidate == false && this.validateGeoLoc == false) {
-        this.GeoToast();
-      }
-      else {
-        /*if Vendor Info is NOT in the Database (the Vendoris legit and does NOT exist yet){
-          this.confirmVend = true;
-          this.dismiss();
-          this.confirmVend = false;
-        }
-        else if Vendor Info is ALREADY in the database ( the vendor already exists)
-        {
-          this.dismiss();
-        }
-        */
-        this.checkForVendorDuplicates().subscribe((data: Object) => {
-          //this.markers = data;
-          this.mark = Object.values(data);
-          this.mark.forEach(element => {
-            if (element.locLong <= (this.currGeoLocLong + 0.09) || element.locLong >= (this.currGeoLocLong - 0.09)) {
 
-              if (element.locLat <= (this.currGeoLocLat + 0.09) || element.locLat >= (this.currGeoLocLat - 0.09)) {
-
-                if (element.Name == this.vendorFormName) {
-                  console.log("Same Name Found!" + element.Name);
-                  this.notFound = false;
-                }
-              }
-              //
+      if(this.vendorForm instanceof Array)//start of array hadnling
+      {
+        this.vendorForm.forEach(vendor=>{
+          this.validateGeoLoc = false;
+          this.successValidate = false;
+          this.notFound = true;
+          if (vendor.locLat != 0 && vendor.locLong != 0) {
+            this.validateGeoLoc = true;
+            if ((vendor.pic != '') && (vendor.Name != '') && (vendor.Description != '')) {
+              this.successValidate = true;
             }
-          })
-          if (this.notFound == true) {
-            this.addVendor();
-            //we should be clearing the cache of all old offline vendors here
-            // this.cache.removeItem("vendorData");
-            this.presentSuccessToast();
+          }
+          if (this.successValidate == false && this.validateGeoLoc == true) {
+            this.failValidateToast();
+          }
+          else if (this.successValidate == false && this.validateGeoLoc == false) {
+            this.GeoToast();
           }
           else {
-            this.presentFailToast()
+            this.checkForVendorDuplicates().subscribe((data: Object) => {
+              this.mark = Object.values(data);
+              this.mark.forEach(element => {
+                if (element.locLong <= (vendor.locLong + 0.09) || element.locLong >= (vendor.locLong - 0.09)) {
+                  if (element.locLat <= (vendor.locLat + 0.09) || element.locLat >= (vendor.locLat - 0.09)) {
+                    if (element.Name == vendor.Name) {
+                      console.log("Same Name Found!" + element.Name);
+                      this.notFound = false;
+                    }
+                  }
+                  //
+                }
+              })
+              if (this.notFound == true) {
+                this.addVendor2(vendor);
+                //we should be clearing the cache of all old offline vendors here
+                
+                this.presentSuccessToast();
+              }
+              else {
+                this.presentFailToast()
+              }
+    
+            });;
+    
+    
+            this.confirmVend = true;
           }
 
-        });;
 
+        });
+        this.cache.removeItem("vendorData");
+      }//end of array handling
+      else
+      { //start of single vendor handling
+        if (this.vendorForm.locLat != 0 && this.vendorForm.locLong != 0) {
+          this.validateGeoLoc = true;
+          if ((this.vendorForm.pic != '') && (this.vendorForm.Name != '') && (this.vendorForm.Description != '')) {
+            this.successValidate = true;
+          }
+        }
+        if (this.successValidate == false && this.validateGeoLoc == true) {
+          this.failValidateToast();
+        }
+        else if (this.successValidate == false && this.validateGeoLoc == false) {
+          this.GeoToast();
+        }
+        else {
+          /*if Vendor Info is NOT in the Database (the Vendoris legit and does NOT exist yet){
+            this.confirmVend = true;
+            this.dismiss();
+            this.confirmVend = false;
+          }
+          else if Vendor Info is ALREADY in the database ( the vendor already exists)
+          {
+            this.dismiss();
+          }
+          */
+          this.checkForVendorDuplicates().subscribe((data: Object) => {
+            //this.markers = data;
+            this.mark = Object.values(data);
+            this.mark.forEach(element => {
+              if (element.locLong <= (this.currGeoLocLong + 0.09) || element.locLong >= (this.currGeoLocLong - 0.09)) {
+  
+                if (element.locLat <= (this.currGeoLocLat + 0.09) || element.locLat >= (this.currGeoLocLat - 0.09)) {
+  
+                  if (element.Name == this.vendorFormName) {
+                    console.log("Same Name Found!" + element.Name);
+                    this.notFound = false;
+                  }
+                }
+                //
+              }
+            })
+            if (this.notFound == true) {
+              this.addVendor();
+              //we should be clearing the cache of all old offline vendors here
+              this.cache.removeItem("vendorData");
+              this.presentSuccessToast();
+            }
+            else {
+              this.presentFailToast()
+            }
+  
+          });;
+  
+  
+          this.confirmVend = true;
+        }
 
-        this.confirmVend = true;
-      }
+      } //end of single vendor handling
+     
+      
     });
   }
   addVendor() {
@@ -288,6 +347,19 @@ export class MyApp {
 
       })
   }
+
+  addVendor2(vendor) {
+    let headers = new Headers();
+    headers.append('Content-Type', 'application/json');
+    //this.http.post('http://127.0.0.1:8000/vendors/', JSON.stringify(this.vendorForm), { headers: headers })
+    this.http.post(this.apiUrl + 'vendors/', JSON.stringify(vendor), { headers: headers })
+      .map(res => res.json())
+      .subscribe(data => {
+        console.log(data);
+      })
+  }
+
+  
 
   checkForVendorDuplicates(): any {
     //return this.http.get('http://127.0.0.1:8000/vendors/').map(res => res.json());
