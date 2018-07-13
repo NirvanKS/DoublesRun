@@ -53,24 +53,25 @@ export class MapPage implements AfterViewInit {
   constructor(public navCtrl: NavController, public navParams: NavParams,
     public geolocation: Geolocation, public modalCtrl: ModalController,
     private http: Http, public api: ApiProvider, public snaptomap: SnapToMapProvider, private cache: CacheService, public settings: ThemeSettingsProvider,
-    private toastCtrl: ToastController, public networkProvider: NetworkProvider, public network: Network, 
+    private toastCtrl: ToastController, public networkProvider: NetworkProvider, public network: Network,
     public platform: Platform, public loadingCtrl: LoadingController, private diagnostic: Diagnostic) {
-      this.markerGroup = leaflet.markerClusterGroup({
-        maxClusterRadius: 20
-      });
+    this.markerGroup = leaflet.markerClusterGroup({
+      maxClusterRadius: 20
+    });
   }
   async ionViewWillEnter() {
     console.log("The network is currently type -", this.network.type);
     console.log("will enter - map.ts");
-    
+
     await this.platform.ready();
-    if (this.networkProvider.isOnline == false && this.network.type == "none") {
+    if (this.network.type == "none" || this.networkProvider.isOnline == false) {
       this.offline = true;
+      this.networkProvider.isOnline = false;  //jus making sure m8
     }
     // this.loadMap();
-    
+
     console.log("network online?", this.networkProvider.isOnline);
-    
+
 
   }
   async ionViewDidLoad() {
@@ -106,9 +107,9 @@ export class MapPage implements AfterViewInit {
       timeout: 15000,
       maximumAge: 0
     };
-    this.diagnostic.isLocationAvailable().then((avail)=>{
-      console.log('Location available? '+avail);
-      if (avail){
+    this.diagnostic.isLocationAvailable().then((avail) => {
+      console.log('Location available? ' + avail);
+      if (avail) {
         this.presentLoading();
         console.log('im gonna try!');
         let watchLoc = this.geolocation.watchPosition(options)
@@ -149,12 +150,12 @@ export class MapPage implements AfterViewInit {
           });
 
       }
-      else{
+      else {
         this.geolocationError(2)
       }
 
-    }).catch((e)=>console.log(e));
-    
+    }).catch((e) => console.log(e));
+
   }
 
 
@@ -218,78 +219,78 @@ export class MapPage implements AfterViewInit {
       //return; //optional? dont wanna have a gigantic else statement for the rest of this function tho
     }
     else {
-      this.diagnostic.isLocationAvailable().then((avail)=>{
-        console.log('Location avail? '+avail);
-        if(avail){
-          let options= {
+      this.diagnostic.isLocationAvailable().then((avail) => {
+        console.log('Location avail? ' + avail);
+        if (avail) {
+          let options = {
             enableHighAccuracy: true,
             timeout: 15000,
             maximumAge: 0
           };
           console.log('im gonna try!');
           let watchLoc = this.geolocation.watchPosition(options)
-          .subscribe((position) =>{
-            console.log(position);
-            if(position.coords == undefined){
-              //this MIGHT mean timeout error, position becomes the error object if one occurs :)
-              this.geolocationError(1);
-              console.log('Error getting location');
-              watchLoc.unsubscribe();
-              return;
-            }
-            console.log("trying my best here ", position.coords.accuracy,"m");
-            if (position.coords.accuracy>50){
-              return;
-            }
-            let latLng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
-            console.log("got location?", position.coords.accuracy,"m");
-            this.geoLatLon = latLng;
-            this.geoNumberLat = position.coords.latitude;
-            this.geoNumberLon = position.coords.longitude;
-            let geoLoc = { "geoLat": this.geoNumberLat, "geoLong": this.geoNumberLon };
-            this.cache.saveItem("geoLoc", JSON.stringify(geoLoc));
-            if (this.geoNumberLat == 0 && this.geoNumberLon == 0) {
-              this.geoLocationNotFoundToast();
-            }
-            else {
-              map.setCenter(latLng);
-              map.setZoom(15);
-              var yourWindow = new google.maps.InfoWindow({
-                content: '<p>You are here<p>'
-              });
-      
-              var YourMarker = new google.maps.Marker({
-                position: latLng,
-                map: map,
-                
-                
-              });
-              this.markers.push(YourMarker);
-              YourMarker.addListener('click', function() {
-                yourWindow.open(map, YourMarker);
-              });
-              watchLoc.unsubscribe();
-      
-            }
-          },(error:any) => { //errors aren't being picked up on watchPosition
-            if (error.code==3){
-              this.geolocationError(1)
-            }
-            console.log('Error getting location', error);
-            
-          });
+            .subscribe((position) => {
+              console.log(position);
+              if (position.coords == undefined) {
+                //this MIGHT mean timeout error, position becomes the error object if one occurs :)
+                this.geolocationError(1);
+                console.log('Error getting location');
+                watchLoc.unsubscribe();
+                return;
+              }
+              console.log("trying my best here ", position.coords.accuracy, "m");
+              if (position.coords.accuracy > 50) {
+                return;
+              }
+              let latLng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+              console.log("got location?", position.coords.accuracy, "m");
+              this.geoLatLon = latLng;
+              this.geoNumberLat = position.coords.latitude;
+              this.geoNumberLon = position.coords.longitude;
+              let geoLoc = { "geoLat": this.geoNumberLat, "geoLong": this.geoNumberLon };
+              this.cache.saveItem("geoLoc", JSON.stringify(geoLoc));
+              if (this.geoNumberLat == 0 && this.geoNumberLon == 0) {
+                this.geoLocationNotFoundToast();
+              }
+              else {
+                map.setCenter(latLng);
+                map.setZoom(15);
+                var yourWindow = new google.maps.InfoWindow({
+                  content: '<p>You are here<p>'
+                });
+
+                var YourMarker = new google.maps.Marker({
+                  position: latLng,
+                  map: map,
+
+
+                });
+                this.markers.push(YourMarker);
+                YourMarker.addListener('click', function () {
+                  yourWindow.open(map, YourMarker);
+                });
+                watchLoc.unsubscribe();
+
+              }
+            }, (error: any) => { //errors aren't being picked up on watchPosition
+              if (error.code == 3) {
+                this.geolocationError(1)
+              }
+              console.log('Error getting location', error);
+
+            });
         }
-        else{
+        else {
           this.geolocationError(2);
         }
-      }).catch((e)=>{
+      }).catch((e) => {
         console.log(e)
         this.geolocationError(3);
       });
-      
-      
+
+
       // this.geolocation.getCurrentPosition(options).then((position) => {
-        
+
       //   let latLng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
       //   console.log("got location?", position.coords.accuracy,"m");
       //   this.geoLatLon = latLng;
@@ -306,18 +307,18 @@ export class MapPage implements AfterViewInit {
       //     var yourWindow = new google.maps.InfoWindow({
       //       content: '<p>You are here<p>'
       //     });
-  
+
       //     var YourMarker = new google.maps.Marker({
       //       position: latLng,
       //       map: map,
-            
-            
+
+
       //     });
       //     this.markers.push(YourMarker);
       //     YourMarker.addListener('click', function() {
       //       yourWindow.open(map, YourMarker);
       //     });
-  
+
       //   }
 
       // }).catch((error) => {
@@ -325,10 +326,10 @@ export class MapPage implements AfterViewInit {
       //     this.geolocationRebootError()
       //   }
       //   console.log('Error getting location', error);
-        
+
       // });
     }
-  //MAP BOUNDS CODE ~~~~~~~~~~~MEMORIES KAPPA
+    //MAP BOUNDS CODE ~~~~~~~~~~~MEMORIES KAPPA
     // this.map.addListener('dragend', function () {
     //   var center = map.getCenter();
     //   if (strictBounds.contains(center)) return;
@@ -369,7 +370,7 @@ export class MapPage implements AfterViewInit {
           url: "assets/imgs/doubles.png",
           size: new google.maps.Size(60, 47),
           origin: new google.maps.Point(0, 0),
-          anchor: new google.maps.Point(30,47)
+          anchor: new google.maps.Point(30, 47)
         }
         let marker = new google.maps.Marker({
           // map: this.map,
@@ -474,11 +475,11 @@ export class MapPage implements AfterViewInit {
     // });
 
   }
-  
+
 
   //Leaflet map
 
-  loadOfflineMap(){
+  loadOfflineMap() {
     this.map = L.map("map");
     let mb = L.tileLayer('assets/tiles/{z}/{x}/{y}.png', {
       minZoom: 9,
@@ -498,14 +499,14 @@ export class MapPage implements AfterViewInit {
 
     this.loadMarkersOffline();
 
-    this.diagnostic.isLocationAvailable().then((avail)=>{
-      console.log('Location available? '+avail);
-      if (avail){
+    this.diagnostic.isLocationAvailable().then((avail) => {
+      console.log('Location available? ' + avail);
+      if (avail) {
         this.map.locate({
           setView: true,
           maxZoom: 14
         }).on('locationfound', (e) => {
-          console.log('found you '+e);
+          console.log('found you ' + e);
           let marker = L.marker(e.latlng).addTo(this.map);
           marker.bindPopup("<b>Hi!<br>You're here.</b><br> <em>Note: Might be inaccurate, but add vendor won't be!</em>");
         })
@@ -513,15 +514,15 @@ export class MapPage implements AfterViewInit {
       else {
         this.geolocationError(2);
       }
-    }).catch((e)=>{
+    }).catch((e) => {
       console.log(e);
       this.geolocationError(3);
     })
-    
+
   }
 
 
-  loadMarkersOffline(){
+  loadMarkersOffline() {
     var Vmodal = this.modalCtrl;
     let url = 'https://dream-coast-60132.herokuapp.com/vendors/';
     console.log(this.cachedVendors);
@@ -535,7 +536,7 @@ export class MapPage implements AfterViewInit {
 
   }
 
-  loadFromCacheOffline(vendorObservable: Observable<any>){
+  loadFromCacheOffline(vendorObservable: Observable<any>) {
     var Vmodal = this.modalCtrl;
     vendorObservable.subscribe((data: Object) => {
       //this.markers = data;
@@ -545,10 +546,10 @@ export class MapPage implements AfterViewInit {
         //console.log(element.Name);
         let doublesIcon = leaflet.icon({
           iconUrl: "assets/imgs/doubles.png",
-          iconSize: [60,47],
-          iconAnchor: [30,47]
+          iconSize: [60, 47],
+          iconAnchor: [30, 47]
         });
-        let marker = leaflet.marker([element.locLat, element.locLong], {icon: doublesIcon}).on('click', () => {
+        let marker = leaflet.marker([element.locLat, element.locLong], { icon: doublesIcon }).on('click', () => {
           var vendorModal = Vmodal.create(VendorModalPage, {
             'name': element.Name,
             'description': element.Description, 'type': element.Type,
@@ -589,28 +590,28 @@ export class MapPage implements AfterViewInit {
   }
   geolocationError(type) {
     var toast;
-    if(type==1){
+    if (type == 1) {
       toast = this.toastCtrl.create({
         message: "Can't get your location, try restarting your device!",
         duration: 3000,
         position: 'bottom'
       });
     }
-    else if (type==2){
+    else if (type == 2) {
       toast = this.toastCtrl.create({
         message: "Please turn on your Location and allow us access :)",
         duration: 3000,
         position: 'bottom'
       });
     }
-    else if (type==3){
+    else if (type == 3) {
       toast = this.toastCtrl.create({
         message: "Error accessing your location services :(",
         duration: 3000,
         position: 'bottom'
-      });        
+      });
     }
-    
+
 
     toast.onDidDismiss(() => {
       console.log('Dismissed toast');
