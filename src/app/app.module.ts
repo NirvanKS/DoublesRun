@@ -53,6 +53,7 @@ import { SnapToMapProvider } from '../providers/snap-to-map/snap-to-map';
 import { ThemeSettingsProvider } from '../providers/theme-settings/theme-settings';
 import { NetworkProvider } from '../providers/network/network';
 import { Network } from '@ionic-native/network';
+import { Diagnostic } from '@ionic-native/diagnostic';
 
 @NgModule({
   declarations: [
@@ -132,6 +133,7 @@ import { Network } from '@ionic-native/network';
     ThemeSettingsProvider,
     NetworkProvider,
     Network,
+    Diagnostic,
   ]
 })
 export class AppModule { }
