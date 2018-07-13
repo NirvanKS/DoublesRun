@@ -1,3 +1,18 @@
 page-filter-list {
-
+  .t1img {
+    background: transparent !important;
+    position: absolute;
+    top: 5px;
+    left: 0;
+  }
+  .vpic {
+    width: 100%;
+    height: 17.1em; // 0 4px 4px rgba(0, 0, 0, 0.5)
+    box-sizing: border-box !important;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.9) !important;
+  } //   .vendor-card {
+  .vendor-card {
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.9) !important;
+  } //     box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3), 0 0 40px rgba(248, 3, 3, 0.842);
+  //   }
 }

@@ -19,13 +19,13 @@
       <button menuClose ion-item *ngFor="let p of pages" (click)="openPage(p)">
         {{p.title}}
       </button>
+      <ion-item id="filter-toggle1">
+        <ion-label>
+          Night Mode
+        </ion-label>
+        <ion-toggle [(ngModel)]="nightMode" color="positive" checked="false" (ionChange)="enableNight()" [ngModelOptions]="{standalone: true}"></ion-toggle>
+      </ion-item>
     </ion-list>
-    <ion-item id="filter-toggle1">
-      <ion-label>
-        Night Mode
-      </ion-label>
-      <ion-toggle [(ngModel)]="nightMode" color="positive" checked="false" (ionChange)="enableNight()" [ngModelOptions]="{standalone: true}"></ion-toggle>
-    </ion-item>
     <div *ngIf="this.isLoggedIn">
       <ion-avatar item-right id="profilepic">
         <img src="{{this.imageUrl}}">

@@ -1,25 +1,17 @@
- @import "./ionic.globals";
-//@import url('https://fonts.googleapis.com/css?family=Signika:400,700');
-@font-face {
-  font-family: Signika;
-  src: url('../assets/fonts/Signika-Regular.ttf') format('truetype');
-  src: url('../assets/fonts/Signika-Bold.ttf') format('truetype');
-}
-
-
-//@import url('https://fonts.googleapis.com/css?family=Muli');
-@font-face {
-  font-family: Muli;
-  src: url('../assets/fonts/Muli-Regular.ttf') format('truetype');
-}
-
-//@import url('https://fonts.googleapis.com/css?family=Bangers');
-@font-face {
-  font-family: Bangers;
-  src: url('../assets/fonts/Bangers-Regular.ttf') format('truetype');
-}
-
- // // A new dark theme for ionic2+
+ @import "./ionic.globals"; //@import url('https://fonts.googleapis.com/css?family=Signika:400,700');
+ @font-face {
+   font-family: Signika;
+   src: url('../assets/fonts/Signika-Regular.ttf') format('truetype');
+   src: url('../assets/fonts/Signika-Bold.ttf') format('truetype');
+ } //@import url('https://fonts.googleapis.com/css?family=Muli');
+ @font-face {
+   font-family: Muli;
+   src: url('../assets/fonts/Muli-Regular.ttf') format('truetype');
+ } //@import url('https://fonts.googleapis.com/css?family=Bangers');
+ @font-face {
+   font-family: Bangers;
+   src: url('../assets/fonts/Bangers-Regular.ttf') format('truetype');
+ } // // A new dark theme for ionic2+
  // // ----------------------------------------
  // // this can go into variables.scss too - I like 
  // // it here so its in one place. If you move it to variables.scss,
@@ -133,6 +125,8 @@
    }
    .vendor-card {
      background-color: #1C1C1C;
+     border-color: white !important;
+     box-shadow: 1px 3px 3px 2px rgba(255, 255, 255, 0.1) !important;
    }
    .vendor-title {
      color: #fff;
