@@ -393,7 +393,8 @@ export class MapPage implements AfterViewInit {
             'reviewList': element.reviews, 'avgRating': element.avgRating,
             'avgThickness': element.avgThickness, 'avgTime': element.avgTime,
             'avgCucumber': element.avgCucumber, 'avgSpicy': element.avgSpicy,
-            'vendorID': element.id
+            'vendorID': element.id,
+            'reportCount': element.reportCount,
           });
           vendorModal.present();
         });
@@ -450,7 +451,8 @@ export class MapPage implements AfterViewInit {
             'avgThickness': element.avgThickness, 'avgTime': element.avgTime,
             'avgCucumber': element.avgCucumber, 'avgSpicy': element.avgSpicy,
             'avgChanna': element.avgChanna,
-            'vendorID': element.id
+            'vendorID': element.id,
+            'reportCount': element.reportCount,
           });
           vendorModal.present();
 

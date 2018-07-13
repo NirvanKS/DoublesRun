@@ -4,7 +4,7 @@ import { VendorReviewPage } from '../vendor-review/vendor-review';
 import { Http, Headers } from '@angular/http';
 import { LoginProvider } from '../../providers/login/login';
 import { ApiProvider } from '../../providers/api/api';
-import { AlertController } from 'ionic-angular';
+import { AlertController, ToastController } from 'ionic-angular';
 import { ThemeSettingsProvider } from '../../providers/theme-settings/theme-settings';
 /**
  * Generated class for the VendorModalPage page.
@@ -47,6 +47,8 @@ export class VendorModalPage {
   vendorID: any;
   userReview: any;
   reviewID: any;
+  reportCount: any;
+  vendor: any;
 
   day: boolean = true;
   thickness: any = 'Thin Barra';
@@ -57,7 +59,8 @@ export class VendorModalPage {
   apiUrl = "https://dream-coast-60132.herokuapp.com/";
   constructor(public viewCtrl: ViewController, public navCtrl: NavController,
     private http: Http, public navParams: NavParams, public loginProvider: LoginProvider,
-    private alertCtrl: AlertController, public api: ApiProvider, public settings: ThemeSettingsProvider, public appCtrl: App) {
+    private alertCtrl: AlertController, public api: ApiProvider, public settings: ThemeSettingsProvider,
+    public appCtrl: App, private toastCtrl: ToastController) {
 
     this.name = navParams.get('name');
     this.pic = navParams.get('img');
@@ -71,9 +74,10 @@ export class VendorModalPage {
     if (this.avgThickness > 5) this.thickness = 'Thick Barra';
     if (this.avgSpicy > 5) this.spiciness = 'Very Hot';
     if (this.avgChanna >= 8) this.channa = 'The Best Channa';
-    if (this.avgChanna >3 && this.avgChanna <8) this.channa = 'Good Channa';
+    if (this.avgChanna > 3 && this.avgChanna < 8) this.channa = 'Good Channa';
     if (this.avgCucumber) this.cuc = 'With Cucumber';
     this.avgTime = navParams.get('avgTime');
+    this.reportCount = navParams.get('reportCount');
 
     if (this.avgTime > 18) this.day = false;
     this.vendorID = navParams.get('vendorID');
@@ -116,7 +120,6 @@ export class VendorModalPage {
             // user has clicked the alert button
             // begin the alert's dismiss transition
             let navTransition = alert.dismiss();
-
             // start some async method
             this.loginProvider.login().then(() => {
               // once the async operation has completed
@@ -183,17 +186,17 @@ export class VendorModalPage {
           }
 
           else {
-          let r = (this.reviews[1])
-          var numbers = Array.from(new Array(r), (val, index) => index + 1);
-          this.ratings.push(numbers);
-          this.comments.push(this.reviews[5]);
-          //this.http.get('http://127.0.0.1:8000/users/' + this.reviews[7] + '/')
-          this.http.get(this.apiUrl + 'users/' + this.reviews[7] + '/')
-            .map(res => res.json())
-            .subscribe((data: Object) => {
-              let u = Object.values(data);
-              this.names.push(u[1]);
-            });
+            let r = (this.reviews[1])
+            var numbers = Array.from(new Array(r), (val, index) => index + 1);
+            this.ratings.push(numbers);
+            this.comments.push(this.reviews[5]);
+            //this.http.get('http://127.0.0.1:8000/users/' + this.reviews[7] + '/')
+            this.http.get(this.apiUrl + 'users/' + this.reviews[7] + '/')
+              .map(res => res.json())
+              .subscribe((data: Object) => {
+                let u = Object.values(data);
+                this.names.push(u[1]);
+              });
           }
         })
     }
@@ -243,6 +246,80 @@ export class VendorModalPage {
       oldChanna: this.userReview[9]
     });
 
+  }
+
+  report() {
+    let alert = this.alertCtrl.create({
+      title: 'Are you sure?',
+      message: "What's wrong with this vendor?",
+      inputs: [
+        {
+          type: 'radio',
+          label: 'Does not exist',
+          value: '2',
+          checked: true
+        },
+        {
+          type: 'radio',
+          label: 'Inaccurate location',
+          value: '1'
+        },
+        {
+          type: 'radio',
+          label: 'Inappropriate content',
+          value: '3'
+        }],
+      buttons: [{
+        text: 'Okay',
+        handler: (data) => {
+          // user has clicked the alert button
+          // begin the alert's dismiss transition
+          let navTransition = alert.dismiss();
+          this.reportToast();
+          console.log(this.reportCount, 'report ', typeof (this.reportCount));
+          this.reportCount = parseInt(data) + parseInt(this.reportCount);
+
+          let rep = { "reportCount": this.reportCount }; console.log(rep);
+          let headers = new Headers();
+          headers.append('Content-Type', 'application/json');
+          this.http.patch(this.apiUrl + 'vendors/' + this.vendorID + '/', JSON.stringify(rep), { headers: headers })
+            .map(res => res.json())
+            .subscribe(resp => {
+              console.log("httppost responsea:", resp);
+              navTransition.then(() => {
+                this.navCtrl.pop();
+              });
+
+            });
+        }
+      },
+      {
+        text: 'Cancel',
+        role: 'cancel',
+        handler: (data) => {
+          console.log('Cancel clicked');
+        }
+      },
+      ]
+    });
+    alert.present();
+    alert.didLeave.subscribe(x => {
+
+    })
+  }
+
+  reportToast() {
+    let toast = this.toastCtrl.create({
+      message: 'Thanks! Reported vendor data will be reviewed.',
+      duration: 3000,
+      position: 'bottom'
+    });
+
+    toast.onDidDismiss(() => {
+      console.log('Dismissed toast');
+    });
+
+    toast.present();
   }
 
 }
