@@ -18,6 +18,10 @@ import { NetworkProvider } from '../../providers/network/network'
 import { Network } from '@ionic-native/network';
 declare var google;
 declare var navigator;
+import * as leaflet from 'leaflet';
+import 'leaflet.markercluster';
+import 'leaflet-tilelayer-mbtiles-ts';
+declare var L: any
 
 @IonicPage()
 @Component({
@@ -43,29 +47,35 @@ export class MapPage implements AfterViewInit {
   apiUrl = "https://dream-coast-60132.herokuapp.com/";
   vendorsKey = "vendor-ranking-list";
   offline: Boolean;
+  markerGroup;
   @ViewChild('map') mapElement: ElementRef;
   constructor(public navCtrl: NavController, public navParams: NavParams,
     public geolocation: Geolocation, public modalCtrl: ModalController,
     private http: Http, public api: ApiProvider, public snaptomap: SnapToMapProvider, private cache: CacheService, public settings: ThemeSettingsProvider,
     private toastCtrl: ToastController, public networkProvider: NetworkProvider, public network: Network, 
     public platform: Platform, public loadingCtrl: LoadingController) {
+      this.markerGroup = leaflet.markerClusterGroup({
+        maxClusterRadius: 20
+      });
   }
   async ionViewWillEnter() {
     console.log("The network is currently type -", this.network.type);
     console.log("will enter - map.ts");
-    this.markers = [];
+    
     await this.platform.ready();
     if (this.networkProvider.isOnline == false && this.network.type == "none") {
       this.offline = true;
     }
-    this.loadMap();
+    // this.loadMap();
+    
     console.log("network online?", this.networkProvider.isOnline);
     
 
   }
   ionViewDidLoad() {
     //this.loadMap();
-
+    this.markers = [];
+    this.loadOfflineMap();
   }
 
   refreshMap() {
@@ -361,7 +371,7 @@ export class MapPage implements AfterViewInit {
         });
       })
       var mcOptions = {
-        gridSize: 25,
+        gridSize: 20,
         minimumClusterSize: 2,
         imagePath: 'assets/imgs/cluster/m'
       };
@@ -427,6 +437,7 @@ export class MapPage implements AfterViewInit {
       var mcOptions = {
         gridSize: 50,
         minimumClusterSize: 10,
+        maxZoom: 4,
         imagePath: 'assets/imgs/cluster/m'
       };
       var markerCluster = new MarkerClusterer(this.map, this.markers, mcOptions);
@@ -435,11 +446,93 @@ export class MapPage implements AfterViewInit {
     });
     // });
 
+  }
+  
+
+  //Leaflet map
+
+  loadOfflineMap(){
+    this.map = L.map("map");
+    let mb = L.tileLayer('assets/tiles/{z}/{x}/{y}.png', {
+      minZoom: 9,
+      maxZoom: 14
+    }).addTo(this.map);
+    // let mb = L.tileLayer.mbTiles('assets/tiles/tobagolul14.mbtiles', {
+    //   minZoom: 9,
+    //   maxZoom: 14
+    // }).addTo(this.map);
+
+    // mb.on('databaseloaded', function(ev) {
+    //   console.info('MBTiles DB loaded', ev);
+    // });
+    // mb.on('databaseerror', function(ev) {
+    //   console.info('MBTiles DB error', ev);
+    // });
+
+    this.loadMarkersOffline();
+    this.map.locate({
+      setView: true,
+      maxZoom: 10
+    }).on('locationfound', (e) => {
+      console.log('found you');
+    })
+    
+  }
 
 
-
+  loadMarkersOffline(){
+    var Vmodal = this.modalCtrl;
+    let url = 'https://dream-coast-60132.herokuapp.com/vendors/';
+    console.log(this.cachedVendors);
+    this.cachedVendors = this.cache.loadFromObservable(url, this.http.get(this.apiUrl + 'vendors/').map(res => res.json()));
+    if (this.cachedVendors != null) {
+      console.log(this.cachedVendors);
+      console.log("Loading from cache");
+      this.loadFromCacheOffline(this.cachedVendors);
+      return;
+    }
 
   }
+
+  loadFromCacheOffline(vendorObservable: Observable<any>){
+    var Vmodal = this.modalCtrl;
+    vendorObservable.subscribe((data: Object) => {
+      //this.markers = data;
+      this.mark = Object.values(data);
+      let x = 0;
+      this.mark.forEach(element => {
+        //console.log(element.Name);
+        let doublesIcon = leaflet.icon({
+          iconUrl: "assets/imgs/doubles.png",
+          iconSize: [60,47],
+          iconAnchor: [30,47]
+        });
+        let marker = leaflet.marker([element.locLat, element.locLong], {icon: doublesIcon}).on('click', () => {
+          var vendorModal = Vmodal.create(VendorModalPage, {
+            'name': element.Name,
+            'description': element.Description, 'type': element.Type,
+            'img': element.pic,
+            'reviewList': element.reviews, 'avgRating': element.avgRating,
+            'avgThickness': element.avgThickness, 'avgTime': element.avgTime,
+            'avgCucumber': element.avgCucumber, 'avgSpicy': element.avgSpicy,
+            'vendorID': element.id
+          });
+          vendorModal.present();
+
+        });
+        this.markerGroup.addLayer(marker);
+      })
+      this.map.addLayer(this.markerGroup);
+
+
+    });
+
+  }
+
+
+
+
+
   geoLocationNotFoundToast() {
     let toast = this.toastCtrl.create({
       message: 'Your geolocation was not loaded.',
