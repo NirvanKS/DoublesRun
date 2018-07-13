@@ -5,26 +5,26 @@
   Ionic pages and navigation.
 -->
 
-<ion-header >
-  <ion-navbar color="danger" > 
+<ion-header>
+  <ion-navbar color="danger">
     <button ion-button menuToggle>
       <ion-icon name="menu"></ion-icon>
     </button>
     <ion-title>Map</ion-title>
     <ion-buttons end>
-      <button ion-button (click)="refreshMap()"><ion-icon name="refresh"></ion-icon> &nbsp;</button>
-    </ion-buttons> 
+      <button ion-button (click)="refreshMap()">
+        <ion-icon name="refresh"></ion-icon> &nbsp;</button>
+    </ion-buttons>
     <ion-buttons end>
-      <button ion-button (click)="addOfflineMarker()"><ion-icon name="add"></ion-icon> &nbsp; Add Vendor</button>
-    </ion-buttons> 
+      <button ion-button (click)="addOfflineMarker()">
+        <ion-icon name="add"></ion-icon> &nbsp; Add Vendor</button>
+    </ion-buttons>
   </ion-navbar>
 </ion-header>
 
 
 <ion-content padding>
 
-    <div #map id="map"></div> 
+  <div #map id="map"></div>
 
 </ion-content>
-
-

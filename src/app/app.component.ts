@@ -219,7 +219,7 @@ export class MyApp {
       console.log('network:online');
       this.networkProvider.isOnline = true;
       this.vendorForm = await this.cache.getItem("vendorData");
-
+      //deal with a single vendor or an array of vendors here.
       if (this.vendorForm.locLat != 0 && this.vendorForm.locLong != 0) {
         this.validateGeoLoc = true;
         if ((this.vendorForm.pic != '') && (this.vendorForm.Name != '') && (this.vendorForm.Description != '')) {
@@ -261,6 +261,8 @@ export class MyApp {
           })
           if (this.notFound == true) {
             this.addVendor();
+            //we should be clearing the cache of all old offline vendors here
+            // this.cache.removeItem("vendorData");
             this.presentSuccessToast();
           }
           else {

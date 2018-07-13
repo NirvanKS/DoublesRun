@@ -1,4 +1,3 @@
-
 <ion-header>
 
   <ion-navbar color="danger">
@@ -9,43 +8,43 @@
 
 
 <ion-content padding>
-    <form (ngSubmit)="logForm()" class="addV">
-      <ion-list radio-group [(ngModel)]="vendorType" name="VendorType">
-        <ion-item>
-          <ion-label>Doubles Vendor</ion-label>
-          <ion-radio checked="true" value="dv"></ion-radio>
-        </ion-item>
-        <ion-item>
-          <ion-label>Not a Doubles Vendor</ion-label>
-          <ion-radio value="ndv"></ion-radio>
-        </ion-item>
-      </ion-list>
+  <form (ngSubmit)="logForm()" class="addV">
+    <ion-list radio-group [(ngModel)]="vendorType" name="VendorType">
       <ion-item>
-        <ion-label>Vendor Name: </ion-label>
-        <ion-input type="text" required [(ngModel)]="vendorForm.Name" name="Name"></ion-input>
+        <ion-label>Doubles Vendor</ion-label>
+        <ion-radio checked="true" value="dv"></ion-radio>
       </ion-item>
       <ion-item>
-        <ion-label>Description</ion-label>
-        <ion-textarea type="text" required [(ngModel)]="vendorForm.Description" name="Description"></ion-textarea>
+        <ion-label>Not a Doubles Vendor</ion-label>
+        <ion-radio value="ndv"></ion-radio>
       </ion-item>
-      <br>
+    </ion-list>
+    <ion-item>
+      <ion-label>Vendor Name: </ion-label>
+      <ion-input type="text" required [(ngModel)]="vendorForm.Name" name="Name"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label>Description</ion-label>
+      <ion-textarea type="text" required [(ngModel)]="vendorForm.Description" name="Description"></ion-textarea>
+    </ion-item>
+    <br>
 
-      <ion-thumbnail item-left>
-        <ion-icon *ngIf="vendorForm.pic" name="trash" class="deleteIcon" (click)="deletePhoto()"></ion-icon>
-        <img [src]="vendorForm.pic" *ngIf="vendorForm.pic" width="128" height="128" />
-      </ion-thumbnail>
-      <br>
-      <br>
-
-    </form>
-
-
-    <button ion-button full (click)="takePhoto()">
-      <ion-icon name="camera"></ion-icon> &nbsp; Take Photo
-    </button>
+    <ion-thumbnail item-left>
+      <ion-icon *ngIf="vendorForm.pic" name="trash" class="deleteIcon" (click)="deletePhoto()"></ion-icon>
+      <img [src]="vendorForm.pic" *ngIf="vendorForm.pic" width="128" height="128" />
+    </ion-thumbnail>
     <br>
     <br>
-    <button ion-button type="submit" (click)="logForm()" color="danger" block>Add Vendor</button>
+
+  </form>
+
+
+  <button ion-button full (click)="takePhoto()">
+    <ion-icon name="camera"></ion-icon> &nbsp; Take Photo
+  </button>
+  <br>
+  <br>
+  <button ion-button type="submit" (click)="logForm()" color="danger" block>Add Vendor</button>
 
   <!-- <button ion-button color="danger" (click)="dismiss()">Back</button> -->
 </ion-content>
