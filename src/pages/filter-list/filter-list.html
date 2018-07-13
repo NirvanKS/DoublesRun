@@ -14,8 +14,34 @@
 
 
 <ion-content padding>
-  <ion-list>
+  <!-- <ion-list>
     <ion-item *ngFor='let v of vendorList' (click)="openVendor(v)">{{v.Name}}</ion-item>
-  </ion-list>
+    
+  </ion-list> -->
+  <div *ngFor='let v of vendorList' id="divCard">
+    <ion-card class="vendor-card">
+      <img [src]="v.pic" class="vpic" />
+      <ion-card-content>
+        <ion-card-title class="vendor-title">
+          {{v.Name}}
+        </ion-card-title>
+        <p class="vendor-desc">
+          {{v.Description}}
+        </p>
+      </ion-card-content>
+
+      <ion-row no-padding>
+        <ion-col text-right>
+          <button ion-button clear small [color]="ionicNamedColor" icon-start (click)="openVendor(v)" class="viewMapButton">
+            <ion-icon name='md-globe'></ion-icon>
+            View On Map
+          </button>
+        </ion-col>
+      </ion-row>
+
+    </ion-card>
+    <br>
+  </div>
+
 
 </ion-content>
