@@ -66,7 +66,11 @@ export class MapPage implements AfterViewInit {
     await this.platform.ready();
     if (this.network.type == "none" || this.networkProvider.isOnline == false) {
       this.offline = true;
-      this.networkProvider.isOnline = false;  //jus making sure m8
+      this.networkProvider.isOnline = false;  //jus making sure 
+      this.markers = [];
+      console.log("offline", this.offline);
+      if (this.networkProvider.isOnline) this.loadMap();
+      else this.loadOfflineMap();
     }
     // this.loadMap();
 
@@ -76,19 +80,27 @@ export class MapPage implements AfterViewInit {
   }
   async ionViewDidLoad() {
     //this.loadMap();
+    console.log("ionviewdidload");
     await this.platform.ready();
-    this.markers = [];
-    if (!this.offline) this.loadMap();
-    else this.loadOfflineMap();
+
   }
 
   refreshMap() {
-    let key = 'https://dream-coast-60132.herokuapp.com/vendors/';
-    this.cache.removeItem(key).then(x => {
-      this.markers = [];
-      if (!this.offline) this.loadMap();
-      else this.loadOfflineMap();
-    })
+    console.log("refreshing");
+
+    if (this.network.type == "none" || this.networkProvider.isOnline == false) {
+      this.map = undefined;
+      let key = 'https://dream-coast-60132.herokuapp.com/vendors/';
+      this.cache.removeItem(key).then(x => {
+        this.markers = [];
+        this.loadMap();
+      })
+    }
+    else {
+      this.map.off();
+      this.map.remove();
+      this.loadOfflineMap();
+    }
 
   }
 
@@ -482,8 +494,8 @@ export class MapPage implements AfterViewInit {
   //Leaflet map
 
   loadOfflineMap() {
-    this.map = L.map("map");
-    let mb = L.tileLayer('assets/tiles/{z}/{x}/{y}.png', {
+    this.map = leaflet.map("map");
+    let mb = leaflet.tileLayer('assets/tiles/{z}/{x}/{y}.png', {
       minZoom: 9,
       maxZoom: 14
     }).addTo(this.map);
@@ -509,7 +521,7 @@ export class MapPage implements AfterViewInit {
           maxZoom: 14
         }).on('locationfound', (e) => {
           console.log('found you ' + e);
-          let marker = L.marker(e.latlng).addTo(this.map);
+          let marker = leaflet.marker(e.latlng).addTo(this.map);
           marker.bindPopup("<b>Hi!<br>You're here.</b><br> <em>Note: Might be inaccurate, but add vendor won't be!</em>");
         })
       }
