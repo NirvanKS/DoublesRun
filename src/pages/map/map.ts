@@ -84,7 +84,7 @@ export class MapPage implements AfterViewInit {
 
     }
     else {
-      this.mapType = 'leafet';
+      this.mapType = 'leaflet';
       this.loadOfflineMap();
 
     }
@@ -97,21 +97,24 @@ export class MapPage implements AfterViewInit {
 
   refreshMap() {
     console.log("refreshing");
-
+    console.log(this.mapType, "maptype");
     if (this.network.type == "none" || this.networkProvider.isOnline == false) {
+
       if (this.mapType == 'leaflet') {
+        console.log(this.mapType, "maptype");
         this.map.off();
         this.map.remove();
-        this.mapType = 'leafet';
+        this.mapType = 'leaflet';
         this.loadOfflineMap();
       }
       else {
         this.map = null;
-        this.mapType = 'leafet';
+        this.mapType = 'leaflet';
         this.loadOfflineMap();
       }
     }
     else {
+      console.log(this.mapType, "maptype");
       if (this.mapType == 'leaflet') {
         this.map.off();
         this.map.remove();
