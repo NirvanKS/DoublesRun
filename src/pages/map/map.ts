@@ -98,6 +98,7 @@ export class MapPage implements AfterViewInit {
   refreshMap() {
     console.log("refreshing");
     console.log(this.mapType, "maptype");
+    this.markers = [];
     if (this.network.type == "none" || this.networkProvider.isOnline == false) {
 
       if (this.mapType == 'leaflet') {
