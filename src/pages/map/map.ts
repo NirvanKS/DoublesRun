@@ -219,74 +219,74 @@ export class MapPage implements AfterViewInit {
       //return; //optional? dont wanna have a gigantic else statement for the rest of this function tho
     }
     else {
-      this.diagnostic.isLocationAvailable().then((avail) => {
-        console.log('Location avail? ' + avail);
-        if (avail) {
-          let options = {
-            enableHighAccuracy: true,
-            timeout: 15000,
-            maximumAge: 0
-          };
-          console.log('im gonna try!');
-          let watchLoc = this.geolocation.watchPosition(options)
-            .subscribe((position) => {
-              console.log(position);
-              if (position.coords == undefined) {
-                //this MIGHT mean timeout error, position becomes the error object if one occurs :)
-                this.geolocationError(1);
-                console.log('Error getting location');
-                watchLoc.unsubscribe();
-                return;
-              }
-              console.log("trying my best here ", position.coords.accuracy, "m");
-              if (position.coords.accuracy > 50) {
-                return;
-              }
-              let latLng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
-              console.log("got location?", position.coords.accuracy, "m");
-              this.geoLatLon = latLng;
-              this.geoNumberLat = position.coords.latitude;
-              this.geoNumberLon = position.coords.longitude;
-              let geoLoc = { "geoLat": this.geoNumberLat, "geoLong": this.geoNumberLon };
-              this.cache.saveItem("geoLoc", JSON.stringify(geoLoc));
-              if (this.geoNumberLat == 0 && this.geoNumberLon == 0) {
-                this.geoLocationNotFoundToast();
-              }
-              else {
-                map.setCenter(latLng);
-                map.setZoom(15);
-                var yourWindow = new google.maps.InfoWindow({
-                  content: '<p>You are here<p>'
-                });
+      // this.diagnostic.isLocationAvailable().then((avail) => {
+      //   console.log('Location avail? ' + avail);
+      //   if (avail) {
+      let options = {
+        enableHighAccuracy: true,
+        timeout: 15000,
+        maximumAge: 0
+      };
+      console.log('im gonna try!');
+      let watchLoc = this.geolocation.watchPosition(options)
+        .subscribe((position) => {
+          console.log(position);
+          if (position.coords == undefined) {
+            //this MIGHT mean timeout error, position becomes the error object if one occurs :)
+            // this.geolocationError(1);
+            console.log('Error getting location');
+            watchLoc.unsubscribe();
+            return;
+          }
+          console.log("trying my best here ", position.coords.accuracy, "m");
+          if (position.coords.accuracy > 50) {
+            return;
+          }
+          let latLng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+          console.log("got location?", position.coords.accuracy, "m");
+          this.geoLatLon = latLng;
+          this.geoNumberLat = position.coords.latitude;
+          this.geoNumberLon = position.coords.longitude;
+          let geoLoc = { "geoLat": this.geoNumberLat, "geoLong": this.geoNumberLon };
+          this.cache.saveItem("geoLoc", JSON.stringify(geoLoc));
+          if (this.geoNumberLat == 0 && this.geoNumberLon == 0) {
+            this.geoLocationNotFoundToast();
+          }
+          else {
+            map.setCenter(latLng);
+            map.setZoom(15);
+            var yourWindow = new google.maps.InfoWindow({
+              content: '<p>You are here<p>'
+            });
 
-                var YourMarker = new google.maps.Marker({
-                  position: latLng,
-                  map: map,
+            var YourMarker = new google.maps.Marker({
+              position: latLng,
+              map: map,
 
-
-                });
-                this.markers.push(YourMarker);
-                YourMarker.addListener('click', function () {
-                  yourWindow.open(map, YourMarker);
-                });
-                watchLoc.unsubscribe();
-
-              }
-            }, (error: any) => { //errors aren't being picked up on watchPosition
-              if (error.code == 3) {
-                this.geolocationError(1)
-              }
-              console.log('Error getting location', error);
 
             });
-        }
-        else {
-          this.geolocationError(2);
-        }
-      }).catch((e) => {
-        console.log(e)
-        this.geolocationError(3);
-      });
+            this.markers.push(YourMarker);
+            YourMarker.addListener('click', function () {
+              yourWindow.open(map, YourMarker);
+            });
+            watchLoc.unsubscribe();
+
+          }
+        }, (error: any) => { //errors aren't being picked up on watchPosition
+          if (error.code == 3) {
+            // this.geolocationError(1)
+          }
+          console.log('Error getting location', error);
+
+        });
+      //   }
+      //   else {
+      //     this.geolocationError(2);
+      //   }
+      // }).catch((e) => {
+      //   console.log(e)
+      //   this.geolocationError(3);
+      // });
 
 
       // this.geolocation.getCurrentPosition(options).then((position) => {
