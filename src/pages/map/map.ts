@@ -48,6 +48,7 @@ export class MapPage implements AfterViewInit {
   apiUrl = "https://dream-coast-60132.herokuapp.com/";
   vendorsKey = "vendor-ranking-list";
   offline: Boolean;
+  mapType: any;
   markerGroup;
   @ViewChild('map') mapElement: ElementRef;
   constructor(public navCtrl: NavController, public navParams: NavParams,
@@ -63,18 +64,6 @@ export class MapPage implements AfterViewInit {
     console.log("The network is currently type -", this.network.type);
     console.log("will enter - map.ts");
 
-    await this.platform.ready();
-    if (this.network.type == "none" || this.networkProvider.isOnline == false) {
-      this.offline = true;
-      this.networkProvider.isOnline = false;  //jus making sure 
-      this.markers = [];
-      console.log("offline", this.offline);
-      if (this.networkProvider.isOnline) this.loadMap();
-      else this.loadOfflineMap();
-    }
-    // this.loadMap();
-
-    console.log("network online?", this.networkProvider.isOnline);
 
 
   }
@@ -82,6 +71,27 @@ export class MapPage implements AfterViewInit {
     //this.loadMap();
     console.log("ionviewdidload");
     await this.platform.ready();
+    if (this.network.type == "none" || this.networkProvider.isOnline == false) {
+      this.offline = true;
+      this.networkProvider.isOnline = false;  //jus making sure 
+      this.markers = [];
+      console.log("offline", this.offline);
+
+    }
+    if (this.networkProvider.isOnline) {
+      this.mapType = 'google';
+      this.loadMap();
+
+    }
+    else {
+      this.mapType = 'leafet';
+      this.loadOfflineMap();
+
+    }
+    // this.loadMap();
+
+    console.log("network online?", this.networkProvider.isOnline);
+
 
   }
 
@@ -89,17 +99,38 @@ export class MapPage implements AfterViewInit {
     console.log("refreshing");
 
     if (this.network.type == "none" || this.networkProvider.isOnline == false) {
-      this.map = undefined;
-      let key = 'https://dream-coast-60132.herokuapp.com/vendors/';
-      this.cache.removeItem(key).then(x => {
-        this.markers = [];
-        this.loadMap();
-      })
+      if (this.mapType == 'leaflet') {
+        this.map.off();
+        this.map.remove();
+        this.mapType = 'leafet';
+        this.loadOfflineMap();
+      }
+      else {
+        this.map = null;
+        this.mapType = 'leafet';
+        this.loadOfflineMap();
+      }
     }
     else {
-      this.map.off();
-      this.map.remove();
-      this.loadOfflineMap();
+      if (this.mapType == 'leaflet') {
+        this.map.off();
+        this.map.remove();
+        let key = 'https://dream-coast-60132.herokuapp.com/vendors/';
+        this.cache.removeItem(key).then(x => {
+          this.markers = [];
+          this.mapType = 'google';
+          this.loadMap();
+        })
+      }
+      else {
+        this.map = null;
+        let key = 'https://dream-coast-60132.herokuapp.com/vendors/';
+        this.cache.removeItem(key).then(x => {
+          this.markers = [];
+          this.mapType = 'google';
+          this.loadMap();
+        })
+      }
     }
 
   }
@@ -367,6 +398,7 @@ export class MapPage implements AfterViewInit {
     // }, (err) => {
     //   console.log(err);
     // });
+    console.log(this.map);
   }
 
   loadFromCache(vendorObservable: Observable<any>) {
@@ -532,7 +564,7 @@ export class MapPage implements AfterViewInit {
       console.log(e);
       this.geolocationError(3);
     })
-
+    console.log(this.map);
   }
 
 
