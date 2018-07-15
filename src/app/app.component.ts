@@ -218,6 +218,8 @@ export class MyApp {
     this.events.subscribe('network:online', async () => {
       console.log('network:online');
       this.networkProvider.isOnline = true;
+      let exists = await this.cache.itemExists("vendorData");
+      if (!exists) return;
       this.vendorForm = await this.cache.getItem("vendorData");
       //deal with a single vendor or an array of vendors here.
 
