@@ -15,7 +15,7 @@ import { ThemeSettingsProvider } from '../providers/theme-settings/theme-setting
 import { MenuController } from 'ionic-angular';
 import { ToastController } from 'ionic-angular';
 import { Storage } from '@ionic/storage';
-import { LoadingController } from 'ionic-angular';
+import { LoadingController, AlertController } from 'ionic-angular';
 import { LoginProvider } from '../providers/login/login'
 import { Network } from '@ionic-native/network';
 import { NetworkProvider } from '../providers/network/network';
@@ -60,9 +60,10 @@ export class MyApp {
   constructor(platform: Platform, statusBar: StatusBar, splashScreen: SplashScreen, public settings: ThemeSettingsProvider, public menuCtrl: MenuController,
     private toastCtrl: ToastController,
     public loadingCtrl: LoadingController, public storage: Storage, public loginProvider: LoginProvider, public events: Events, public network: Network,
-    public networkProvider: NetworkProvider, private cache: CacheService, public api: ApiProvider, private http: Http) {
+    public networkProvider: NetworkProvider, private cache: CacheService, public api: ApiProvider, private http: Http, private alertCtrl: AlertController) {
 
     this.listenToLoginEvents();
+    this.listenToSuggEvents();
     this.settings.getActiveTheme().subscribe(val => {
       this.selectedTheme = val;
     });
@@ -192,6 +193,12 @@ export class MyApp {
 
   loginUser() {
     this.loginProvider.login();
+  }
+
+  listenToSuggEvents() {
+    this.events.subscribe('First Suggestions Available', () => {
+      this.presentConfirm();
+    });
   }
 
   listenToLoginEvents() {
@@ -428,6 +435,30 @@ export class MyApp {
     });
 
     toast.present();
+  }
+
+  presentConfirm() {
+    let alert = this.alertCtrl.create({
+      title: 'First Suggestions!',
+      message: 'Looks like you got some new Suggestions!',
+      buttons: [
+        {
+          text: 'Whatever dude',
+          role: 'cancel',
+          handler: () => {
+            console.log('Cancel clicked');
+          }
+        },
+        {
+          text: 'View',
+          handler: () => {
+            this.nav.push(SuggestedPage);
+            console.log('Buy clicked');
+          }
+        }
+      ]
+    });
+    alert.present();
   }
 
 
