@@ -50,6 +50,7 @@ export class MapPage implements AfterViewInit {
   offline: Boolean;
   mapType: any;
   markerGroup;
+  setToMyPos: boolean = true;
   @ViewChild('map') mapElement: ElementRef;
   constructor(public navCtrl: NavController, public navParams: NavParams,
     public geolocation: Geolocation, public modalCtrl: ModalController,
@@ -63,6 +64,16 @@ export class MapPage implements AfterViewInit {
   async ionViewWillEnter() {
     console.log("The network is currently type -", this.network.type);
     console.log("will enter - map.ts");
+
+    if (this.snaptomap.shouldIBeVendorSnappo) {
+      let latLng = new google.maps.LatLng(this.snaptomap.myLatParam, this.snaptomap.myLongParam);
+      //this.navParams.get("myLatParam");
+      this.map.setCenter(latLng);
+      this.map.setZoom(15);
+      this.snaptomap.shouldIBeVendorSnappo = false;
+      this.setToMyPos = false;
+      //return; //optional? dont wanna have a gigantic else statement for the rest of this function tho
+    }
 
 
 
@@ -257,125 +268,120 @@ export class MapPage implements AfterViewInit {
     //   {imagePath: '../assets/imgs/cluster'});
 
 
-    if (this.snaptomap.shouldIBeVendorSnappo) {
-      let latLng = new google.maps.LatLng(this.snaptomap.myLatParam, this.snaptomap.myLongParam);
-      //this.navParams.get("myLatParam");
-      map.setCenter(latLng);
-      map.setZoom(15);
-      this.snaptomap.shouldIBeVendorSnappo = false;
-      //return; //optional? dont wanna have a gigantic else statement for the rest of this function tho
-    }
-    else {
-      // this.diagnostic.isLocationAvailable().then((avail) => {
-      //   console.log('Location avail? ' + avail);
-      //   if (avail) {
-      let options = {
-        enableHighAccuracy: true,
-        timeout: 15000,
-        maximumAge: 0
-      };
-      console.log('im gonna try!');
-      let watchLoc = this.geolocation.watchPosition(options)
-        .subscribe((position) => {
-          console.log(position);
-          if (position.coords == undefined) {
-            //this MIGHT mean timeout error, position becomes the error object if one occurs :)
-            // this.geolocationError(1);
-            console.log('Error getting location');
-            watchLoc.unsubscribe();
-            return;
-          }
-          console.log("trying my best here ", position.coords.accuracy, "m");
-          if (position.coords.accuracy > 50) {
-            return;
-          }
-          let latLng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
-          console.log("got location?", position.coords.accuracy, "m");
-          this.geoLatLon = latLng;
-          this.geoNumberLat = position.coords.latitude;
-          this.geoNumberLon = position.coords.longitude;
-          let geoLoc = { "geoLat": this.geoNumberLat, "geoLong": this.geoNumberLon };
-          this.cache.saveItem("geoLoc", JSON.stringify(geoLoc));
-          if (this.geoNumberLat == 0 && this.geoNumberLon == 0) {
-            this.geoLocationNotFoundToast();
-          }
-          else {
+    // this.diagnostic.isLocationAvailable().then((avail) => {
+    //   console.log('Location avail? ' + avail);
+    //   if (avail) {
+    let options = {
+      enableHighAccuracy: true,
+      timeout: 15000,
+      maximumAge: 0
+    };
+    console.log('im gonna try!');
+    let watchLoc = this.geolocation.watchPosition(options)
+      .subscribe((position) => {
+        console.log(position);
+        if (position.coords == undefined) {
+          //this MIGHT mean timeout error, position becomes the error object if one occurs :)
+          // this.geolocationError(1);
+          console.log('Error getting location');
+          watchLoc.unsubscribe();
+          return;
+        }
+        console.log("trying my best here ", position.coords.accuracy, "m");
+        if (position.coords.accuracy > 50) {
+          return;
+        }
+        let latLng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+        console.log("got location?", position.coords.accuracy, "m");
+        this.geoLatLon = latLng;
+        this.geoNumberLat = position.coords.latitude;
+        this.geoNumberLon = position.coords.longitude;
+        let geoLoc = { "geoLat": this.geoNumberLat, "geoLong": this.geoNumberLon };
+        this.cache.saveItem("geoLoc", JSON.stringify(geoLoc));
+        if (this.geoNumberLat == 0 && this.geoNumberLon == 0) {
+          this.geoLocationNotFoundToast();
+        }
+        else {
+          //only set to my location if it didnt already to snap to a vendor
+          if (this.setToMyPos) {
             map.setCenter(latLng);
-            map.setZoom(15);
-            var yourWindow = new google.maps.InfoWindow({
-              content: '<p>You are here<p>'
-            });
-
-            var YourMarker = new google.maps.Marker({
-              position: latLng,
-              map: map,
-
-
-            });
-            this.markers.push(YourMarker);
-            YourMarker.addListener('click', function () {
-              yourWindow.open(map, YourMarker);
-            });
-            watchLoc.unsubscribe();
-
           }
-        }, (error: any) => { //errors aren't being picked up on watchPosition
-          if (error.code == 3) {
-            // this.geolocationError(1)
-          }
-          console.log('Error getting location', error);
 
-        });
-      //   }
-      //   else {
-      //     this.geolocationError(2);
-      //   }
-      // }).catch((e) => {
-      //   console.log(e)
-      //   this.geolocationError(3);
-      // });
+          map.setZoom(15);
+          var yourWindow = new google.maps.InfoWindow({
+            content: '<p>You are here<p>'
+          });
+
+          var YourMarker = new google.maps.Marker({
+            position: latLng,
+            map: map,
 
 
-      // this.geolocation.getCurrentPosition(options).then((position) => {
+          });
+          this.markers.push(YourMarker);
+          YourMarker.addListener('click', function () {
+            yourWindow.open(map, YourMarker);
+          });
+          watchLoc.unsubscribe();
 
-      //   let latLng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
-      //   console.log("got location?", position.coords.accuracy,"m");
-      //   this.geoLatLon = latLng;
-      //   this.geoNumberLat = position.coords.latitude;
-      //   this.geoNumberLon = position.coords.longitude;
-      //   let geoLoc = { "geoLat": this.geoNumberLat, "geoLong": this.geoNumberLon };
-      //   this.cache.saveItem("geoLoc", JSON.stringify(geoLoc));
-      //   if (this.geoNumberLat == 0 && this.geoNumberLon == 0) {
-      //     this.geoLocationNotFoundToast();
-      //   }
-      //   else {
-      //     map.setCenter(latLng);
-      //     map.setZoom(15);
-      //     var yourWindow = new google.maps.InfoWindow({
-      //       content: '<p>You are here<p>'
-      //     });
+        }
+      }, (error: any) => { //errors aren't being picked up on watchPosition
+        if (error.code == 3) {
+          // this.geolocationError(1)
+        }
+        console.log('Error getting location', error);
 
-      //     var YourMarker = new google.maps.Marker({
-      //       position: latLng,
-      //       map: map,
+      });
+    //   }
+    //   else {
+    //     this.geolocationError(2);
+    //   }
+    // }).catch((e) => {
+    //   console.log(e)
+    //   this.geolocationError(3);
+    // });
 
 
-      //     });
-      //     this.markers.push(YourMarker);
-      //     YourMarker.addListener('click', function() {
-      //       yourWindow.open(map, YourMarker);
-      //     });
+    // this.geolocation.getCurrentPosition(options).then((position) => {
 
-      //   }
+    //   let latLng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+    //   console.log("got location?", position.coords.accuracy,"m");
+    //   this.geoLatLon = latLng;
+    //   this.geoNumberLat = position.coords.latitude;
+    //   this.geoNumberLon = position.coords.longitude;
+    //   let geoLoc = { "geoLat": this.geoNumberLat, "geoLong": this.geoNumberLon };
+    //   this.cache.saveItem("geoLoc", JSON.stringify(geoLoc));
+    //   if (this.geoNumberLat == 0 && this.geoNumberLon == 0) {
+    //     this.geoLocationNotFoundToast();
+    //   }
+    //   else {
+    //     map.setCenter(latLng);
+    //     map.setZoom(15);
+    //     var yourWindow = new google.maps.InfoWindow({
+    //       content: '<p>You are here<p>'
+    //     });
 
-      // }).catch((error) => {
-      //   if (error.code==3){
-      //     this.geolocationRebootError()
-      //   }
-      //   console.log('Error getting location', error);
+    //     var YourMarker = new google.maps.Marker({
+    //       position: latLng,
+    //       map: map,
 
-      // });
-    }
+
+    //     });
+    //     this.markers.push(YourMarker);
+    //     YourMarker.addListener('click', function() {
+    //       yourWindow.open(map, YourMarker);
+    //     });
+
+    //   }
+
+    // }).catch((error) => {
+    //   if (error.code==3){
+    //     this.geolocationRebootError()
+    //   }
+    //   console.log('Error getting location', error);
+
+    // });
+
     //MAP BOUNDS CODE ~~~~~~~~~~~MEMORIES KAPPA
     // this.map.addListener('dragend', function () {
     //   var center = map.getCenter();
