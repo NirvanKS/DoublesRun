@@ -4,6 +4,7 @@ import { Http, Headers } from '@angular/http';
 import { GooglePlus } from '@ionic-native/google-plus';
 import { CacheService } from 'ionic-cache';
 import { Events } from 'ionic-angular';
+import { Storage } from '@ionic/storage';
 
 /*
   Generated class for the LoginProvider provider.
@@ -16,7 +17,7 @@ import { Events } from 'ionic-angular';
 
 export class LoginProvider {
   providers: [GooglePlus]
-  constructor(private http: Http, private cache: CacheService, private googlePlus: GooglePlus, public events: Events) {
+  constructor(private http: Http, private cache: CacheService, private googlePlus: GooglePlus, public events: Events, public storage: Storage) {
     console.log('Hello LoginProvider Provider');
   }
   displayName: any;
@@ -55,6 +56,20 @@ export class LoginProvider {
           .subscribe(data => {
             this.suggestions = data.suggestions;
             console.log("sugg", this.suggestions);
+            if (this.suggestions.length != 0) {
+              console.log("dis be suggestions", this.suggestions);
+              this.storage.get('suggShown').then((result) => {
+
+                if (result) {
+                  // this.rootPage = TabsPage;
+                } else {
+                  this.events.publish('First Suggestions Available');
+                  this.storage.set('suggShown', true);
+                }
+
+              });
+
+            }
             this.cachedVendors.subscribe((data: Object) => {
               console.log(data)
               for (let i = 0; i < this.suggestions.length; i++) {
@@ -129,6 +144,19 @@ export class LoginProvider {
         .subscribe(data => {
           this.suggestions = data.suggestions;
           console.log("sugg", this.suggestions);
+          if (this.suggestions != []) {
+            this.storage.get('suggShown').then((result) => {
+
+              if (result) {
+                // this.rootPage = TabsPage;
+              } else {
+                this.events.publish('First Suggestions Available');
+                this.storage.set('suggShown', true);
+              }
+
+            });
+
+          }
           this.cachedVendors.subscribe((data: Object) => {
             console.log(data)
             for (let i = 0; i < this.suggestions.length; i++) {

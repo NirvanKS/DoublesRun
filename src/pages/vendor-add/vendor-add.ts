@@ -181,7 +181,10 @@ export class VendorAddPage {
       encodingType: this.camera.EncodingType.JPEG,
       mediaType: this.camera.MediaType.PICTURE,
       correctOrientation: true,
+<<<<<<< HEAD
 
+=======
+>>>>>>> 42b74a0f5843f65adb775d8dccec991f8a2937ac
     }
     this.camera.getPicture(options).then((imageData) => {
       this.vendorForm.pic = "data:image/jpeg;base64," + imageData;
