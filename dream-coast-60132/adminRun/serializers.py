@@ -8,6 +8,12 @@ class VendorSerializer(serializers.HyperlinkedModelSerializer):
         fields = ('id','Name', 'Description', 'locLat', 'locLong','pic', 'Type','avgRating', 'avgThickness', 'avgTime', 'avgCucumber','avgSpicy','reviews','positiveReviews','negativeReviews','oneStars','twoStars','threeStars','fourStars','fiveStars', 'rankingScore','reportCount','baseTrending','avgChanna')
 #'avgRating', 'avgThickness', 'avgTime','avgCucmber','avgSpicy','reviews
 
+class VendorIdSerializer(serializers.HyperlinkedModelSerializer):
+    id = serializers.ReadOnlyField()
+    class Meta:
+        model = Vendor
+        fields = ('id',) #comma needed to be considered a tuple of size 1
+
 class UserSerializer(serializers.HyperlinkedModelSerializer):
     # id = serializers.ReadOnlyField()
     class Meta:

@@ -4,8 +4,11 @@ import { Http, Headers } from '@angular/http';
 import { CacheService } from 'ionic-cache';
 import { Observable } from 'rxjs/Observable';
 import { ApiProvider } from '../../providers/api/api';
+import { VendorAddPage } from '../vendor-add/vendor-add';
 import { NetworkProvider } from '../../providers/network/network'
 import { Network } from '@ionic-native/network';
+import { Diagnostic } from '@ionic-native/diagnostic';
+import { Geolocation } from '@ionic-native/geolocation';
 import { SnapToMapProvider } from '../../providers/snap-to-map/snap-to-map'
 import { MapPage } from '../map/map'
 import { ToastController } from 'ionic-angular';
@@ -27,11 +30,13 @@ export class RankingsPage {
 
   vendorsKey = "vendor-ranking-list"
   vendors: Observable<any>;
-  vendorList: any;
+  vendorList: any = [];
   orderedVendors: any = [];
   loadim: Boolean = true;
   loader: any;
   apiUrl = "https://dream-coast-60132.herokuapp.com/";
+  difference: Set<any>;
+  deleteCheck: boolean = false;
 
   validateGeoLoc: boolean = false;
   successValidate: boolean = false;
@@ -53,7 +58,8 @@ export class RankingsPage {
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private http: Http, private cache: CacheService, public api: ApiProvider,
     public loadingCtrl: LoadingController, public snaptomap: SnapToMapProvider,
-    public networkProvider: NetworkProvider, public network: Network, private toastCtrl: ToastController) {
+    public networkProvider: NetworkProvider, public network: Network, private toastCtrl: ToastController,
+    private diagnostic: Diagnostic, public geolocation: Geolocation) {
   }
 
   async ionViewDidLoad() {
@@ -188,20 +194,78 @@ export class RankingsPage {
     this.navCtrl.parent.select(1);
   }
   // Load either from API or Cache
-  loadVendors(refresher?) {
-    let url = 'https://dream-coast-60132.herokuapp.com/vendors/';
+  async loadVendors(refresher?) {
+    //get cache list if it exists
+    var cacheList = [];
+    var url = 'https://dream-coast-60132.herokuapp.com/vendors/';
+    cacheList = await this.cache.getItem('vendorIDs')
+      .catch(() => {
+        console.log('vendor cache empty');
+      });
+    //if the cache list exists, get the live list and do set difference
+    if (cacheList != []) {
+      this.http.get('https://dream-coast-60132.herokuapp.com/vendorids/')
+        .map(data => data.json())
+        .subscribe(data => {
+          let IDlist = [];
+          data.forEach(element => {
+            IDlist.push(element.id);
+          });
+          let local = new Set(cacheList);
+          let live = new Set(IDlist);
+          //get items of the local set that are not in the live set - i.e deleted vendors still in local
+          // items of the live set that are not in the local set would be new vendors
+          // but loaddelayedobservable should handle those
+          this.difference = new Set(
+            [...local].filter(x => !live.has(x)));
+          console.log('this is?', local);
+          //iterate through the deleted vendor set and remove them from cache
+          if (this.vendorList != [] && !this.deleteCheck) {
+            this.difference.forEach(el => {
+              //instead of subscribing to the cache observable twice,
+              //cater for whichever event finishes first to be the one to remove the difference vendors
+              //seems like this runs after each time, because of the get request probably, too sleepy to think it through
+              this.vendorList.forEach(element => {
+                if (element.id == el) {
+                  let index = this.vendorList.indexOf(element);
+                  this.vendorList.splice(index, 1);
+                  local.delete(el);
+                  console.log('locla', local);
+                  cacheList = [...local];
+                  this.cache.saveItem('vendorIDs', cacheList);
+                  this.cache.saveItem(url, this.vendorList);
+                }
+              });
+            });
+            this.deleteCheck = true;
+          }
+          console.log('post delete', this.vendorList);
+        });
+
+    }
+    console.log(cacheList);
+
     let req = this.http.get(url)
       .map(res => {
         //this.loadim = true;
+        let list = [];
+        res.json().forEach(element => {
+          list.push(element.id);
+        });
+        this.cache.saveItem('vendorIDs', list);
+
         return res.json();
 
       });
 
-    let ttl = 60 * 60 * 3;
+    let ttl = 60 * 60 * 24;
 
     if (refresher) {
       // Reload data even if it is cached
       let delayType = 'all';
+      this.cache.clearGroup(url);
+      this.cache.removeItem('vendorIDs');
+      this.cache.removeItem(url);
       this.vendors = this.cache.loadFromDelayedObservable(url, req, 'none', ttl, delayType);
       // Hide the refresher once loading is done
       this.vendors.subscribe(data => {
@@ -219,8 +283,9 @@ export class RankingsPage {
     }
 
     this.vendors.subscribe((data: Object) => {
-      this.vendorList = Object.values(data);
-      console.log(this.vendorList);
+      this.vendorList = data;
+      console.log(data);
+      console.log('vlist', this.vendorList);
       let o = this.vendorList.sort(function compare(a, b) {
         // if (a.avgRating < b.avgRating)
         //   return -1;
@@ -345,6 +410,89 @@ export class RankingsPage {
       position: 'bottom'
     });
 
+    toast.onDidDismiss(() => {
+      console.log('Dismissed toast');
+    });
+
+    toast.present();
+  }
+
+  //add vendor code 
+  addOfflineMarker() {
+    var geoNumberLat = 0;
+    var geoNumberLon = 0;
+    let options = {
+      enableHighAccuracy: true,
+      timeout: 15000,
+      maximumAge: 0
+    };
+    this.presentLoading();
+    console.log('im gonna try!');
+    let watchLoc = this.geolocation.watchPosition(options)
+      .subscribe((position) => {
+        console.log(position);
+        if (position.coords == undefined) {
+          //this MIGHT mean timeout error, position becomes the error object if one occurs :)
+          this.geolocationError(2);
+          console.log('Error getting location');
+          this.loader.dismiss();
+          watchLoc.unsubscribe();
+          return;
+        }
+        console.log("trying my best here ", position.coords.accuracy, "m");
+        if (position.coords.accuracy > 30) {
+          return;
+        }
+        console.log("got location?", position.coords.accuracy, "m");
+        geoNumberLat = position.coords.latitude;
+        geoNumberLon = position.coords.longitude;
+        if (geoNumberLat == 0 && geoNumberLon == 0) {
+          this.geolocationError(3);
+        }
+        else {
+          watchLoc.unsubscribe();
+          this.loader.dismiss();
+          this.navCtrl.push(VendorAddPage, {
+            geoNumberLat: geoNumberLat,
+            geoNumberLon: geoNumberLon,
+          });
+        }
+      }, (error: any) => { //errors aren't being picked up on watchPosition
+        if (error.code == 3) {
+          this.geolocationError(1)
+        }
+        console.log('Error getting location', error);
+
+      });
+
+
+
+
+  }
+
+  geolocationError(type) {
+    var toast;
+    if (type == 1) {
+      toast = this.toastCtrl.create({
+        message: "Can't get your location, try restarting your device!",
+        duration: 3000,
+        position: 'bottom'
+      });
+    }
+    else if (type == 2) {
+      toast = this.toastCtrl.create({
+        message: "Please turn on your Location and allow us access :)",
+        duration: 3000,
+        position: 'bottom'
+      });
+    }
+    else if (type == 3) {
+      toast = this.toastCtrl.create({
+        message: "Error accessing your location services :(",
+        duration: 3000,
+        position: 'bottom'
+      });
+    }
     toast.onDidDismiss(() => {
       console.log('Dismissed toast');
     });

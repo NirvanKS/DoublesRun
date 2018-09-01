@@ -26,6 +26,7 @@ router = routers.DefaultRouter()
 router.register(r'vendors', views.VendorViewSet)
 router.register(r'users',views.UserViewSet)
 router.register(r'reviews',views.ReviewViewSet)
+router.register(r'vendorids',views.VendorIdViewSet)
 
 
 urlpatterns = [

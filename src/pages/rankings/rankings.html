@@ -10,11 +10,15 @@
       <ion-icon name="menu"></ion-icon>
     </button>
     <ion-title>Rankings</ion-title>
+    <ion-buttons end>
+      <button ion-button (click)="addOfflineMarker()">
+        <ion-icon name="add"></ion-icon> &nbsp; Add Vendor</button>
+    </ion-buttons>
   </ion-navbar>
 </ion-header>
 <ion-content padding>
   <ion-refresher (ionRefresh)="forceReload($event)">
-    <ion-refresher-content refreshingText="Reload from API...">
+    <ion-refresher-content pullingIcon="arrow-dropdown" pullingText="Pull to refresh" refreshingText="Refreshing...">
     </ion-refresher-content>
   </ion-refresher>
   <div *ngIf="loadim">

@@ -6,7 +6,7 @@ from django.shortcuts import render
 # Create your views here.
 from .models import Vendor, User, Review
 from rest_framework import viewsets
-from .serializers import VendorSerializer, UserSerializer, ReviewSerializer
+from .serializers import VendorSerializer, UserSerializer, ReviewSerializer, VendorIdSerializer
 
 
 class VendorViewSet(viewsets.ModelViewSet):
@@ -15,6 +15,10 @@ class VendorViewSet(viewsets.ModelViewSet):
     """
     queryset = Vendor.objects.all()
     serializer_class = VendorSerializer
+
+class VendorIdViewSet(viewsets.ModelViewSet):
+    queryset = Vendor.objects.all()
+    serializer_class = VendorIdSerializer
 
 class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()
