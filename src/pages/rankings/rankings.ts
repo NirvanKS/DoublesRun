@@ -66,7 +66,7 @@ export class RankingsPage {
     console.log('ionViewDidLoad RankingsPage');
     console.log("network online?", this.networkProvider.isOnline);
     if (this.networkProvider.isOnline) {
-      this.presentLoading();
+      this.presentLoading("vendors");
     }
     this.loadVendors();
     if (this.network.type != "none") {
@@ -315,11 +315,17 @@ export class RankingsPage {
     this.loadVendors(refresher);
   }
 
-  presentLoading() {
-
-    this.loader = this.loadingCtrl.create({
-      content: "Loading Vendors..."
-    });
+  presentLoading(type) {
+    if (type == "vendors") {
+      this.loader = this.loadingCtrl.create({
+        content: "Loading Vendors..."
+      });
+    }
+    if (type == "location") {
+      this.loader = this.loadingCtrl.create({
+        content: "Getting location..."
+      });
+    }
 
     this.loader.present();
 
@@ -426,7 +432,7 @@ export class RankingsPage {
       timeout: 15000,
       maximumAge: 0
     };
-    this.presentLoading();
+    this.presentLoading("location");
     console.log('im gonna try!');
     let watchLoc = this.geolocation.watchPosition(options)
       .subscribe((position) => {
@@ -481,7 +487,7 @@ export class RankingsPage {
     }
     else if (type == 2) {
       toast = this.toastCtrl.create({
-        message: "Please turn on your Location and allow us access :)",
+        message: "Error getting location.",
         duration: 3000,
         position: 'bottom'
       });
