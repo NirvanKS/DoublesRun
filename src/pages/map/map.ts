@@ -318,7 +318,7 @@ export class MapPage implements AfterViewInit {
 
 
           });
-          this.markers.push(YourMarker);
+
           YourMarker.addListener('click', function () {
             yourWindow.open(map, YourMarker);
           });
