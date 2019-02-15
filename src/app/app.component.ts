@@ -88,7 +88,7 @@ export class MyApp {
           // this.rootPage = TabsPage;
         } else {
           this.rootPage = IntroPage;
-          this.storage.set('introShown', true);
+          // this.storage.set('introShown', true);
         }
 
         this.loader.dismiss();
