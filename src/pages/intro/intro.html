@@ -1,64 +1,50 @@
-<ion-content>
-  <ion-slides pager="true">
-
-    <ion-slide>
-      <ion-row>
-        <ion-col>
-          <div class="text">
-            <h2 class="text">Works Offline Too!</h2>
+<ion-content class="intro">
+<ion-row>
+  <ion-col>
+    <div class="van">
+      <div class="van-body">
+        <div class="window-layer">
+          <div class="window"></div>
+          <div class="window"></div>
+          <div class="window"></div>
+          <div class="window">
+            <div class="me"></div>
           </div>
-        </ion-col>
-      </ion-row>
-      <ion-row>
-        <ion-col>
-          <div class="van">
-            <div class="van-body">
-              <div class="window-layer">
-                <div class="window"></div>
-                <div class="window"></div>
-                <div class="window"></div>
-                <div class="window">
-                  <div class="me"></div>
-                </div>
-              </div>
-              <div class="canopy"></div>
-              <div class="roofrack">
-                <div class="support"></div>
-                <div class="support"></div>
-                <div class="board"></div>
-              </div>
-              <div class="tailpipe">
-                <div class="smoke"></div>
-                <div class="smoke"></div>
-                <div class="smoke"></div>
-              </div>
-              <div class="rear"></div>
-              <div class="front"></div>
-            </div>
-            <div class="wheels">
-              <div class="wheel"></div>
-              <div class="wheel"></div>
-            </div>
-          </div>
-        </ion-col>
-      </ion-row>
-      <ion-row>
-        <ion-col>
-          <h3>No Internet? No Problem!</h3>
-          <p class="pee">
-            <i>While on the go you can view our map and vendors,
-              <br> Or even add new vendors!
-              <br> They'll get sent in when you reconnect
-            </i>
-          </p>
-        </ion-col>
-      </ion-row>
-      <ion-row>
-        <ion-col>
-          <button ion-button round outline class="butt" (click)="goToHome()">Continue</button>
-        </ion-col>
-      </ion-row>
-    </ion-slide>
-
-  </ion-slides>
+        </div>
+        <div class="canopy"></div>
+        <div class="roofrack">
+          <div class="support"></div>
+          <div class="support"></div>
+          <div class="board"></div>
+        </div>
+        <div class="tailpipe">
+          <div class="smoke"></div>
+          <div class="smoke"></div>
+          <div class="smoke"></div>
+        </div>
+        <div class="rear"></div>
+        <div class="front"></div>
+      </div>
+      <div class="wheels">
+        <div class="wheel"></div>
+        <div class="wheel"></div>
+      </div>
+    </div>
+  </ion-col>
+</ion-row>
+<ion-row>
+  <ion-col col-10 offset-1>
+    <h1>Works offline too</h1>
+    <h6>No internet? No problem!</h6>
+    <p class="pee">
+      While on the go you can view our map and vendors,
+      or even add new vendors! They'll get sent in when you reconnect.
+    </p>
+  </ion-col>
+</ion-row>
+<ion-row>
+  <ion-col>
+    <button ion-button round outline class="butt" (click)="goToHome()">Continue</button>
+  </ion-col>
+</ion-row>
 </ion-content>
